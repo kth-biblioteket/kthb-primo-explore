@@ -1,0 +1,2153 @@
+/*********************************************
+
+KTH-Anpassningar för Primo New UI
+
+**********************************************
+
+/****************************************************
+
+Rättning för iPhone IOS 11 från Ex libris 2017-11-01
+
+*****************************************************/
+.md-dialog-container {
+  height: 100% !important;
+  position: fixed !important;
+  top: 0px !important;
+}
+
+
+
+/*********************
+
+FÄRGER 
+
+TODO: Flytta till respektive avdelning nedan?
+
+*********************/
+
+/* bakgrund på sida */
+primo-explore>div {
+	background-color: #f5f5f5;
+}
+
+/* backgrund till dialogrutan för full view, så att sökresultatet syns bakom */
+primo-explore>.md-dialog-container {
+	background-color: transparent;
+}
+
+/* vit bakgrund på träfflista */
+prm-search-result-list {
+	background-color: #ffffff;
+}
+
+/* vit bakgrund på 0 results */
+prm-no-search-result md-card.default-card {
+	background-color: #ffffff;
+}
+
+/* vit bakgrund på varje post i träfflistan */
+prm-search-result-list .pages-separated-with-gaps .list-item-wrapper {
+	background-color: #ffffff;
+}
+
+/* Grå hoverfärg på varje post */
+prm-brief-result-container .list-item-primary-content:before {
+	background-color: transparent;
+}
+prm-search-result-list .pages-separated-with-gaps .list-item-wrapper:hover {
+	background-color: #f2f2f2;
+}
+
+/* strecket under inputrutor*/
+md-input-container:after {
+	background-color: #4aa8ea;
+}
+
+/* streck under tabrubrik med focus*/
+ md-tabs md-ink-bar {
+	background-color: #4aa8ea
+ }
+ 
+/* back to search ikonens färg */
+#backtosearch svg, #backtosearchfromfavorites svg {
+    color: #e08303;
+}
+
+/* checkboxar */
+md-checkbox ._md-icon {
+    opacity: 1;
+    border-color: #4aa8ea;
+    border-width: 2px;
+}
+md-checkbox.md-checked ._md-icon {
+    background-color: #4aa8ea;
+}
+
+
+/*****************************
+
+LAYOUT
+
+*****************************/
+
+/* Avstånd längst ner i träfflistan från "more results" till slutet på sidan */
+prm-search-result-list .list-spacer {
+    min-height: 300px;
+}
+@media (max-width: 959px) and (min-width: 200px) {
+	prm-search-result-list .list-spacer {
+		min-height: 450px;
+	}
+}
+
+/* ram runt bokomslag etc*/
+prm-search-result-thumbnail-container img {
+    border: 1px solid #bdbdbd;
+}
+
+/*visa pilen som scrollar till sidans topp*/
+prm-search-bookmark-filter #fixed-buttons-holder.fixed-to-top {
+	position: fixed;
+	left: initial !important;
+    right: 0px !important;
+	top: 0px !important;
+	
+}
+
+/*KTH-Knappar*/
+.kth-button {
+	color: #000000 !important;
+	background-color: #f3f3f3 !important;
+	line-height: 24px !important;
+	min-height: 1em !important;
+	min-width: 0px  !important;
+}
+
+.kth-button:hover {
+	background-color: rgba(69,170,180,.1) !important;
+}
+
+/*********************************
+
+Tooltips när inte Angulars egen 
+tooltip räcker till. 
+
+För närvarande till låneinfo
+för tryck material som visas
+på fullposten.
+
+TODO: Anpassa till små skärmar
+*********************************/
+.tooltip {
+    position: relative;
+    display: inline-block;
+	overflow: visible;
+	white-space: initial;
+}
+
+.tooltip .locationmap.tooltiptext {
+	text-align: left;
+	margin-left: 0px;
+	color: #000000;
+}
+
+.tooltip .locationmap.tooltiptext::after {
+	content: none;
+}
+
+.tooltip .tooltiptext {
+	white-space: initial;
+    visibility: hidden;
+    width: 330px;
+    background-color: #8e8e8e;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 5px;
+    position: absolute;
+    z-index: 1;
+    top: 125%;
+    left: 50%;
+    margin-left: -310px;
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: 140px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #8e8e8e transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+/*********************************
+
+ANIMATIONER
+
+*********************************/
+
+/* ingen ikon som "flyger" till favoriter */
+.pinDummy {
+	display: none;
+}
+
+prm-search header > prm-spinner .spinner-wrapper {
+    width: 30px;
+    height: 90px;
+    transform: rotate(90deg) scale(1) translateY(0);
+}
+
+prm-spinner.half-transparent .diamond {
+    background-color: transparent;
+}
+
+prm-spinner .loader .diamond {
+    height: 100%;
+    z-index: 1000;
+    display: block;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #3498db;
+	border-left-color: #3498db;
+	border-right-color: #3498db;
+	border-bottom-color: #b0ccde;
+    -webkit-animation: spin 1s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
+    animation: spin 1s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
+}
+ 
+@-webkit-keyframes spin {
+    0%   {
+        -webkit-transform: rotate(0deg);  /* Chrome, Opera 15+, Safari 3.1+ */
+        -ms-transform: rotate(0deg);  /* IE 9 */
+        transform: rotate(0deg);  /* Firefox 16+, IE 10+, Opera */
+    }
+    100% {
+        -webkit-transform: rotate(360deg);  /* Chrome, Opera 15+, Safari 3.1+ */
+        -ms-transform: rotate(360deg);  /* IE 9 */
+        transform: rotate(360deg);  /* Firefox 16+, IE 10+, Opera */
+    }
+}
+@keyframes spin {
+    0%   {
+        -webkit-transform: rotate(0deg);  /* Chrome, Opera 15+, Safari 3.1+ */
+        -ms-transform: rotate(0deg);  /* IE 9 */
+        transform: rotate(0deg);  /* Firefox 16+, IE 10+, Opera */
+    }
+    100% {
+        -webkit-transform: rotate(360deg);  /* Chrome, Opera 15+, Safari 3.1+ */
+        -ms-transform: rotate(360deg);  /* IE 9 */
+        transform: rotate(360deg);  /* Firefox 16+, IE 10+, Opera */
+    }
+}
+
+prm-spinner .loader .diamond:nth-child(2), prm-spinner .loader .diamond:nth-child(3) {
+	display:none
+}
+
+/*******************
+ 
+ ALERTBAR, Ex libris och våra egna
+ 
+ ******************/
+
+ /* ta bort ex libris alert?? */
+prm-search .alert-bar {
+	/*display:none;*/
+}
+
+.bar.alert-bar {
+	background-color: #fff8c4; /*ex libris gul*/
+	height: auto;
+	border: none;
+	padding: .5em .5em;
+}
+
+.kth_alertbarwrapper div {
+	background-color: #fff8c4; /*ex libris gul*/
+}
+
+.kth_alertbarwrapper {
+	display: flex;
+}
+
+.bar.alert-bar.kthinfotext {
+   border-color: #ed9e9e;
+}
+
+/***********************
+
+HOMEPAGE
+
+***********************/
+prm-static[section="homepage"] {
+	padding: 0;
+}
+
+prm-static, prm-static md-card.default-card {
+	background-color: #ffffff;
+}
+
+/*********************************
+
+ANPASSNINGAR AV RESPEKTIVE DELAR(i ordning uppifrån och ner över sidan)
+
+*********************************/
+
+/*************************
+
+SIDHUVUD(Logga och meny)
+
+*************************/
+
+/* höjden/storleken på sidhuvud*/
+prm-topbar {
+    height: auto;
+}
+
+/*ta bort links, a-z, library search...*/
+.top-nav-bar-links, div.custom-links-container {
+	display: none !important;
+}
+
+/* färg, höjd, padding */
+prm-topbar .top-nav-bar {
+	background-color: #ffffff;
+	height: 60px;
+	/*firefoxfix*/
+	min-height: 0%;
+}
+
+/*KTH-loggan*/
+prm-logo .product-logo {
+	padding: 0px;
+	height: 40px;
+}
+prm-topbar prm-logo a:hover {
+	text-decoration: none;
+}
+prm-topbar prm-logo {
+	height: 60px;
+    align-items: center;
+	max-width: 100% !important;
+	flex-direction: row;
+	display: flex;
+	color: #1954a6;
+	font-size: 2em;
+}
+prm-logo img {
+	width: 40px;
+	height: 40px;
+}
+prm-logo a {
+	background-color: transparent !important;
+	box-shadow: none !important;
+}
+prm-logo a:hover {
+	box-shadow: none !important;
+}
+prm-logo .logo-image, prm-logo img {
+    max-height: none;
+}
+
+
+/*KTH Biblioteket Rubrik*/
+prm-logo-after {
+    top: 8px;
+    color: #525252;
+    position: relative;
+	padding-left: 10px;
+}
+.kth-sitenameheader {
+	color: #525252;
+}
+
+/* Språkbyte */
+.kth_top-language-bar {
+	padding: 0.1em 0em 0.1em 0em;
+}
+
+/* olika skärmstorlekar*/
+@media (max-width: 1279px) and (min-width: 960px) {
+
+	prm-topbar .top-nav-bar {
+		padding: 0px 10px 0px 10px;
+	}
+	
+	.kth_top-language-bar {
+		padding: 0em 1.5em 0em 1.5em;
+	}
+}
+
+@media (max-width: 959px) and (min-width: 200px) {
+	
+	prm-logo {
+		width: 100%;
+		padding-left: 10px;
+	}
+	prm-topbar .top-nav-bar {
+		padding: 0em 1.5em 0em 1.5em;
+	}
+	
+	.kth_top-language-bar {
+		padding: 0em 0.5em 0em 0.5em;
+	}
+	
+	prm-logo.flex {
+		flex: 0 1 auto;
+	}
+}	
+
+/***********************
+
+Vår egen Meny
+
+***********************/
+
+/* används för vad? */
+md-fab-actions {
+	justify-content: flex-end;
+}
+
+/*bakgrund*/
+prm-user-area {
+	background: none;
+	/*firefox- och safarifix*/
+	min-height: 0%;
+	height: 60px;
+}
+
+/*font*/
+prm-user-area .md-toolbar-tools {
+    font-size: unset;
+}
+
+/* färg vid hover */
+prm-user-area .md-fab-action-item .md-button:hover:not([disabled]),prm-user-area .md-fab-action-item md-input-container:hover:not([disabled]) {
+	background-color: transparent;
+	color: #1954a6;
+}
+
+/*inga avdelare på själva knapparna, rätt färger, text etc*/
+prm-user-area .md-fab-action-item .md-button, prm-user-area .md-fab-action-item prm-change-lang {
+	box-shadow: none !important;
+	background-color: #fff;
+	color: #1954a6;
+	text-transform: uppercase;
+	margin: 0 !important;
+	min-width:10px;
+	padding: 0 1em;
+}
+
+/* bort med padding på höger sida så knappen hamnar ute i kanten*/
+prm-user-area .md-fab-action-item prm-authentication .md-button {
+	padding-right: 0px;
+}
+
+/*avdelare på varje hela action item*/
+.md-fab-action-item {
+	display: flex;
+    flex-direction: row;
+}
+
+
+/* flytta upp ikonen 2px för "a", hjärtat linjeras rätt*/
+a.button-with-icon>prm-icon md-icon {
+    position: relative;
+    top: -2px;
+}
+
+/* gör så att texten hamnar under menyikonerna*/
+prm-user-area .md-fab-action-item .md-button, prm-user-area .md-fab-action-item md-input-container, prm-user-area .md-fab-action-item a {
+	display: flex;
+    flex-direction: column;
+	line-height: 100%;
+}
+
+/*centrera meny items vertikalt*/
+.md-fab-action-item prm-authentication , .md-fab-action-item prm-library-card-menu, .kth_fabaction, .md-fab-action-item prm-change-lang {
+	width: 100%;
+	height: 60px;
+	padding: 10px 0px 10px 0px; 
+}
+.kth-favorite prm-icon, prm-library-card-menu button prm-icon, prm-authentication button prm-icon {
+	margin: auto
+}
+.md-fab-action-item prm-authentication , .md-fab-action-item prm-library-card-menu, .kth_fabaction {
+	flex-direction: column; 
+	display: flex;
+}
+
+/*ta bort padding på menytexterna*/
+prm-user-area .md-fab-action-item .md-button span,prm-user-area .md-fab-action-item a span {
+	padding: 0px;
+	font-size: 14px;
+}
+
+/*favoritknapp i menyn*/
+.kth-favorite {
+	min-height: 100%;
+	text-transform: uppercase;
+	color: #1954a6 !important;
+	/* ikon o text på varsin rad*/
+	padding: 0 1em;
+	align-items: center;
+	
+}
+.kth-favorite:hover {
+	text-decoration: none;
+	box-shadow: inset 0 -1px 0 0 rgba(255, 255, 255, 0.77);
+	background-color: #ffffff
+}
+.kth-favorite:focus {
+	text-decoration: none;
+	box-shadow: inset 0 -1px 0 0 rgba(255, 255, 255, 0.77);
+	background-color: #ffffff
+}
+
+/*dölj alla favorites/searchhistory-knappar*/
+prm-search-bookmark-filter a {
+	display: none !important
+}
+
+/* anpassning mindre skärmar */
+@media (max-width: 959px) and (min-width: 200px) {
+	/*  ta bort menyknapp på små skärmar*/
+	prm-user-area .mobile-menu-button {
+		display: none !important;
+		background-color: #1954a6;
+		color: #ffffff;
+		box-shadow: 1px 0 0 0 rgba(0,0,0,.1), -1px 0 0 0 rgba(0,0,0,.1);
+	}
+	
+	/* tillbaks med padding så inloggning inte hamnar i högerkant*/
+	prm-user-area .md-fab-action-item prm-authentication .md-button {
+		padding-right: 1em;
+	}
+	
+	/* se till att menyikonerna hamnar under logga o rubrik, ta bort lite paddings */
+	prm-topbar .top-nav-bar {
+		padding-left: 0em;
+		padding-right: 0em;
+		height: 120px;
+		flex-direction: column;
+	}
+	
+	/* se till att menyn sprids ut jämnt över hela sidan*/
+	prm-user-area .md-fab-action-item {
+		flex: 1;
+		height: 60px;
+	}
+}
+
+@media (max-width: 599px) and (min-width: 200px) {
+	/* ta bort menytexter på de allra minsta skärmarna*/
+	prm-user-area .md-fab-action-item .md-button span, prm-user-area .md-fab-action-item .kth-favorite span {
+		display: none;	
+	}
+}
+
+/*******************
+	SÖKRUTAN
+*******************/
+
+/*KTH-Blått, höjd*/
+prm-search-bar, prm-search-bar .advanced-search-backdrop, prm-tags-search-bar {
+    background-color: #1954a6;
+}
+
+/* vänd förstoringsglaset, byt färg */
+prm-icon[icon-definition="magnifying-glass"] md-icon svg{
+    transform: scale(1,1) !important;
+	color: #e08303;
+}
+
+/* IE Fix, överst */
+prm-search-bar {
+	z-index: 11;
+}
+
+/* dölj lilla advanced search ikonen (som visas på små skärmar)*/
+.search-actions>button:first-of-type {
+	display: none;
+}
+
+/*ta bort sökrutans rensakryss när fönstret minskar*/
+@media (max-width: 959px) and (min-width: 200px) {
+	/*md-autocomplete-wrap button {
+		display: none;
+	}*/
+}
+
+/* padding */
+prm-search-bar, prm-tags-search-bar {
+    padding: 1.5em 0em 1.5em 0em !important;
+    position: relative;
+}
+
+/* Bredder */
+.kth-searchbarwrapper {
+	flex: 1 1 70%;
+    max-width: 70%;
+	display: flex;
+}
+
+/* Sökrutans bredd */
+prm-search-bar .search-elements-wrapper.advanced-mode, prm-search-bar .search-elements-wrapper.simple-mode {
+	flex: 1;
+	max-width: 100%;
+	
+}
+/* Sökrutans bredd när sökning gjorts */
+prm-search-bar .search-elements-wrapper.advanced-mode.has-input, prm-search-bar .search-elements-wrapper.simple-mode.has-input {
+	flex: 1;
+	max-width: 100%;
+}
+
+/* Vänstermarginal */
+prm-search-bar .search-wrapper>div:first-of-type {
+	flex: 1 1 15% !important;
+	max-width: 15% !important;
+}
+/* Ingen vänstermarginal på mindre skärmar */
+@media (max-width: 1279px) and (min-width: 200px) {
+	prm-search-bar .search-wrapper>div:first-of-type {
+		flex: 1 1 0% !important;
+		max-width: 0% !important;
+	}
+}
+
+/* Sökrutans bredd och padding på mellanstora skärmar */
+@media (max-width: 1279px) and (min-width: 960px) {
+	prm-search-bar {
+		padding: 1.5em 1.5em 1.5em 1.5em !important;
+	}
+	
+	.kth-searchbarwrapper {
+		flex: 1 1 100%;
+		max-width: 100%;
+	}
+}
+
+/* Sökrutans bredd och padding på mindre skärmar */
+@media (max-width: 959px) and (min-width: 700px) {
+
+	prm-search-bar {
+		padding: 1.5em 1.5em 1.5em 1.5em !important;
+	}
+	
+	/* ingen bredd på search options, för att söksträngen ska fylla hela sökrutan*/
+	prm-search-bar .simple-search-wrapper .search-options {
+		flex: 1 1 0%;
+		max-width: 0%;
+	}
+	
+	.kth-searchbarwrapper {
+		flex: 1 1 100%;
+		max-width: 100%;
+	}
+}
+
+/* Sökrutans bredd och padding på små skärmar */
+@media (max-width: 699px) and (min-width: 400px) {
+
+	.kth-searchbarwrapper {
+		flex: 1 1 100%;
+		max-width: 100%;
+	}
+}
+
+@media (max-width: 399px) and (min-width: 200px) {
+	
+	prm-search-bar .search-elements-wrapper.advanced-mode, prm-search-bar .search-elements-wrapper.simple-mode {
+		flex: 1 1 80%;
+		max-width: 100%;
+	}
+	
+	prm-search-bar .search-elements-wrapper.advanced-mode.has-input, prm-search-bar .search-elements-wrapper.simple-mode.has-input {
+		flex: 1 1 80%;
+		max-width: 100%;
+	}
+	
+	.kth-searchbarwrapper {
+		flex: 1 1 100%;
+		max-width: 100%;
+	}
+	
+	/* dölj förstoringsglaset*/
+	prm-journals-search-bar .simple-search-wrapper .search-actions, prm-search-bar .simple-search-wrapper .search-actions {
+		display: none; 
+	}
+}
+
+@media (max-width: 699px) and (min-width: 200px) {
+	/* ingen bredd på search options, för att söksträngen ska fylla hela sökrutan*/
+	prm-search-bar .simple-search-wrapper .search-options {
+		flex: 1 1 0%;
+		max-width: 0%;
+	}
+	
+	/* rundade hörn på sökrutan även på små skärmar*/
+	prm-search-bar .search-element-inner {
+		-ms-flex-direction: row;
+		flex-direction: row;
+		border-radius: 5px;
+	}
+	
+	prm-search-bar {
+		/*padding: 1em !important;*/
+	}
+	
+	/* ordningen på sökrutan, så den hamnar före förstoringsglaset även på små skärmar*/
+	prm-journals-search-bar .search-input, prm-search-bar .search-input {
+		-ms-flex-order: 0;
+		order: 0;
+	}
+	/* inte absolut position på förstoringsglaset, dölj förstoringsglaset*/
+	prm-journals-search-bar .simple-search-wrapper .search-actions, prm-search-bar .simple-search-wrapper .search-actions {
+		position: initial; 
+		display: none;
+	}
+	
+	prm-search-bar .search-elements-wrapper.advanced-mode {
+		position: absolute;
+		width: 100%;		
+	}
+	
+}
+
+
+/*********************
+	Advanced Search
+*********************/
+
+/* Fix för Safaris sätt att visa hur en inputruta är aktiv (grön understruken)*/
+
+md-input-container:after {
+	    height: 0px;
+}
+md-input-container.md-input-focused:after {
+	    height: 3px;
+}
+
+/* formulerade sökfrågan som skapas underst */
+
+prm-search-bar .advanced-search-wrapper .search-string span {
+	float: none;
+}
+
+/*dölj ikon och text för advanced search-plusset/simple search-minuset*/
+.switch-to-advanced>span, .switch-to-simple>span {
+	display:none !important; 
+}
+
+/*visa ett plus istället för ikon/text advanced search-plusset*/
+.md-button.switch-to-advanced:after {
+	content: "+";
+}
+
+/*visa ett minus istället för ikon/text advanced search-minuset*/
+.md-button.switch-to-simple:after {
+	content: "−";
+}
+
+/*sätt färg för när musen hålls över advanced search-plusset*/
+prm-search-bar .search-switch-buttons .md-button.switch-to-advanced:hover, prm-search-bar .search-switch-buttons .md-button.switch-to-simple:hover {
+  background-color: #e6e6e6;
+}
+
+/* Bredd, höjd, färg, fontstorlek etc på advanced/simple search-plusset/minuset*/
+prm-search-bar .search-switch-buttons .md-button.switch-to-advanced, prm-search-bar .search-switch-buttons .md-button.switch-to-simple {
+	min-height: 0px;
+    min-width: 60px;
+    line-height: 60px;
+    background-color: rgb(255, 255, 255);
+    color: #000;
+    font-size: 46px;
+    padding: 0;
+	align-self: flex-end;
+	font-weight: lighter;
+}
+
+/* advanced/simple search*/
+prm-search-bar .search-switch-buttons {
+    padding-top: 0 !important;
+	display: flex !important;
+	flex-direction: column;
+	flex: 1 1 5% !important;
+	max-width: 5% !important;
+}
+/* hur mkt av sökrutan ska plusset uppta på mellanstora skärmar*/
+@media (max-width: 1279px) and (min-width: 960px) {
+	prm-search-bar .search-switch-buttons {
+		flex: 1 1 7% !important;
+		max-width: 7% !important;
+	}
+}
+
+/* hur mkt av sökrutan ska plusset uppta på mindre/små skärmar*/
+@media (max-width: 959px) and (min-width: 700px) {
+	prm-search-bar .search-switch-buttons {
+		flex: 1 1 10% !important;
+		max-width: 10% !important;
+	}
+}
+/* hur mkt av sökrutan ska plusset uppta på mindre/små skärmar*/
+@media (max-width: 699px) and (min-width: 600px) {
+	prm-search-bar .search-switch-buttons {
+		flex: 1 1 12% !important;
+		max-width: 12% !important;
+	}
+	prm-search-bar .search-switch-buttons .md-button.switch-to-simple {
+		display: none !important;
+	}
+	
+	/* stängkrysset*/
+	prm-search-bar .advanced-search-wrapper .md-button.switch-to-simple {
+		top: 0px;
+		display: inline-block !important;
+	}
+	
+	/* egna rader */
+	prm-advanced-search form>div>div:nth-of-type(2) {
+		flex-direction: column;
+	}
+	/*IE fix*/
+	prm-advanced-search form>div>div:nth-of-type(2) md-card {
+		flex: 1 0 auto;
+	}
+}
+@media (max-width: 599px) and (min-width: 400px) {
+	prm-search-bar .search-switch-buttons {
+		flex: 1 1 15% !important;
+		max-width: 15% !important;
+	}
+	prm-search-bar .search-switch-buttons .md-button.switch-to-simple {
+		display: none !important;
+	}
+	
+	/* stängkrysset*/
+	prm-search-bar .advanced-search-wrapper .md-button.switch-to-simple {
+		top: 0px;
+		display: inline-block !important;
+	}
+	
+	/* egna rader */
+	prm-advanced-search form>div>div:nth-of-type(2) {
+		flex-direction: column;
+	}
+	/*IE fix*/
+	prm-advanced-search form>div>div:nth-of-type(2) md-card {
+		flex: 1 0 auto;
+	}
+}
+
+@media (max-width: 399px) and (min-width: 200px) {
+	prm-search-bar .search-switch-buttons {
+		flex: 1 1 20% !important;
+		max-width: 20% !important;
+		padding-left: .75em;
+	}
+	prm-search-bar .search-switch-buttons .md-button.switch-to-simple {
+		display: none !important;
+	}	
+	
+	prm-search-bar .search-switch-buttons .md-button.switch-to-advanced, prm-search-bar .search-switch-buttons .md-button.switch-to-simple {
+		/*min-width: 24px;*/
+	}
+	
+	/* stängkrysset*/
+	prm-search-bar .advanced-search-wrapper .md-button.switch-to-simple {
+		top: 0px;
+		display: inline-block !important;;
+	}
+	
+	/* egna rader */
+	prm-advanced-search form>div>div:nth-of-type(2) {
+		flex-direction: column;
+	}
+	/*IE fix*/
+	prm-advanced-search form>div>div:nth-of-type(2) md-card {
+		flex: 1 0 auto;
+	}
+}
+
+/**********************
+
+EGEN FACETTMENY 
+ovanför sökresultat
+
+**********************/
+#facettmenudiv {
+	display: flex;
+	background-color: transparent;
+	padding: .5em .75em;
+	padding: 0;
+}
+
+#facettmenu {
+	margin: 0;
+    padding: 2px 0px;
+}
+#facettmenu li {
+    display: inline;
+}
+
+#facettmenu a {
+    font-weight: normal;
+    color: #24A0D8;
+}
+
+#facettmenu span {
+	font-size: 0.9em;
+	font-style: italic;
+}
+
+/*****************
+
+SÖKRESULTAT
+
+*****************/
+
+/* Streck även ovanför första posten */
+.list-item-wrapper.first-in-page:first-of-type {
+    border-top-width: 1px;
+    border-top-style: solid;
+}
+
+/* logga in för att spara sökning */
+prm-search-result-list .kth_loggain {
+    height: 19px;
+    margin-left: 1em;
+}
+prm-search-result-list .kth_loggain .md-button {
+	top: -5px;
+	font-style: initial;
+	color: #97abba !important;
+}
+
+/* spara sökning */
+prm-add-query-to-saved-searches .md-button {
+	color: #97abba !important;
+}
+
+/* gör did u mean tydligare */
+prm-did-u-mean a {
+	color: #24A0D8;
+	font-weight: 600; /* =strong*/
+}
+
+/* flytta ned sidnummer, antal sökträffar etc*/
+prm-search-result-list .results-title {
+    top: 0px;
+}
+prm-search-result-list .pages-separated-with-gaps .list-item-wrapper.first-in-page:first-of-type .md-subheader ._md-subheader-inner {
+    top: -27px;
+}
+
+/* ordning på search result och search result after så att våra egna facetter hamnar överst	*/
+prm-search-result-list {
+	flex-direction: column; /*after hamnar överst*/
+	display: flex;
+	position: relative;
+	padding-top: 1em;
+	border-right: 1px solid #e1e1e1; /*avdelare mellan resultat och facetter*/
+    padding-right: 1em;
+	min-height: 0px;
+}
+/* prm-search-result-list-after. Våra egna facetter */
+prm-search-result-list-after {
+	top: -38px;
+	background-color: #ffffff;
+    padding-bottom: 10px;
+	padding-left: 7px;
+}
+
+/* färg på knappen för att hämta fler träffar */
+button.button-confirm.button-large.md-button.md-primoExplore-theme.md-ink-ripple {
+	color: #4aa8ea
+}
+	
+@media (max-width: 599px) and (min-width: 200px) {
+	prm-search-result-list-after{
+		padding: 0px 7px 10px 7px;
+	}
+}
+
+/* "Actions", dölj mail och citations */
+prm-brief-result-container .result-item-actions>button:nth-of-type(1),prm-brief-result-container .result-item-actions>button:nth-of-type(2) {
+	display:none;
+}
+
+/* Krysset för att stänga "actions"*/
+.result-item-actions .more-options-button prm-icon.close-icon md-icon {
+    height: 24px;
+    width: 24px;
+    min-height: 24px;
+    min-width: 24px;
+    top: 9px;
+}
+
+/* "Actions", flytta ner rutan och anpassa innehållet*/
+/*.result-item-actions, */
+
+.action-list-content {
+	top: 12px;
+}
+
+.item-expanded .result-item-actions {
+	top: 12px;
+}
+
+
+.list-item-wrapper.item-expanded .list-item-primary-content {
+    transform: translate3d(0px,0px,0); 
+}
+
+/* Ikonen för att öppna "actions" på varje sökträff */
+.result-item-actions .more-options-button prm-icon.open-icon md-icon {
+	top: 0px;
+}
+
+/*Visa alltid(även på små skärmar)*/
+#briefResultMoreOptionsButton {
+    display: block;
+}
+
+/* "actions"-knappar*/
+prm-copy-clipboard-btn .md-button.button-confirm {
+	color: #4aa8ea; 
+}
+
+/* Bredd på materialtitel */
+prm-brief-result .item-title {
+    max-width: 95%;
+}
+
+/* Färg på materialtitel */
+prm-brief-result .item-title span {
+    color: #47699a;
+}
+
+/* färger på markera favoritikon(hjärta), grå resp blå*/
+ .result-item-actions .pin-button.pinned {
+	color: #97abba;
+ }
+ .result-item-actions .unpin-button.unpinned {
+	color: #4aa8ea;
+ }
+ 
+ /* favoritikon(hjärta) i träfflista ej vriden*/
+.result-item-actions .custom-button.pin-button.pinned md-icon, prm-icon.pin-icon md-icon {
+    -webkit-transform: rotate3d(0, 0, 1, 0deg);
+    -moz-transform: rotate3d(0, 0, 1, 0deg);
+    -ms-transform: rotate3d(0, 0, 1, 0deg);
+    -o-transform: rotate3d(0, 0, 1, 0deg);
+	transform: rotate3d(0, 0, 1, -0deg);
+}
+
+/* ändra ordning inne i posten */
+/*materialtyp(bok etc)*/
+prm-brief-result-container .result-item-text .media-content-type {
+	order: -6
+}
+/*titel beskrivning...*/
+prm-brief-result-container .result-item-text prm-brief-result {
+	order: -5
+}
+/*fler exemplar*/
+prm-brief-result-container .result-item-text .isMultipleVersions {
+	order: -4
+}
+/*tryckt exemplar finns.. online..*/
+prm-brief-result-container .result-item-text prm-search-result-availability-line {
+	order: -3
+}
+
+/*inga ikoner före "printed..., online... etc*/
+prm-brief-result-container .result-item-text prm-search-result-availability-line prm-icon, prm-brief-result-container .result-item-text prm-search-result-frbr-line prm-icon{
+	display:none;
+}
+
+/* dölj, Vad är detta?*/
+prm-search-result-availability-line:before {
+	display:none;
+}
+
+/* visa ikon för länk som öpnnas i nytt fönster */
+prm-brief-result-container .result-item-text prm-search-result-availability-line [icon-definition="open-in-new"] {
+	display: inline;
+}
+
+/*färg på statuslänk */
+prm-brief-result-container [class*="no_"], prm-brief-result-container [class*="unavailable"] {
+    color: #e01b1b; /* not available etc = RÖD */
+}
+prm-brief-result-container [class*="check_"] {
+	color: #0f7d00; /* Available in print, check holdings = GRÖN*/
+}
+
+/* Dölj länk till "view all" för de som har fler versioner */
+prm-search-result-frbr-line [translate="nui.frbrversion.found.link"] {
+	display: none;
+}
+/* Dölj "3 versions exist" på fullposten */
+prm-full-view-service-container .isMultipleVersions {
+	visibility: hidden;
+}
+
+/* Bilden på materialet */
+.largeimage { 
+	z-index: 999;
+}
+.largeimage img{ 
+	width: 200%;
+	max-height: 200px;
+}
+
+/* Dölj peer-reviewed icon och flytta texten rätt och inte fetstil */
+.peer-reviewed-mark {
+	left: 0px;
+}
+.peer-reviewed-mark-icon {
+	display: none;
+}
+.peer-reviewed-mark span {
+    font-weight: 500;
+}
+/****************************** 
+
+FACETTER
+
+******************************/
+
+/* vit bakgrund */
+#facets {
+	background-color: #ffffff;
+}
+
+/* ingen högermarginal */
+.sidebar-inner-wrapper {
+	margin-right: 0;
+	padding-bottom: 10em;
+}
+
+/* padding över under */
+prm-facet>div {
+	padding-top: 1em;
+	padding-right: 1em;
+}
+
+/*aktiva filter*/
+prm-breadcrumbs .md-chips .md-chip {
+	background-color: #f3f3f3;
+}
+prm-breadcrumbs .md-button.button-as-link {
+	padding: 0;
+}
+/*mindre runda aktiva filterknappar*/
+prm-breadcrumbs .md-chip {
+    border-radius: 0.5em;
+}
+/*färg och font aktiva filterknappar*/
+prm-breadcrumbs .md-chip {
+	color: #6d6d6d;
+}
+prm-breadcrumbs .md-chip strong {
+	font-size: 1em !important;
+	font-weight: 400 !important;
+}
+
+/* padding settingsdelen av högermeny */
+.kth_settings .sidebar-section {
+	padding: 4px 0px;
+}
+.kth_settings .sidebar-section:nth-of-type(3) {
+	padding: 6px 0px;
+}
+.kth_settings .sidebar-section prm-icon, .md-button.button-as-link.link-alt-color, .section-title prm-icon {
+	color: #4aa8ea;
+}
+.kth_settings .sidebar-section a {
+	color: #6d6d6d;
+}
+
+/*mellanrum ikon och text för settingsalternativen*/
+.kth_settings .sidebar-section prm-icon {
+    margin-right: 0.4em;
+}
+
+/*include materials outside*/
+prm-facet md-checkbox span {
+	color: #6d6d6d;
+}
+.section-title {
+	margin:0px;
+}
+/* checkbox för material utanför */
+prm-facet md-checkbox {
+	padding-bottom: .1em;
+}
+prm-facet md-checkbox ._md-container {
+	left: 3px;
+}	
+prm-facet md-checkbox.md-checked ._md-icon {
+	background-color: #4aa8ea;
+}
+prm-facet md-checkbox ._md-icon {
+    opacity: 1;
+    border-color: #4aa8ea;
+    border-width: 2px;
+}
+
+/* font och färg på facett-titlar */
+.sidebar-title {
+	font-weight: 400;
+	color: #525252;
+	align-self: center;
+}
+
+.section-title-header {
+	font-weight: 400;
+	color: #525252;
+}
+
+/* mellanrum vid "no facets to display" facetter */
+span [translate="nui.facets.nofacets"] {
+	padding-left: 6px;
+}
+
+/* padding på varje facett i listor */
+prm-facet-exact .section-content {
+	padding-left: 4px
+}
+
+/* texten på varje facett i listan */
+.section-content .md-chips .md-chip strong {
+   font-size: 1em;
+   font-weight: 400 !important; 
+}
+
+/* show-more knappen*/
+.expand-section-button>button {
+	padding: .3em .45em !important;
+}
+
+/* datum/årtal */
+prm-facet-range .section-content {
+	padding-left: 4px
+}
+
+/*mellanrum facettrubrik och facetten ovan*/
+prm-facet-group>div {
+	margin-top: 0.5em;
+}
+
+/* sorteringsväljaren */
+prm-search-result-sort-by {
+    position: relative;
+    top: -2px;
+}
+/* pilen */
+prm-search-result-sort-by ._md-select-value ._md-select-icon {
+    -webkit-transform: translate3d(0,0px,0);
+    transform: translate3d(0,0px,0);
+}
+
+/* knapp för att ta fram facetterna på små skärmar*/
+
+#sidebar-trigger prm-icon {
+    color: #e08303;
+}
+
+#sidebar-trigger span {
+   /*color: #e08303;*/
+}
+/*apply filterknapp*/
+.multiselect-submit .multiselect-submit-inner .md-button.md-primary, .prm-positive-bg, .multiselect-submit .multiselect-submit-inner .md-button.md-primary:focus, .multiselect-submit .multiselect-submit-inner .md-button.md-primary:hover {
+    background-color: #4aa8ea;
+}
+
+/*Låt hänglås för facetter alltid synas*/
+prm-facet prm-breadcrumbs div.md-chip-content strong {
+	padding-left: 22px;
+}
+
+prm-breadcrumbs .md-chips .md-chip-content .persistence-button {
+	opacity: 1;
+	transform: none;
+	padding-left: -2px;
+}
+
+prm-breadcrumbs .md-chip.persistent-facet strong {
+	padding-left: 0;
+}
+
+prm-breadcrumbs .md-chip.persistent-facet .md-chip-content .persistence-button {
+	left: -1px;
+}
+
+/**************************
+
+FULL DETAILS / FULL VIEW
+
+**************************/
+
+/* Dialogfönster */
+#kth_fulldetail {
+	background-color: #ffffff;
+	/*flex: 1 0 auto;*/
+}
+#kth_fulldetail md-toolbar {
+	background-color: #1954a6;
+	color: #ffffff;
+	flex: 0;
+}
+/* stängkryss*/
+#kth_fulldetail md-toolbar button {
+	color: #ffffff;	
+}
+/* titel i dialoghuvud */
+.md-truncate {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* ingen padding runt hela */
+#dialogContent_kth_fulldetail .md-dialog-content {
+    padding: 0px 0px;
+	/*flex: 1 0 auto;*/
+}
+
+/* Bort med klammer som visar vilken avdelning man är vid */
+.section-focused .full-view-section-content:after {
+	display: none;
+}
+
+/* mindre avstånd mellan varje avdelning*/
+.full-view-section {
+	margin-top: 0.7em;
+	padding-left: 1.5em;
+}
+.full-view-section .section-head {
+	margin-bottom: 0em;
+}
+
+/* ingen vänsterpadding på varje avdelning*/
+.full-view-section .full-view-section-content {
+	padding-left: 0px;
+}
+
+/* vänsterjustera actions */
+.full-view-section-content prm-action-list>md-nav-bar nav {
+    -ms-flex-pack: flex-start;
+    justify-content: flex-start;
+}
+
+/*vänster justera citationknappar under actions */
+prm-citation .md-button {
+	text-align: left;
+}
+
+/*avdelningsrubriker ovanför strecken, font*/
+prm-service-header>div.layout-align-center-center {
+	flex-direction: column;
+	align-items: stretch;
+    align-content: stretch;
+}
+prm-service-header .section-title, .loc-altemtrics .section-title, prm-full-view-service-container-after .section-title	  {
+	font-weight: 500; 
+}
+
+/* Ordning placering av avdelningar, bakgrundsfärg */
+.full-view-container .full-view-inner-container {
+	display: flex;
+    flex-direction: column;
+	padding-bottom: 0em;
+	background-color: #ffffff;
+	/* IE Fix*/
+	flex: 1 0 auto;
+}
+.full-view-container #brief {
+	order: 0;
+}
+.full-view-container #getit_link1_0 {
+	order: 5;
+}
+.full-view-container #getit_link1_1 {
+	order: 7;
+}
+.full-view-container #getit_link2 {
+	order: 10;
+	display: none; /* Dölj alltid getit_link2 */
+}
+.full-view-container #action_list {
+	order: 15;
+}
+.full-view-container #details {
+	order: 20;
+}
+.full-view-container #virtualBrowse {
+	order: 50;
+}
+/* flytta citations till höger*/
+.full-view-container #citationTrails {
+	position: relative;
+	top: 0px;
+}
+
+/* visa inte onlinetexten i huvudet*/
+.full-view-container prm-search-result-availability-line {
+	display:none; 
+}
+
+/* Online-länkar gröna*/
+prm-view-online span[translate="nui.getit_full.tab1_full"] {
+	color: #0f7d00;
+}
+
+/* mellanrum efter huvudet */
+.full-view-container prm-brief-result-container {
+    margin-bottom: 1em;
+}
+
+/* på samma hylla */
+prm-virtual-browse [md-virtual-repeat] {
+	width: 84px;
+}
+
+/*citations*/
+.wostimesCited {
+	color: tomato
+}
+
+#citationTrails .full-view-section-content {
+	padding-left: 2em;
+    padding-right: 2em;
+	padding-top: 2em;
+}
+#citationTrails md-divider {
+    border: none;
+    margin-top: .5em;
+    margin-bottom: .5em;
+    opacity: .5;
+    border-bottom: 1px solid #c3c3c3;
+}
+prm-citation-trails-indication {
+	margin: 0 !important;
+}
+prm-citation-trails-indication .md-button.button-with-icon {
+	line-height: 20px;
+    min-height: 20px;
+	padding: 0;
+	min-width: 0px;
+	color: #5c92bd;
+	box-shadow: inset 0 -1px 0 0 rgba(92,146,189,0);
+	border-radius: 0px;
+}
+prm-citation-trails-indication .md-button.button-with-icon:hover {
+	color: #226091!important;
+	background-color: rgba(92,146,189,.1)!important;
+	box-shadow: inset 0 -1px 0 0 rgba(34,96,145,.5)!important;
+	
+}
+prm-citation-trails-indication .md-button.button-with-icon>prm-icon {
+	display: none;
+}
+
+/*recommendations*/
+.recommendations-wrapper {
+    padding-top: 0.7em;
+}
+prm-recomendation-item .media-figure {
+	min-width: 47px;
+}
+prm-recomendation-item .media-figure img {
+	min-height: 60px;
+	background-image: url('/primo-explore/img/icon_journal.png');
+	background-size: 47px;
+    background-repeat: no-repeat;
+}
+prm-recomendations .recommendations-wrapper .section-head {
+	flex-direction: column;
+    align-items: initial;
+    padding-left: 2em;
+    padding-right: 2em;
+	margin-bottom: 0px;
+}
+prm-recomendations .section-head .section-title, prm-recomendations .section-head .section-description {
+	margin-left: 0;
+	padding-left: 0;
+	font-weight: 500; 
+}
+prm-recomendations .section-head .section-description {
+	display: none;
+}
+
+/* loginknapp för request om man inte är inloggad redan  */
+prm-login-alma-mashup prm-authentication .md-button {
+	color: #5c92bd;
+	padding-left: 0px;
+	border: 1px solid;
+    border-color: #5c92bd;
+}
+
+/* prm-alma-mashup-after, Information om tryckt material som hämtas från Alma via API */
+prm-alma-mashup-after table {
+   border-spacing: 0;
+   width: 100%;
+}
+prm-alma-mashup-after th {
+   font-size: 1.2em;
+   color: #757575;
+   white-space: nowrap;
+}
+prm-alma-mashup-after td, prm-alma-mashup-after th {
+	padding-right: 10px;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	text-align:left;
+}
+prm-alma-mashup-after tr:nth-child(even) {
+	background-color: #ddd;
+}
+prm-alma-mashup-after tr:first-of-type {
+	background-color: transparent;
+}
+prm-alma-mashup-after prm-icon {
+	color: #8e8e8e;
+}
+prm-alma-mashup-after md-icon {
+	height: 20px;
+	width: 20px;
+	min-height: 20px;
+	min-width: 20px;
+}
+
+/* Metrics, flytta till rätt plats */
+prm-full-view-after {
+	padding: 1em 2em 0 2em;
+	display: flex;
+	flex-direction: column; 
+}
+
+/* För mindre skärmar */
+@media (max-width: 959px) and (min-width: 200px) {
+	
+	/* lista allt i en kolumn, paddings etc..*/
+	prm-full-view>.layout-row {
+		flex-direction: column;
+	}
+	.__xs .full-view-inner-container, .full-view-inner-container {
+		padding: 1em;
+	}
+	prm-brief-result-container .list-item-primary-content {
+		padding: 0;
+	}
+	#citationTrails .full-view-section-content {
+	    padding: 1em;
+	}
+	prm-recomendations .recommendations-wrapper .section-head {
+		padding: 1em;
+	}
+	prm-recomendation-item {
+		margin-left: 0em;
+		padding: 1em;
+	}
+	.__xs .full-view-section, .full-view-section {
+		padding: 1em 0em;
+	}
+	prm-full-view-after {
+		padding: 1em;
+		display: flex;
+	}
+	/* anpassa tabell för Tryckt Material*/
+	/* Force table to not be like tables anymore */
+	prm-alma-mashup-after table, prm-alma-mashup-after thead, prm-alma-mashup-after tbody, prm-alma-mashup-after th, prm-alma-mashup-after td, prm-alma-mashup-after tr { 
+		display: block; 
+	}
+	/* Hide table headers (but not display: none;, for accessibility) */
+	prm-alma-mashup-after thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	prm-alma-mashup-after td { 
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #eee; 
+		position: relative;
+		padding-left: 50%; 
+	}
+	prm-alma-mashup-after td:before { 
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+	}
+	/*	Label the data	*/
+	/* TODO översätt? */
+	td:nth-of-type(1):before { content: "Library"; }
+	td:nth-of-type(2):before { content: "Description"; }
+	td:nth-of-type(3):before { content: "Location"; }
+	td:nth-of-type(4):before { content: "Shelf"; }
+	td:nth-of-type(5):before { content: "Status"; }
+	td:nth-of-type(6):before { content: "Loan period"; }
+}
+
+/******************
+
+	FAVOURITES
+
+******************/
+
+/* Ta bort siffror från sparade sökträffar */
+
+prm-favorites .has-checkbox .list-item-count {
+	display: none;
+}
+
+/* bort med (scope / Onesearch) */
+prm-saved-queries-list .md-list-item-text h4:nth-of-type(1) {
+	display: none;
+}
+
+/* hjärta-färg*/
+prm-icon[icon-definition="ic_favorite_24px"] {
+	color: #4aa8ea;
+}
+prm-icon[icon-definition="ic_favorite_24px"].disabledFavTool {
+	 color: #aaa;
+}
+
+/*  mellanrum mellan checkbox och text */
+prm-saved-queries-list .md-list-item-text h4:nth-of-type(2), prm-saved-queries-list .weak-text.text-ellipsis {
+	padding-left: 10px;
+}
+
+/* saved searches radbryt långa söksträngar, mellanrum mellan checkbox och text */
+prm-saved-queries-list .item-title {
+	white-space: normal !important;
+	padding-left: 10px;
+}
+/* saved searches klocka och hjärta på samma rad*/
+prm-saved-queries-list .result-item-actions {
+	flex-direction: row;
+}
+
+/* layout vänster o högermarginaler toolbar*/
+prm-favorites-tool-bar>md-toolbar>div {
+	padding: 0 !important;
+}
+prm-favorites-tool-bar>md-toolbar>div>div {
+	flex: 1 1 15% !important;
+    max-width: 15% !important;
+}
+prm-favorites-tool-bar>md-toolbar>div>button {
+	margin-left: 0px !important;
+	background-color: #e9e9e9 !important;
+}
+
+@media (max-width: 1279px) and (min-width: 200px) {
+	prm-favorites-tool-bar>md-toolbar>div {
+		padding: 0 !important;
+	}
+	prm-favorites-tool-bar>md-toolbar>div>div {
+		flex: 1 1 0% !important;
+		max-width: 0% !important;
+	}
+	prm-favorites-tool-bar>md-toolbar>div>button {
+		margin-left: 0px !important;
+		background-color: #e9e9e9 !important;
+	}
+}
+
+@media (max-width: 599px) and (min-width: 200px) {
+	/* visa inte texten till "lägg till etiketter" på små skärmar */
+	prm-favorites-edit-labels-menu span {
+		display: none !important;
+	}
+}
+
+/* layout vänster o högermarginaler content*/
+prm-favorites md-content {
+	padding: 0 !important;
+}
+prm-favorites>div>div:nth-of-type(1) {
+	flex: 1 1 15% !important;
+    max-width: 15% !important;
+}
+prm-favorites>div>div:nth-of-type(2) {
+	flex: 1 1 15% !important;
+    max-width: 15% !important;
+}
+
+@media (max-width: 1279px) and (min-width: 200px) {
+	prm-favorites>div>div:nth-of-type(1) {
+		flex: 1 1 0% !important;
+		max-width: 0% !important;
+	}
+	prm-favorites>div>div:nth-of-type(2) {
+		flex: 1 1 0% !important;
+		max-width: 0% !important;
+	}
+}
+
+/**************************
+
+MINA SIDOR
+
+**************************/
+
+/* layoutl, ordning etc*/
+prm-account-after prm-search-bar {
+	display: flex;
+}
+prm-account>div {
+	order: 1;
+}
+prm-account>prm-account-after {
+	order: 2;
+}
+prm-account>md-toolbar {
+	order: 3;
+}
+prm-account>md-content {
+	order: 4;
+}
+
+/*bort med de stora ikonerna (palmen etc) */
+.giant-icon {
+	display: none;
+}
+
+/* ingen selectbox för filtrering(onödig eftersom vi inte har nån lånehistorik)*/
+prm-loans md-input-container {
+	display: none;
+}
+
+/* färg och layout på "ta bort reservation"*/ 
+prm-requests md-dialog .md-actions {
+	background-color: #ffffff;
+}
+prm-requests md-dialog md-dialog-content {
+    background-color: #ffffff;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+/*Cancel Request-knapp */
+prm-requests .separate-list-items md-list-item .md-list-item-text>div.list-item-actions {
+	position: initial !important; 
+}
+
+/* layout vänster o högermarginaler toolbar*/
+prm-account>md-toolbar>div {
+	padding: 0 !important;
+}
+prm-account>md-toolbar>div>div {
+	flex: 1 1 15% !important;
+    max-width: 15% !important;
+}
+prm-account>md-toolbar>div>button {
+	margin-left: 0px !important;
+	background-color: #e9e9e9 !important;
+}
+
+/* layout vänster o högermarginaler content*/
+prm-account>md-content {
+	padding: 0 !important;
+}
+prm-account>md-content>div:nth-of-type(1) {
+	flex: 1 1 15% !important;
+    max-width: 15% !important;
+}
+prm-account>md-content>div:nth-of-type(2) {
+	background-color: #ffffff;
+}
+prm-account>md-content>div:nth-of-type(3) {
+	flex: 1 1 15% !important;
+    max-width: 15% !important;
+}
+
+@media (max-width: 1279px) and (min-width: 200px) {
+	
+	prm-account>md-toolbar>div>div {
+		flex: 1 1 0% !important;
+		max-width: 0% !important;
+	}	
+	prm-account>md-content>div:nth-of-type(1) {
+		flex: 1 1 0% !important;
+		max-width: 0% !important;
+	}
+	prm-account>md-content>div:nth-of-type(3) {
+		flex: 1 1 0% !important;
+		max-width: 0% !important;
+	}
+
+}
+
+/* visa inte patron group, 2018-02-20 visa igen då vi uppdaterat användargrupperna*/
+span[translate="nui.details.patronstatus.group"] {
+	/*display: none;*/
+}
+
+/* Dölj listan med utskick */
+prm-personal-info md-card-content>div:nth-of-type(3) {
+	display: none;
+}
+
+/****************************
+
+EGEN KARTA Ska användas??
+
+****************************/
+
+.loc {
+	position: absolute;
+    left: -150%;
+    top: 22px;
+    /*background-color: #ffffff;*/
+    padding: 5px;
+    border-radius: 3px;
+	display: none;
+	
+}
+
+#kartplupp {
+	display: none;
+	width: 20px;
+	height: 20px;
+}
+
+.mapheader {
+	padding:10px;
+}
+
+#ic-map-div {
+	padding-top: 10px;
+}
+
+.ic-map-div  {
+	position: relative;
+}
+
+#ic-map-img, .ic-map-img {
+	position: relative;
+    top: 0;
+    left: 0;
+}
+
+#ic-map-canvas, .ic-map-canvas {
+/*Canvas*/
+    position: absolute;
+    top: 0;
+    left: 0px;
+    /*margin-left: 1em;*/
+    z-index: 1;
+}
+
+@media (max-width: 700px) and (min-width: 350px) {
+	#ic-map-div {
+		padding-left: 0px;
+	}
+}
+
+/* Pulserande kartplupp*/
+.pulse {
+    background: rgba(45, 68, 236, 0.62);
+    border-radius: 50%;
+    height: 12px;
+    width: 12px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: 0px 0px 0px 0px;
+    -webkit-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    -o-transform: rotateX(0eg);
+    -ms-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+    z-index: 2;
+}
+
+.pulse:after {
+    content: "";
+    border-radius: 50%;
+    height: 24px;
+    width: 24px;
+    position: absolute;
+    margin: -6px 0 0 -6px;
+    -webkit-animation: pulsate 2.5s ease-out;
+    -moz-animation: pulsate 2.5s ease-out;
+    -o-animation: pulsate 2.5s ease-out;
+    -ms-animation: pulsate 2.5s ease-out;
+    animation: pulsate 2.5s ease-out;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-iteration-count: infinite;
+    -o-animation-iteration-count: infinite;
+    -ms-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    opacity: 0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+    background: rgba(94,190,255,0.5);
+    -webkit-box-shadow: 0 0 1px 2px #db2f2f;
+    box-shadow: 0 0 1px 2px #db2f2f;
+    -webkit-animation-delay: 1.1s;
+    -moz-animation-delay: 1.1s;
+    -o-animation-delay: 1.1s;
+    -ms-animation-delay: 1.1s;
+    animation-delay: 1.1s;
+}
+
+@-moz-keyframes pulsate {
+  0% {
+    transform: scale(0.1, 0.1);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.2, 1.2);
+    opacity: 0;
+  }
+}
+@-webkit-keyframes pulsate {
+  0% {
+    transform: scale(0.1, 0.1);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.2, 1.2);
+    opacity: 0;
+  }
+}
+@-o-keyframes pulsate {
+  0% {
+    transform: scale(0.1, 0.1);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.2, 1.2);
+    opacity: 0;
+  }
+}
+@keyframes pulsate {
+  0% {
+    transform: scale(0.1, 0.1);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.2, 1.2);
+    opacity: 0;
+  }
+}
+@-moz-keyframes bounce {
+  0% {
+    opacity: 0;
+    transform: translateY(-2000px) rotate(-45deg);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(30px) rotate(-45deg);
+  }
+  80% {
+    transform: translateY(-10px) rotate(-45deg);
+  }
+  100% {
+    transform: translateY(0) rotate(-45deg);
+  }
+}
+@-webkit-keyframes bounce {
+  0% {
+    opacity: 0;
+    transform: translateY(-2000px) rotate(-45deg);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(30px) rotate(-45deg);
+  }
+  80% {
+    transform: translateY(-10px) rotate(-45deg);
+  }
+  100% {
+    transform: translateY(0) rotate(-45deg);
+  }
+}
+@-o-keyframes bounce {
+  0% {
+    opacity: 0;
+    transform: translateY(-2000px) rotate(-45deg);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(30px) rotate(-45deg);
+  }
+  80% {
+    transform: translateY(-10px) rotate(-45deg);
+  }
+  100% {
+    transform: translateY(0) rotate(-45deg);
+  }
+}
+@keyframes bounce {
+  0% {
+    opacity: 0;
+    transform: translateY(-2000px) rotate(-45deg);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(30px) rotate(-45deg);
+  }
+  80% {
+    transform: translateY(-10px) rotate(-45deg);
+  }
+  100% {
+    transform: translateY(0) rotate(-45deg);
+  }
+}
+@-moz-keyframes bounce-only {
+  0% {
+    opacity: 0;
+    transform: translateY(-2000px) rotate(-45deg);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(30px) rotate(-45deg);
+  }
+  80% {
+    transform: translateY(-10px) rotate(-10deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+@-webkit-keyframes bounce-only {
+  0% {
+    opacity: 0;
+    transform: translateY(-2000px) rotate(-45deg);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(30px) rotate(-45deg);
+  }
+  80% {
+    transform: translateY(-10px) rotate(-10deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+@-o-keyframes bounce-only {
+  0% {
+    opacity: 0;
+    transform: translateY(-2000px) rotate(-45deg);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(30px) rotate(-45deg);
+  }
+  80% {
+    transform: translateY(-10px) rotate(-10deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+@keyframes bounce-only {
+  0% {
+    opacity: 0;
+    transform: translateY(-2000px) rotate(-45deg);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(30px) rotate(-45deg);
+  }
+  80% {
+    transform: translateY(-10px) rotate(-10deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+/**************************
+
+ÖVRIGT
+
+**************************
+
+/*visa inte element förrän angular har laddats??*/
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+	display: none !important;
+}
+
+/* klass för att visa hand vid hover på vissa element */
+.pointer {
+	cursor: pointer;
+}
+
+/*openinghours*/
+#navigatedays {
+	display: none;
+}
+
+/* kth blå backgrund/vit text */
+
+.kth-blue {
+	background-color: #1954a6;
+	color: #fff;
+}
+
+.kth-bluetext {
+	background-color: rgba(58,58,58,.1);
+	color: #1954a6;
+}
+
+/*
+kth-actionbuttontext {
+	background-color: rgba(58,58,58,.1);
+	color: #676767;
+}
+*/
+
+/* kth blå text/vit bakgrund */
+
+/*kth länkar a*/
+.kth_link {
+    font-weight: normal;
+    color: #24A0D8;
+}
+
+/*autocomplete bakgrund*/
+md-virtual-repeat-container li.selected {
+    background-color: #cecece;
+}
