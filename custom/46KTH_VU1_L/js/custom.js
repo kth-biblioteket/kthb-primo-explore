@@ -720,7 +720,7 @@ console.log(kth_vid);
 					' <span ng-if="$ctrl.searchInfo.maxTotal > 0">{{$ctrl.searchInfo.maxTotal | number}})</span>' +
 					' <span translate="results.title"></span>' +
 				'</span>' +
-				//personalize AUGUSTIRELEASE
+				//personalize AUGUSTIRELEASE 2017
 				//flytta till facets??
 				//'<prm-personalize-results-button ng-if="!$ctrl.isCitationState() && !$ctrl.isJournalSearch() && !$ctrl.isBrowsHeaderResults() && $ctrl.notLocal()"></prm-personalize-results-button>' +
 				//visa "logga in för att spara" när INTE inloggad
@@ -1192,22 +1192,25 @@ console.log(kth_vid);
 			//'</div>' +
 			
 			//visa citationTrails/recommendations här istället med villkor
-			'<div flex-md="30" flex-lg="30" flex-xl="30" flex ng-repeat="service in $ctrl.services.slice(1) track by $index" ng-attr-id="{{service.scrollId}}" ng-if="$ctrl.showConditionalService(service) && !service.isDisabled && service.scrollId==\'citationTrails\'">' + 
-				'<div class="full-view-section-content" ng-if="$ctrl.showConditionalService(service) && service.scrollId==\'citationTrails\'">' +
-					//sätt load-additional-services = true
-					'<prm-full-view-service-container [load-additional-services]="true" [item]="::$ctrl.item" [service]="service" [index]="::$index">' + 
-					'</prm-full-view-service-container>' + 
-				'</div>' +
-				'<prm-full-view-after parent-ctrl="$ctrl">' + 
-				'</prm-full-view-after>' +
-				'<div ng-if="::($ctrl.bxdisplay)" >' + 
+			'<div flex-md="30" flex-lg="30" flex-xl="30">' +
+				'<div flex ng-repeat="service in $ctrl.services.slice(1) track by $index" ng-attr-id="{{service.scrollId}}" ng-if="($ctrl.showConditionalService(service) && !service.isDisabled && service.scrollId==\'citationTrails\')">' + 
+					'<div class="full-view-section-content" ng-if="$ctrl.showConditionalService(service) && service.scrollId==\'citationTrails\'">' +
+						//sätt load-additional-services = true
+						'<prm-full-view-service-container [load-additional-services]="true" [item]="::$ctrl.item" [service]="service" [index]="::$index">' + 
+						'</prm-full-view-service-container>' + 
+					'</div>' +
+					//Metrics
+					'<prm-full-view-after parent-ctrl="$ctrl">' + 
+					'</prm-full-view-after>' +
+				'</div>' + 
+				'<div flex ng-if="::($ctrl.bxdisplay)" >' + 
 					'<prm-recomendations [item]="::$ctrl.item" [bxenable]="::$ctrl.bxenable" [(bxdisplay)]="::$ctrl.bxdisplay"></prm-recomendations>' + 
 				'</div>' + 
 			'</div>' + 
 			//bort med layoutdiv
 			//'<div ng-if="::($ctrl.bxdisplay && !$ctrl.isOverlayFullView)" flex="0" flex-gt-md="5" flex-xl="20" ng-class="{\'flex-lgPlus-10\': $ctrl.mediaQueries.lgPlus}"></div>' +
 			//visa bara när full view inte är i "md-dialog"
-			'<div class="full-view-spacer" ng-if="::(!$ctrl.bxdisplay  && !$ctrl.isOverlayFullView)" flex="0" flex-md="0" flex-lg="20" flex-xl="30" ng-class="{\'flex-lgPlus-25\': $ctrl.mediaQueries.lgPlus}"></div>' + 
+			//'<div class="full-view-spacer" ng-if="::(!$ctrl.bxdisplay  && !$ctrl.isOverlayFullView)" flex="0" flex-md="0" flex-lg="20" flex-xl="30" ng-class="{\'flex-lgPlus-25\': $ctrl.mediaQueries.lgPlus}"></div>' + 
 		'</div>' + 
 		'<prm-full-view-after-kth parent-ctrl="$ctrl">' + 
 		'</prm-full-view-after-kth>'
@@ -2255,90 +2258,91 @@ console.log(kth_vid);
 		vm.absUrl = $location.absUrl();
 		vm.showfacets = false;
 		$scope.$on('urldataAdded', function(event, data) {
-			vm.facetservice_results = vm.parentCtrl.facetService.results;
-			vm.physical_item_enabled = false;
-			vm.online_resources_enabled = false;
-			vm.books_enabled = false;
-			vm.journals_enabled = false;
-			vm.bibldbfasett_enabled = false;
-			vm.articles_enabled = false;
-			vm.physical_item_nr = 0;
-			vm.online_resources_nr = 0;
-			vm.books_nr = 0;
-			vm.journals_nr = 0;
-			vm.bibldbfasett_nr = 0;
-			vm.articles_nr = 0;
-			vm.isfavorites = vm.parentCtrl.isFavorites;
-			//gå igenom alla facetter
-			//hittas en facett här så är den alltså aktiv och möjlig att begränsa resultatet med
-			vm.parentCtrl.facetService.results.forEach( 
-				function (item, index) {
-					if (item.name=='tlevel') {
-						item.values.forEach( 
-							function (value,valueindex) {
-								if (value.value == 'physical_item') {
-									vm.physical_item_enabled = true;
-									vm.physical_item_nr = value.count.toLocaleString();
+			$timeout(function(){
+				vm.facetservice_results = vm.parentCtrl.facetService.results;
+				vm.physical_item_enabled = false;
+				vm.online_resources_enabled = false;
+				vm.books_enabled = false;
+				vm.journals_enabled = false;
+				vm.bibldbfasett_enabled = false;
+				vm.articles_enabled = false;
+				vm.physical_item_nr = 0;
+				vm.online_resources_nr = 0;
+				vm.books_nr = 0;
+				vm.journals_nr = 0;
+				vm.bibldbfasett_nr = 0;
+				vm.articles_nr = 0;
+				vm.isfavorites = vm.parentCtrl.isFavorites;
+				//gå igenom alla facetter
+				//hittas en facett här så är den alltså aktiv och möjlig att begränsa resultatet med
+				vm.parentCtrl.facetService.results.forEach( 
+					function (item, index) {
+						if (item.name=='tlevel') {
+							item.values.forEach( 
+								function (value,valueindex) {
+									if (value.value == 'physical_item') {
+										vm.physical_item_enabled = true;
+										vm.physical_item_nr = value.count.toLocaleString();
+									}
+									if (value.value == 'online_resources') {
+										vm.online_resources_enabled = true;
+										vm.online_resources_nr = value.count.toLocaleString();
+									}
+									if (value.value == 'peer_reviewed') {
+										vm.articles_enabled = true;
+										vm.articles_nr = value.count.toLocaleString();
+									}
 								}
-								if (value.value == 'online_resources') {
-									vm.online_resources_enabled = true;
-									vm.online_resources_nr = value.count.toLocaleString();
+							)
+						}
+						if (item.name=='rtype') {
+							item.values.forEach( 
+								function (value,valueindex) {
+									if (value.value == 'books') {
+										vm.books_enabled = true;
+										vm.books_nr = value.count.toLocaleString();
+									}
+									if (value.value == 'journals') {
+										vm.journals_enabled = true;
+										vm.journals_nr = value.count.toLocaleString();
+									}
+									if (value.value == 'bibldbfasett') {
+										vm.bibldbfasett_enabled = true;
+										vm.bibldbfasett_nr = value.count.toLocaleString();
+									}
 								}
-								if (value.value == 'peer_reviewed') {
-									vm.articles_enabled = true;
-									vm.articles_nr = value.count.toLocaleString();
-								}
-							}
-						)
+							)
+						}
+						
 					}
-					if (item.name=='rtype') {
-						item.values.forEach( 
-							function (value,valueindex) {
-								if (value.value == 'books') {
-									vm.books_enabled = true;
-									vm.books_nr = value.count.toLocaleString();
-								}
-								if (value.value == 'journals') {
-									vm.journals_enabled = true;
-									vm.journals_nr = value.count.toLocaleString();
-								}
-								if (value.value == 'bibldbfasett') {
-									vm.bibldbfasett_enabled = true;
-									vm.bibldbfasett_nr = value.count.toLocaleString();
-								}
-							}
-						)
-					}
-					
+				);
+				vm.physical_item = "";
+				vm.online_resources = "";
+				vm.books = "";
+				vm.journals = "";
+				vm.bibldbfasett = "";
+				vm.articles = "";
+
+				if (vm.absUrl.indexOf("facet=tlevel,include,physical_item")=== -1) {
+					vm.physical_item = "&facet=tlevel,include,physical_item";
 				}
-			);
-
-			vm.physical_item = "";
-			vm.online_resources = "";
-			vm.books = "";
-			vm.journals = "";
-			vm.bibldbfasett = "";
-			vm.articles = "";
-
-			if (vm.absUrl.indexOf("facet=tlevel,include,physical_item")=== -1) {
-				vm.physical_item = "&facet=tlevel,include,physical_item";
-			}
-			if (vm.absUrl.indexOf("facet=tlevel,include,online_resources")=== -1) {
-				vm.online_resources = "&facet=tlevel,include,online_resources";
-			}
-			if (vm.absUrl.indexOf("facet=tlevel,include,peer_reviewed")=== -1) {
-				vm.articles = "&facet=tlevel,include,peer_reviewed";
-			}
-			if (vm.absUrl.indexOf("facet=rtype,include,books")=== -1) {
-				vm.books = "&facet=rtype,include,books";
-			}
-			if (vm.absUrl.indexOf("facet=rtype,include,journals")=== -1) {
-				vm.journals = "&facet=rtype,include,journals";
-			}
-			if (vm.absUrl.indexOf("facet=rtype,include,bibldbfasett")=== -1) {
-				vm.bibldbfasett = "&facet=rtype,include,bibldbfasett";
-			}
-			vm.showfacets = true;
+				if (vm.absUrl.indexOf("facet=tlevel,include,online_resources")=== -1) {
+					vm.online_resources = "&facet=tlevel,include,online_resources";
+				}
+				if (vm.absUrl.indexOf("facet=tlevel,include,peer_reviewed")=== -1) {
+					vm.articles = "&facet=tlevel,include,peer_reviewed";
+				}
+				if (vm.absUrl.indexOf("facet=rtype,include,books")=== -1) {
+					vm.books = "&facet=rtype,include,books";
+				}
+				if (vm.absUrl.indexOf("facet=rtype,include,journals")=== -1) {
+					vm.journals = "&facet=rtype,include,journals";
+				}
+				if (vm.absUrl.indexOf("facet=rtype,include,bibldbfasett")=== -1) {
+					vm.bibldbfasett = "&facet=rtype,include,bibldbfasett";
+				}
+				vm.showfacets = true;
+			},2000); //slut timeout
 		});
 	
 	});	
@@ -2449,7 +2453,7 @@ console.log(kth_vid);
 		Altmetrics, orcid, oaDOI etc
 		
 		**************************************************/
-		vm.almetricsscore = 0
+		vm.almetricsscore = 0;
 		if(vm.parentCtrl.item.pnx.addata.doi) {
 			vm.doi = vm.parentCtrl.item.pnx.addata.doi[0] || '';
 		}
@@ -2536,7 +2540,7 @@ console.log(kth_vid);
 	});
 	
 	app.controller('FullViewAfterKthController', function (angularLoad, $http) {
-        var vm = this;
+		var vm = this;
     });
 
 	/********************************************************
@@ -2640,7 +2644,7 @@ console.log(kth_vid);
 	app.controller('prmFullViewServiceContainerAfterController',function ($scope, $http) {
 		var vm = this;
 		vm.showOA = false;
-		
+
 		//Brief eller full view?
 		//Bevaka (watch) eftersom värdet inte alltid hunnit sättas.
 		if (typeof(vm.parentCtrl.result) != "undefined") {
@@ -2674,11 +2678,12 @@ console.log(kth_vid);
 			});
 		}
 		
+		//Exempelsökning: "postprandial oxytocin"
 		function getoaDOI(doi) {
 			vm.parentCtrl.oaDOIisLoading = true;
 			vm.oaDOIdata = "";
 			var method = 'GET';
-			var url = 'https://api.oadoi.org/v2/' + doi;
+			var url = 'https://api.oadoi.org/v2/' + doi + '?email=ask-kthb@kth.se';
 			$http({method: method, url: url, headers: {"X-From-ExL-API-Gateway": undefined},}).
 				then(function(response) {
 					var status = response.status;
