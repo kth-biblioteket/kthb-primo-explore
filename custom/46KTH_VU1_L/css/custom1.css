@@ -27,7 +27,9 @@ TODO: Flytta till respektive avdelning nedan?
 
 /* bakgrund på sida */
 primo-explore>div {
-	background-color: #f5f5f5;
+	/*background-color: #f5f5f5;*/
+	background-color: #ffffff;
+
 }
 
 /* backgrund till dialogrutan för full view, så att sökresultatet syns bakom */
@@ -271,6 +273,7 @@ prm-search .alert-bar {
 	height: auto;
 	border: none;
 	padding: .5em .5em;
+	justify-content: flex-start /*vänsterjustera*/
 }
 
 .kth_alertbarwrapper div {
@@ -612,6 +615,12 @@ prm-search-bar .search-elements-wrapper.advanced-mode, prm-search-bar .search-el
 prm-search-bar .search-elements-wrapper.advanced-mode.has-input, prm-search-bar .search-elements-wrapper.simple-mode.has-input {
 	flex: 1;
 	max-width: 100%;
+}
+
+/* sökknappen */
+
+.__xs md-autocomplete-wrap button {
+    margin: auto 0px auto 0!important;
 }
 
 /* Vänstermarginal */
@@ -1370,12 +1379,13 @@ prm-service-header .section-title, .loc-altemtrics .section-title, prm-full-view
 	font-weight: 500; 
 }
 
-/* Ordning placering av avdelningar, bakgrundsfärg */
+/* Ordning placering av avdelningar, bakgrundsfärg etc */
 .full-view-container .full-view-inner-container {
 	display: flex;
     flex-direction: column;
 	padding-bottom: 0em;
 	background-color: #ffffff;
+	border-right: 1px solid #e1e1e1;
 	/* IE Fix*/
 	flex: 1 0 auto;
 }
@@ -1413,7 +1423,7 @@ prm-service-header .section-title, .loc-altemtrics .section-title, prm-full-view
 }
 
 /* Online-länkar gröna*/
-prm-view-online span[translate="nui.getit_full.tab1_full"] {
+prm-view-online span[translate="nui.getit_full.tab1_full"], prm-view-online span[translate="nui.getit_full.Online"] {
 	color: #0f7d00;
 }
 

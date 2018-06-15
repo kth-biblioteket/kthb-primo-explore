@@ -27,7 +27,9 @@ TODO: Flytta till respektive avdelning nedan?
 
 /* bakgrund på sida */
 primo-explore>div {
-	background-color: #f5f5f5;
+	/*background-color: #f5f5f5;*/
+	background-color: #ffffff;
+
 }
 
 /* backgrund till dialogrutan för full view, så att sökresultatet syns bakom */
@@ -120,7 +122,7 @@ prm-search-bookmark-filter #fixed-buttons-holder.fixed-to-top {
 	background-color: #f3f3f3 !important;
 	line-height: 24px !important;
 	min-height: 1em !important;
-	min-width: 0px;  !important;
+	min-width: 0px  !important;
 }
 
 .kth-button:hover {
@@ -263,7 +265,7 @@ prm-spinner .loader .diamond:nth-child(2), prm-spinner .loader .diamond:nth-chil
 
  /* ta bort ex libris alert?? */
 prm-search .alert-bar {
-	1display:none;
+	/*display:none;*/
 }
 
 .bar.alert-bar {
@@ -584,9 +586,9 @@ prm-search-bar {
 
 /*ta bort sökrutans rensakryss när fönstret minskar*/
 @media (max-width: 959px) and (min-width: 200px) {
-	1md-autocomplete-wrap button {
+	/*md-autocomplete-wrap button {
 		display: none;
-	}
+	}*/
 }
 
 /* padding */
@@ -612,6 +614,12 @@ prm-search-bar .search-elements-wrapper.advanced-mode, prm-search-bar .search-el
 prm-search-bar .search-elements-wrapper.advanced-mode.has-input, prm-search-bar .search-elements-wrapper.simple-mode.has-input {
 	flex: 1;
 	max-width: 100%;
+}
+
+/* sökknappen */
+
+.__xs md-autocomplete-wrap button {
+    margin: auto 0px auto 0!important;
 }
 
 /* Vänstermarginal */
@@ -705,7 +713,7 @@ prm-search-bar .search-wrapper>div:first-of-type {
 	}
 	
 	prm-search-bar {
-		1padding: 1em !important;
+		/*padding: 1em !important;*/
 	}
 	
 	/* ordningen på sökrutan, så den hamnar före förstoringsglaset även på små skärmar*/
@@ -863,7 +871,7 @@ prm-search-bar .search-switch-buttons {
 	}	
 	
 	prm-search-bar .search-switch-buttons .md-button.switch-to-advanced, prm-search-bar .search-switch-buttons .md-button.switch-to-simple {
-		1min-width: 24px;
+		/*min-width: 24px;*/
 	}
 	
 	/* stängkrysset*/
@@ -1115,6 +1123,16 @@ prm-full-view-service-container .isMultipleVersions {
 	max-height: 200px;
 }
 
+/* Dölj peer-reviewed icon och flytta texten rätt och inte fetstil */
+.peer-reviewed-mark {
+	left: 0px;
+}
+.peer-reviewed-mark-icon {
+	display: none;
+}
+.peer-reviewed-mark span {
+    font-weight: 500;
+}
 /****************************** 
 
 FACETTER
@@ -1261,7 +1279,7 @@ prm-search-result-sort-by ._md-select-value ._md-select-icon {
 }
 
 #sidebar-trigger span {
-    1color: #e08303;
+   /*color: #e08303;*/
 }
 /*apply filterknapp*/
 .multiselect-submit .multiselect-submit-inner .md-button.md-primary, .prm-positive-bg, .multiselect-submit .multiselect-submit-inner .md-button.md-primary:focus, .multiselect-submit .multiselect-submit-inner .md-button.md-primary:hover {
@@ -1296,7 +1314,7 @@ FULL DETAILS / FULL VIEW
 /* Dialogfönster */
 #kth_fulldetail {
 	background-color: #ffffff;
-	1flex: 1 0 auto;
+	/*flex: 1 0 auto;*/
 }
 #kth_fulldetail md-toolbar {
 	background-color: #1954a6;
@@ -1317,7 +1335,7 @@ FULL DETAILS / FULL VIEW
 /* ingen padding runt hela */
 #dialogContent_kth_fulldetail .md-dialog-content {
     padding: 0px 0px;
-	1flex: 1 0 auto;
+	/*flex: 1 0 auto;*/
 }
 
 /* Bort med klammer som visar vilken avdelning man är vid */
@@ -1360,12 +1378,13 @@ prm-service-header .section-title, .loc-altemtrics .section-title, prm-full-view
 	font-weight: 500; 
 }
 
-/* Ordning placering av avdelningar, bakgrundsfärg */
+/* Ordning placering av avdelningar, bakgrundsfärg etc */
 .full-view-container .full-view-inner-container {
 	display: flex;
     flex-direction: column;
 	padding-bottom: 0em;
 	background-color: #ffffff;
+	border-right: 1px solid #e1e1e1;
 	/* IE Fix*/
 	flex: 1 0 auto;
 }
@@ -1403,7 +1422,7 @@ prm-service-header .section-title, .loc-altemtrics .section-title, prm-full-view
 }
 
 /* Online-länkar gröna*/
-prm-view-online span[translate="nui.getit_full.tab1_full"] {
+prm-view-online span[translate="nui.getit_full.tab1_full"], prm-view-online span[translate="nui.getit_full.Online"] {
 	color: #0f7d00;
 }
 
@@ -1796,7 +1815,7 @@ prm-account>md-content>div:nth-of-type(3) {
 
 /* visa inte patron group, 2018-02-20 visa igen då vi uppdaterat användargrupperna*/
 span[translate="nui.details.patronstatus.group"] {
-	1display: none;
+	/*display: none;*/
 }
 
 /* Dölj listan med utskick */
@@ -1814,7 +1833,7 @@ EGEN KARTA Ska användas??
 	position: absolute;
     left: -150%;
     top: 22px;
-    1background-color: #ffffff;
+    /*background-color: #ffffff;*/
     padding: 5px;
     border-radius: 3px;
 	display: none;
@@ -1850,7 +1869,7 @@ EGEN KARTA Ska användas??
     position: absolute;
     top: 0;
     left: 0px;
-    1margin-left: 1em;
+    /*margin-left: 1em;*/
     z-index: 1;
 }
 
@@ -2122,10 +2141,12 @@ EGEN KARTA Ska användas??
 	color: #1954a6;
 }
 
-.1kth-actionbuttontext {
+/*
+kth-actionbuttontext {
 	background-color: rgba(58,58,58,.1);
 	color: #676767;
 }
+*/
 
 /* kth blå text/vit bakgrund */
 
