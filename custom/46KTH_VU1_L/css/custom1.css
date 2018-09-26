@@ -732,12 +732,11 @@ prm-search-bar .search-wrapper>div:first-of-type {
 	}
 	
 	prm-search-bar .search-elements-wrapper.advanced-mode {
-		position: absolute;
+		/*position: absolute;*/
 		width: 100%;		
 	}
 	
 }
-
 
 /*********************
 	Advanced Search
@@ -746,10 +745,10 @@ prm-search-bar .search-wrapper>div:first-of-type {
 /* Fix för Safaris sätt att visa hur en inputruta är aktiv (grön understruken)*/
 
 md-input-container:after {
-	    height: 0px;
+	height: 0px;
 }
 md-input-container.md-input-focused:after {
-	    height: 3px;
+	height: 3px;
 }
 
 /* formulerade sökfrågan som skapas underst */
@@ -757,29 +756,34 @@ md-input-container.md-input-focused:after {
 prm-search-bar .advanced-search-wrapper .search-string span {
 	float: none;
 }
-
+/*180822 inget plus på stora skärmar längre*/
 /*dölj ikon och text för advanced search-plusset/simple search-minuset*/
-.switch-to-advanced>span, .switch-to-simple>span {
+/*.switch-to-advanced>span, .switch-to-simple>span {
 	display:none !important; 
-}
+}*/
 
 /*visa ett plus istället för ikon/text advanced search-plusset*/
-.md-button.switch-to-advanced:after {
+/*.md-button.switch-to-advanced:after {
 	content: "+";
-}
+}*/
 
 /*visa ett minus istället för ikon/text advanced search-minuset*/
-.md-button.switch-to-simple:after {
+/*.md-button.switch-to-simple:after {
 	content: "−";
-}
+}*/
 
 /*sätt färg för när musen hålls över advanced search-plusset*/
-prm-search-bar .search-switch-buttons .md-button.switch-to-advanced:hover, prm-search-bar .search-switch-buttons .md-button.switch-to-simple:hover {
-  background-color: #e6e6e6;
+/*180822 inget plus på stora skärmar längre*/
+/*prm-search-bar .search-switch-buttons .md-button.switch-to-advanced:hover, prm-search-bar .search-switch-buttons .md-button.switch-to-simple:hover {
+	background-color: #e6e6e6;
+}*/
+prm-search-bar .md-button.switch-to-advanced:hover, prm-search-bar .md-button.switch-to-simple:hover {
+	background-color: #e6e6e6;
 }
 
+/*180822 inget plus på stora skärmar längre*/
 /* Bredd, höjd, färg, fontstorlek etc på advanced/simple search-plusset/minuset*/
-prm-search-bar .search-switch-buttons .md-button.switch-to-advanced, prm-search-bar .search-switch-buttons .md-button.switch-to-simple {
+/*prm-search-bar .search-switch-buttons .md-button.switch-to-advanced, prm-search-bar .search-switch-buttons .md-button.switch-to-simple {
 	min-height: 0px;
     min-width: 60px;
     line-height: 60px;
@@ -789,16 +793,35 @@ prm-search-bar .search-switch-buttons .md-button.switch-to-advanced, prm-search-
     padding: 0;
 	align-self: flex-end;
 	font-weight: lighter;
-}
+}*/
 
 /* advanced/simple search*/
-prm-search-bar .search-switch-buttons {
+/*180822 inget plus på stora skärmar längre*/
+/*prm-search-bar .search-switch-buttons {
+	
     padding-top: 0 !important;
 	display: flex !important;
 	flex-direction: column;
 	flex: 1 1 5% !important;
 	max-width: 5% !important;
+}*/
+prm-search-bar .md-button.switch-to-advanced, prm-search-bar .md-button.switch-to-simple  {
+	/*
+	padding-top: 0 !important;
+	display: flex !important;
+	flex-direction: column;
+	flex: 1 1 5% !important;
+	max-width: 5% !important;
+	*/
+	background-color: rgb(255, 255, 255);
+	padding: 0px 10px 0 10px;
+	color: #1954a6;
+	line-height: 20px;
+    white-space: pre-wrap;
+	width: 100px;
+	max-height: 60px;
 }
+
 /* hur mkt av sökrutan ska plusset uppta på mellanstora skärmar*/
 @media (max-width: 1279px) and (min-width: 960px) {
 	prm-search-bar .search-switch-buttons {
@@ -808,14 +831,65 @@ prm-search-bar .search-switch-buttons {
 }
 
 /* hur mkt av sökrutan ska plusset uppta på mindre/små skärmar*/
+@media (max-width: 1279px) and (min-width: 960px) {
+	prm-search-bar .search-switch-buttons {
+		flex: 1 1 7% !important;
+		max-width: 7% !important;
+	}
+}
+/*180822 inget plus på stora skärmar längre*/
+/* hur mkt av sökrutan ska plusset uppta på mindre/små skärmar*/
 @media (max-width: 959px) and (min-width: 700px) {
 	prm-search-bar .search-switch-buttons {
 		flex: 1 1 10% !important;
 		max-width: 10% !important;
 	}
 }
+/*180822 inget plus på stora skärmar längre*/
+@media (max-width: 699px) and (min-width: 200px) {
+	/* Bredd, höjd, färg, fontstorlek etc på advanced/simple search-plusset/minuset*/
+	prm-search-bar .md-button.switch-to-advanced, prm-search-bar .md-button.switch-to-simple {
+		min-height: 0px;
+		min-width: 60px;
+		line-height: 60px;
+		font-size: 46px;
+		align-self: flex-end;
+		font-weight: lighter;
+		width: auto;
+	}
+	/*dölj minuset*/
+	.switch-to-simple {
+		display:none !important; 
+	}
+	/*dölj ikon och text för advanced search-plusset/simple search-minuset*/
+	.switch-to-advanced>span, .switch-to-simple>span {
+		display:none !important; 
+	}
+	/*visa ett plus istället för ikon/text advanced search-plusset*/
+	/*endast på små skärmar*/
+	.md-button.switch-to-advanced:after {
+		content: "+";
+	}
+
+	/*visa ett minus istället för ikon/text advanced search-minuset*/
+	.md-button.switch-to-simple:after {
+		content: "−";
+	}
+}
+
 /* hur mkt av sökrutan ska plusset uppta på mindre/små skärmar*/
 @media (max-width: 699px) and (min-width: 600px) {
+	/*180822 inget plus på stora skärmar längre*/
+	/* Bredd, höjd, färg, fontstorlek etc på advanced/simple search-plusset/minuset*/
+	prm-search-bar .md-button.switch-to-advanced, prm-search-bar .search-switch-buttons .md-button.switch-to-simple {
+		min-height: 0px;
+		min-width: 60px;
+		line-height: 60px;
+		font-size: 46px;
+		align-self: flex-end;
+		font-weight: lighter;
+	}
+
 	prm-search-bar .search-switch-buttons {
 		flex: 1 1 12% !important;
 		max-width: 12% !important;
@@ -1286,7 +1360,7 @@ prm-search-result-sort-by ._md-select-value ._md-select-icon {
 
 /*
 #sidebar-trigger span {
-   color: #e08303;
+	color: #e08303;
 }
 */
 
@@ -1359,6 +1433,32 @@ FULL DETAILS / FULL VIEW
 }
 .full-view-section .section-head {
 	margin-bottom: 0em;
+}
+
+/*180822 marginaler etc vid visning av fullpost utan dialogruta*/
+prm-full-view-page .full-view-section, prm-full-view-page>prm-full-view-cont>md-content, prm-full-view-page>prm-full-view-cont>md-content .full-view-container>div
+, prm-full-view-page>prm-full-view-cont>md-content .full-view-container prm-full-view-service-container prm-brief-result-container>div:first-of-type {
+	padding-left: 0px !important;
+}
+/*180822 marginaler etc vid visning av fullpost utan dialogruta*/
+prm-full-view-page md-content>div:first-of-type, prm-full-view-page prm-back-to-search-results-button md-toolbar>div>div {
+	flex: 1 1 15% !important;
+    max-width: 15% !important;
+}
+/*180822 marginaler etc vid visning av fullpost utan dialogruta*/
+@media (max-width: 1279px) and (min-width: 200px) {
+	prm-full-view-page md-content>div:first-of-type, prm-full-view-page prm-back-to-search-results-button md-toolbar>div>div {
+		flex: 1 1 2% !important;
+		max-width: 2% !important;
+	}
+}
+/*180822 färg på tillbakaknapp*/
+prm-back-to-search-results-button prm-icon md-icon.md-primoExplore-theme {
+	color: #e08303 !important;
+}
+
+prm-back-to-search-results-button button {
+	background-color: #e9e9e9 !important;
 }
 
 /* ingen vänsterpadding på varje avdelning*/
@@ -1584,8 +1684,13 @@ prm-full-view-after {
 		padding: 1em;
 	}
 	.__xs .full-view-section, .full-view-section {
-		padding: 1em 0em;
+		padding: 1em 1.5em; /* 180801 */
 	}
+
+	.__xs prm-full-view prm-brief-result-container .list-item-primary-content {
+		padding: 1em 1.5em; /* 180801 */
+	}
+	
 	prm-full-view-after {
 		padding: 1em;
 		display: flex;
@@ -1822,6 +1927,11 @@ prm-account>md-content>div:nth-of-type(3) {
 
 }
 
+/* LÅN */
+prm-loans .header-count {
+	display: none;
+}
+
 /* visa inte patron group, 2018-02-20 visa igen då vi uppdaterat användargrupperna*/
 /*
 span[translate="nui.details.patronstatus.group"] {
@@ -1832,6 +1942,62 @@ span[translate="nui.details.patronstatus.group"] {
 /* Dölj listan med utskick */
 prm-personal-info md-card-content>div:nth-of-type(3) {
 	display: none;
+}
+
+/****************************
+
+CITATION PATH
+
+****************************/
+
+prm-citation-trails-breadcrumbs>md-toolbar>div>button {
+	margin-left: 0px !important;
+	background-color: #e9e9e9 !important;
+	color: #e08303 !important;
+}
+
+prm-citation-trails-breadcrumbs md-toolbar>div {
+	padding-left: 0px !important;;
+}
+prm-citation-trails-breadcrumbs md-toolbar>div>div, prm-citation-trails-breadcrumbs .prm-horizontal-content>div:first-of-type {
+	flex: 1 1 15% !important;
+    max-width: 15% !important;
+}
+prm-citation-trails-breadcrumbs prm-alert-bar {
+	display: none;
+}
+
+@media (max-width: 1279px) and (min-width: 200px) {
+	prm-citation-trails-breadcrumbs md-toolbar>div>div, prm-citation-trails-breadcrumbs .prm-horizontal-content>div:first-of-type {
+		flex: 1 1 0% !important;
+		max-width: 0% !important;
+	}
+
+	prm-citation-trails-breadcrumbs md-toolbar {
+   		padding: 0px 10px 0px 10px;
+	}
+}
+
+/***************************
+
+SERVICE PAGE
+
+***************************/
+/*180822 marginaler etc vid visning av fullpost utan dialogruta*/
+prm-services-page .full-view-section, prm-services-page .full-view-inner-container, prm-services-page>prm-full-view-cont>md-content, prm-brief-result-container>div:first-of-type {
+	padding-left: 0px !important;
+}
+/*180822 marginaler etc vid visning av fullpost utan dialogruta*/
+prm-services-page>prm-full-view-cont>md-content>div:first-of-type {
+	flex: 1 1 15% !important;
+    max-width: 15% !important;
+}
+/*180822 marginaler etc vid visning av fullpost utan dialogruta*/
+@media (max-width: 1279px) and (min-width: 200px) {
+	prm-services-page>prm-full-view-cont>md-content>div:first-of-type {
+		flex: 1 1 2% !important;
+		max-width: 2% !important;
+	}
 }
 
 /****************************

@@ -63,6 +63,8 @@ console.log(kth_vid);
     });
 	
 	//Ändra de timeouts som ExLibris har satt
+	//Numera parameter i BO
+	//Starting from the Primo November 2017 Release, New UI users can define the Session Timeout per view via the Views Wizard General Views Attributes page
 	
 	app.config(['KeepaliveProvider', 'IdleProvider','$translateProvider', function(KeepaliveProvider, IdleProvider, $translateProvider) {
 		//KTHB Primo 60 minuter(eller ska vi ha nån timeout alls??)
@@ -80,9 +82,6 @@ console.log(kth_vid);
 	app.component('prmExploreMainAfter', {
 			bindings: {parentCtrl: '<'},
 			controller: 'prmExploreMainAfterController',
-			/*template: 	'{{$ctrl.started}}<button type="button" class="btn btn-success" data-ng-hide="$ctrl.started" data-ng-click="$ctrl.start()">Start Demo</button>' +
-						'<button type="button" class="btn btn-danger" data-ng-show="$ctrl.started" data-ng-click="$ctrl.stop()">Stop Demo</button>',
-						*/
 			require: {
 				primoExploreCtrl: '^primoExplore'
 			}
@@ -142,51 +141,6 @@ console.log(kth_vid);
 	
 	app.controller('prmExploreMainAfterController', function ($compile, $scope, $http,$rootScope,$timeout,$templateCache, $element,Idle, $location,$translate) {
         var vm = this;
-		//Lista alla värden i localstorage
-		//localstorage funkar INTE i private mode i Safari
-		/*
-		for(var i=0; i < localStorage.length; i++){
-			var propertyName = localStorage.key(i);
-			//console.log(  i + " : " + propertyName + " = " + localStorage.getItem(propertyName));
-		}
-		*/
-		
-		//TIMEOUT
-		vm.started = false;
-		vm.start = function() {
-			Idle.watch();
-			vm.started = true;
-		};
-
-		vm.stop = function() {
-			Idle.unwatch();
-			vm.started = false;
-		};
-		
-		
-		vm.$onInit = function() { 
-			//Sätt sökresultatet till 10 träffar initialt 
-			//(om inget värde redan finns i local storage)
-			//if(localStorage.getItem("kthb_primo_resultsBulkSize")==null) {
-				//localStorage.setItem("kthb_primo_resultsBulkSize","10");
-			//} 
-			/*
-			if (typeof vm.primoExploreCtrl.userSessionManagerService.searchStateService.resultsBulkSize != 'undefined') {
-				vm.primoExploreCtrl.userSessionManagerService.searchStateService.resultsBulkSize = +localStorage.getItem("kthb_primo_resultsBulkSize");
-			}
-			*/
-			
-			/*
-			if (typeof vm.primoExploreCtrl.$scope.$$childHead.$$childHead.$ctrl.searchService != 'undefined') {
-				vm.primoExploreCtrl.$scope.$$childHead.$$childHead.$ctrl.searchService.configurationUtil.searchStateService.resultsBulkSize = +localStorage.getItem("kthb_primo_resultsBulkSize");
-			}
-			
-			if (typeof vm.primoExploreCtrl.$scope.$$childHead.$$childHead.$ctrl.primolyticsService != 'undefined') {
-				vm.primoExploreCtrl.$scope.$$childHead.$$childHead.$ctrl.primolyticsService.searchService.configurationUtil.searchStateService.resultsBulkSize = +localStorage.getItem("kthb_primo_resultsBulkSize");
-			}
-			*/
-		}
-		
 		
 		/*************************************************************
 		
@@ -663,7 +617,9 @@ console.log(kth_vid);
 					'<div style="flex: 1 1 10px;max-width: 10px"></div>' +
 					//Plusknappen
 					//'<div class="search-switch-buttons" layout-sm="column" layout-align-sm="start stretch" hide-xs ng-class="{\'facet-to-left-advanced-search\': $ctrl.facetToLeft}">' +
-						'<md-button style="min-height: 0px;min-width: 60px;line-height: 60px;background-color: rgb(255, 255, 255);color: #000;font-size: 46px;padding: 0;align-self: flex-end;font-weight: lighter;" aria-label="{{\'nui.aria.searchBar.advancedLink\' | translate}}" class="switch-to-advanced zero-margin button-with-icon" ng-if="!$ctrl.advancedSearch" ng-click="$ctrl.switchAdvancedSearch()">' +
+						//180822 inget plus på stora skärmar längre
+						//'<md-button style="min-height: 0px;min-width: 60px;line-height: 60px;background-color: rgb(255, 255, 255);color: #000;font-size: 46px;padding: 0;align-self: flex-end;font-weight: lighter;" aria-label="{{\'nui.aria.searchBar.advancedLink\' | translate}}" class="switch-to-advanced zero-margin button-with-icon" ng-if="!$ctrl.advancedSearch" ng-click="$ctrl.switchAdvancedSearch()">' +
+						'<md-button style="" aria-label="{{\'nui.aria.searchBar.advancedLink\' | translate}}" class="switch-to-advanced zero-margin button-with-icon" ng-if="!$ctrl.advancedSearch" ng-click="$ctrl.switchAdvancedSearch()">' +
 						//'<md-button aria-label="{{\'nui.aria.searchBar.advancedLink\' | translate}}" class="switch-to-advanced zero-margin button-with-icon" ng-if="!$ctrl.advancedSearch" ng-click="$ctrl.switchAdvancedSearch()">' +
 							'<span layout="row" layout-align="start center"><span translate="label.advanced_search"></span></span>' +
 							//tooltip (Primo BO Code Tables, Header/Footer Tiles)
@@ -671,8 +627,10 @@ console.log(kth_vid);
 								'<span translate="searchbar.tooltip.advanced_search"></span>' +
 							'</md-tooltip>' +
 						'</md-button>' +
+						//180822 inget plus på stora skärmar längre
 						//'<md-button class="switch-to-simple zero-margin button-with-icon" ng-if="$ctrl.advancedSearch" ng-click="$ctrl.switchAdvancedSearch()">' +
-						'<md-button style="max-height: 60px;min-height: 0px;min-width: 60px;line-height: 60px;background-color: rgb(255, 255, 255);color: #000;font-size: 46px;padding: 0;font-weight: lighter;" class="switch-to-simple zero-margin button-with-icon" ng-if="$ctrl.advancedSearch" ng-click="$ctrl.switchAdvancedSearch()">' +
+						//'<md-button style="max-height: 60px;min-height: 0px;min-width: 60px;line-height: 60px;background-color: rgb(255, 255, 255);color: #000;font-size: 46px;padding: 0;font-weight: lighter;" class="switch-to-simple zero-margin button-with-icon" ng-if="$ctrl.advancedSearch" ng-click="$ctrl.switchAdvancedSearch()">' +
+						'<md-button style="" class="switch-to-simple zero-margin button-with-icon" ng-if="$ctrl.advancedSearch" ng-click="$ctrl.switchAdvancedSearch()">' +
 							'<span layout="row" layout-align="start center"><span translate="label.simple_search"></span></span>' +
 						'</md-button>' +
 					//'</div>' +
@@ -1262,24 +1220,31 @@ console.log(kth_vid);
 		
 		/****** prm-full-view-dialog-template ******/
 		//Här visas fulla posten i en md-dialog
+		
 		$templateCache.put('components/search/fullView/full-view-dialog-template.html', 
 		'<md-dialog flex-md="80" flex-lg="70" flex-xl="60" style="max-height: 80%;f1lex: 1 1 60%;m1ax-width: 60%;" id="kth_fulldetail" aria-label="List dialog">' +
 			'<md-toolbar class="_md _md-toolbar-transitions">' +
 				'<div class="md-toolbar-tools">' +
 					'<h2 flex class="md-truncate">{{$ctrl.item.pnx.display.title[0]}}</h2>' +
 					//'<span flex class="flex"></span>' +
+					//augustirelease 2018 gå till föregående post
+					'<md-button aria-label="{{::(\'nui.aria.fulldisplay.goToPreviousButton\' | translate)}}" class="md-icon-button md-button md-ink-ripple close-button full-view-navigation" ng-if="$ctrl.mediaQueries.gtsm && !$ctrl.isFirstRecord()" ng-click="$ctrl.getPreviousRecord()" style=""><md-tooltip md-direction="top"><span translate="nui.results.previous.tooltip"></span></md-tooltip><prm-icon icon-type="svg" svg-icon-set="primo-ui" icon-definition="chevron-left"></prm-icon></md-button>' +
 					'<md-button class="md-icon-button" (click)="$ctrl.handleHideDetails()" aria-label="{{\'nui.aria.fulldisplay.closeButton\' | translate}}">' +
 						'<prm-icon icon-type="svg" svg-icon-set="primo-ui" icon-definition="close">'+ 
 							'<md-icon md-svg-icon="primo-ui:close" aria-label="icon-close" class="md-primoExplore-theme" aria-hidden="true">' +
 							'</md-icon>' +
 						'</prm-icon>' +
 					'</md-button>' +
+					//augustirelease 2018 gå till nästa post
+					'<md-button aria-label="{{::(\'nui.aria.fulldisplay.goToNextButton\' | translate)}}" class="md-icon-button md-button md-ink-ripple close-button full-view-navigation" ng-if="$ctrl.mediaQueries.gtsm && !$ctrl.isLastRecordByState() " ng-click="$ctrl.getNextRecord()" style=""><md-tooltip md-direction="{{$ctrl.getPageWidgetDirection()}}"><span translate="nui.results.next.tooltip"></span></md-tooltip><prm-icon icon-type="svg" svg-icon-set="primo-ui" icon-definition="chevron-right"></prm-icon></md-button>' +
 				'</div>' +
 			'</md-toolbar>' +
 			'<md-dialog-content>'+
 				'<div class="md-dialog-content">' + 
-					'<prm-full-view flex="100" ng-if="$ctrl.dialogOpened.val" [load-full-view-additional-services]="$ctrl.loadFullViewAdditionalServices.val" [is-overlay-full-view]="true" [isfavorites]="$ctrl.isfavorites" [item]="::$ctrl.item" [focus-id]="$ctrl.focusId" [originator]="$ctrl.originator" id="fullView" tabindex="-1" role="contentinfo" ng-class="{\'padding-top-medium\':$ctrl.mediaQueries.xs}">' +
-					'</prm-full-view>' + 
+					//'<prm-full-view flex="100" ng-if="$ctrl.dialogOpened.val" [load-full-view-additional-services]="$ctrl.loadFullViewAdditionalServices.val" [is-overlay-full-view]="true" [isfavorites]="$ctrl.isfavorites" [item]="::$ctrl.item" [focus-id]="$ctrl.focusId" [originator]="$ctrl.originator" id="fullView" tabindex="-1" role="contentinfo" ng-class="{\'padding-top-medium\':$ctrl.mediaQueries.xs}">' +
+					//'</prm-full-view>' +
+					//augustirelease 2018 
+					'<prm-full-view flex="100" ng-repeat="item in $ctrl.currentStateResults()" ng-if="$ctrl.dialogOpened.val && $index === $ctrl.currentResultIndex()" [load-full-view-additional-services]="$ctrl.loadFullViewAdditionalServices.val" [is-overlay-full-view]="true" [isfavorites]="$ctrl.isfavorites" [item]="::item" [focus-id]="$ctrl.getFocusId()" [originator]="$ctrl.originator" id="fullView" tabindex="-1" role="contentinfo" [is-first-item]="$ctrl.isFirstRecord()" [is-last-item]="$ctrl.isLastRecordByState()" ng-class="{\'padding-top-medium\':$ctrl.mediaQueries.xs}"></prm-full-view>' +
 				'</div>' +
 			'</md-dialog-content>' +
 		'</md-dialog>');
@@ -1548,6 +1513,7 @@ console.log(kth_vid);
 				'<md-button aria-label="show/collapse facets" ng-click="$ctrl.togglefacets()" style="display:flex" tabindex="-1" ng-if="$ctrl.totalResults > 1 || $ctrl.isFiltered()" class="section-title sidebar-section margin-top-small compensate-padding-left">' +
 					'<h2 flex="90" class="sidebar-title margin-bottom-zero" translate="nui.facets.title" style="font-size: 1.6em;text-align:left" ></h2>' +
 					//veckla ut/ihop facetter, text i st f ikkonen?
+					//TODO in i code table i Primo BO(översättning)
 					'<span ng-if="$ctrl.allfacetscollapsed">Expand all</span>' +
 					'<span ng-if="!$ctrl.allfacetscollapsed">Collapse all</span>' +
 					'<prm-icon style="align-self: flex-end;padding-left: 5px" icon-type="svg" svg-icon-set="primo-ui" icon-definition="expand-list" class="rotate-180"></prm-icon>' +
@@ -1767,30 +1733,7 @@ console.log(kth_vid);
 		//window.appConfig['mapping-tables']['Citation styles'].push({ source1: '12', target: 'oscola' });
 	});
 
-	//BETA
-	app.component('prmRecomendationsAfter', {
-			bindings: {parentCtrl: '<'},
-			controller: 'prmRecomendationsAfterController'
-	});
-	
-	app.controller('prmRecomendationsAfterController',function ($scope) { 
-		var vm = this;
-		console.log("prmRecomendationsAfterController");
-		console.log(vm.parentCtrl);
-	});
-	
-	//BETA prm-action-list-after
-	app.component('prmActionListAfter', {
-			bindings: {parentCtrl: '<'},
-			controller: 'prmActionListAfterController'
-	});
-	
-	app.controller('prmActionListAfterController',function ($scope) { 
-		var vm = this;
-		console.log("prmActionListAfterController");
-		console.log(vm.parentCtrl);
-	});
-		
+			
 	/*****************************************
 	
 	KTHB Primo rubrik
@@ -1799,11 +1742,15 @@ console.log(kth_vid);
 	app.component('prmLogoAfter', {
 			bindings: {parentCtrl: '<'},
 			controller: 'prmLogoAfterController',
-			template: '<div><a href="{{$ctrl.parentCtrl.kthb_link}}"><span class="kth-sitenameheader" translate="nui.header.sitename"></span></a></div>'
+			template: 
+				'<div>' +
+					'<a href="{{$ctrl.parentCtrl.kthb_link}}"><span class="kth-sitenameheader" translate="nui.header.sitename"></span><span ng-if="$ctrl.kth_vid==\'46KTH_VU1_B\'">BETA!!!</span></a>' +
+				'</div>'
 	});
 	
 	app.controller('prmLogoAfterController',function ($scope, $translate,$timeout) { 
 		var vm = this;
+		vm.kth_vid = kth_vid;
 		//Se till att länken anpassas till valt språk
 		//engelska default?
 		
@@ -2615,7 +2562,7 @@ console.log(kth_vid);
 			}
 			openRequestForm(vm.parentCtrl.item, lang);
 		}
-    });
+	});
 
 	/********************************************************
 	
@@ -2653,7 +2600,27 @@ console.log(kth_vid);
 		kth_currenturl.addData($location.absUrl());
 		$rootScope.$broadcast('urldataAdded', $location.absUrl());
 
-    });
+	});
+	
+	/*****************************************************************
+	
+	Service för oadoi
+	
+	*****************************************************************/
+	app.factory('kth_oadoi', function ($http) {
+
+		var data = {
+		};
+		
+		//Exempelsökning: "postprandial oxytocin"
+		data.getoaDOI = function(doi) {
+			var method = 'GET';
+			var url = 'https://api.oadoi.org/v2/' + doi + '?email=ask-kthb@kth.se';
+			return $http({method: method, url: url, headers: {"X-From-ExL-API-Gateway": undefined},});
+		};
+
+		return data;
+	});
 	
 	/**********************************************************
 	
@@ -2690,7 +2657,8 @@ console.log(kth_vid);
 	app.component('prmFullViewServiceContainerAfter', {
 			bindings: {parentCtrl: '<'},
 			controller: 'prmFullViewServiceContainerAfterController',
-			template: '<div ng-if="$ctrl.parentCtrl.service.title==\'nui.getit.alma_tab1_nofull\' || $ctrl.parentCtrl.service.title==\'nui.getit.alma_tab1_nofulltextlinktorsrc\'">' +
+			//visa endast på alma-service!
+			template: '<div ng-if="$ctrl.parentCtrl.service.title.indexOf(\'alma\')> -1">' +
 						'<div class="layout-full-width" ng-if="$ctrl.showOA">' +
 							'<div layout="column" layout-align="">' +
 								//TODO in i code table i Primo BO(översättning)
@@ -2712,68 +2680,66 @@ console.log(kth_vid);
 								'</div>' +
 							'</div>' +
 						'</div>' +
-					  '</div>'
+					'</div>'
 	});
-	
-	app.controller('prmFullViewServiceContainerAfterController',function ($scope, $http) {
+
+	app.controller('prmFullViewServiceContainerAfterController',function ($scope, $http, kth_oadoi) {
 		var vm = this;
 		vm.showOA = false;
-		
-		//Brief eller full view?
 		//Bevaka (watch) eftersom värdet inte alltid hunnit sättas.
 		if (typeof(vm.parentCtrl.result) != "undefined") {
+			console.log("RESULT");
+			//träfflista
 			$scope.$watch(function() { return vm.parentCtrl.result.delivery; }, function(delivery) {
 				if (typeof(delivery) != "undefined") {
 					if (typeof(vm.parentCtrl.result.pnx.addata.doi) == "undefined") {
-					} else { //visa bara för de som inte har full text
-						if (vm.parentCtrl.result.delivery.displayedAvailability == "no_fulltext") {
+					} else { //visa bara för de som inte har full text /
+						//viewit_NFT – View It services are available, but there is no full text.
+						//viewit_getit_NFT – View It and Get It services are available, but there is no full text.
+						//if (vm.parentCtrl.result.delivery.displayedAvailability == "no_fulltext" || vm.parentCtrl.result.delivery.displayedAvailability == "viewit_NFT" || vm.parentCtrl.result.delivery.displayedAvailability == "viewit_getit_NFT" ) {
 							vm.doi = vm.parentCtrl.result.pnx.addata.doi[0] || '';
-						}
+						//}
 					}
 					if(vm.doi) {	
-						getoaDOI(vm.doi);
+						kth_oadoi.getoaDOI(vm.doi).then(function(data, status) {
+							if (data.data.best_oa_location) {
+								vm.best_oa_location_url = data.data.best_oa_location.url;
+								vm.best_oa_location_evidence = data.data.best_oa_location.evidence;
+								vm.showOA = true;
+							} else {
+								vm.doi = false;
+							}
+						});
 					}
 				}
 			});
 		}
+		//fullpost/servicesida
 		if (typeof(vm.parentCtrl.item) != "undefined") {
+			console.log("ITEM");
 			$scope.$watch(function() { return vm.parentCtrl.item.delivery; }, function(delivery) {
 				if (typeof(delivery) != "undefined") {
 					if (typeof(vm.parentCtrl.item.pnx.addata.doi) == "undefined") {
 					} else {
-						if (vm.parentCtrl.item.delivery.displayedAvailability == "no_fulltext") {
+						//if (vm.parentCtrl.item.delivery.displayedAvailability == "no_fulltext" || vm.parentCtrl.item.delivery.displayedAvailability == "viewit_NFT" || vm.parentCtrl.item.delivery.displayedAvailability == "viewit_getit_NFT" ) {
 							vm.doi = vm.parentCtrl.item.pnx.addata.doi[0] || '';
-						}
+						//}
 					}
 					if(vm.doi) {	
-						getoaDOI(vm.doi);
+						kth_oadoi.getoaDOI(vm.doi).then(function(data, status) {
+							if (data.data.best_oa_location) {
+								vm.best_oa_location_url = data.data.best_oa_location.url;
+								vm.best_oa_location_evidence = data.data.best_oa_location.evidence;
+								vm.showOA = true;
+							} else {
+								vm.doi = false;
+							}
+						});	
 					}
 				}
 			});
 		}
 		
-		//Exempelsökning: "postprandial oxytocin"
-		function getoaDOI(doi) {
-			vm.parentCtrl.oaDOIisLoading = true;
-			vm.oaDOIdata = "";
-			var method = 'GET';
-			var url = 'https://api.oadoi.org/v2/' + doi + '?email=ask-kthb@kth.se';
-			$http({method: method, url: url, headers: {"X-From-ExL-API-Gateway": undefined},}).
-				then(function(response) {
-					var status = response.status;
-					var data = response.data;
-					vm.best_oa_location = response.data.best_oa_location;
-					if (vm.best_oa_location) {
-						vm.best_oa_location_url = response.data.best_oa_location.url;
-						vm.best_oa_location_evidence = response.data.best_oa_location.evidence;
-						vm.showOA = true;
-					} else {
-						vm.doi = false;
-					}
-				}, function(response) {
-					vm.doi = false;
-				});
-		}
 		
 	});
 	
@@ -2859,9 +2825,8 @@ console.log(kth_vid);
 		});
 	}]);
 
-
 	/*****************************************
-	
+	ALLT NEDAN ÄR BETA för VU1_B(eta)
 	//BETA prm-alma-mashup-after
 	
 	*****************************************/
@@ -3064,16 +3029,19 @@ console.log(kth_vid);
 			console.log(findPos(document.getElementById("almamashup")));
 			//window.scroll(0,findPos(document.getElementById("almamashup"))-100);
 			window.document.getElementById("almamashup").scrollIntoView( true );
+			
 			var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
 			var eventer = window[eventMethod];
 			var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
 			// Lyssna på message från iframe
 			eventer(messageEvent,function(e) {
+				console.log("iframeaction");
 				if(e.data == "iframeaction")
 				{
 					window.document.getElementById("almamashup").style.display = "none";
 				}
 			},false);
+			
 			//skicka message till iframe
 			//window.document.getElementById("almamashup").contentWindow.postMessage("iframeaction","*");
 
@@ -3279,7 +3247,7 @@ console.log(kth_vid);
 	Dialogformulär BETA, Används INTE
 	
 	********************************************************************/
-	/*
+	
 	app.component('prmContactUs', {
 		bindings: {
 			parentCtrl: '<'
@@ -3294,8 +3262,8 @@ console.log(kth_vid);
 
 	app.controller('prmContacUsController', ['$mdDialog', '$http', function ($mdDialog, $http) {
 		var ctrl = this;	
-		//console.log("prmContacUsController");
-		//console.log(ctrl);
+		console.log("prmContacUsController");
+		console.log(ctrl);
 		//console.log("prmContacUsController2");
 		function sendreport(){
 							console.log("sending report");
@@ -3319,7 +3287,7 @@ console.log(kth_vid);
 							console.log("sending report");
 							var method = 'GET';
 							var html = '';
-							var url = 'https://apps.lib.kth.se/alma/errorreport/index.php?payload=' + ctrl.parentCtrl.item.pnx.addata.atitle;
+							var url = 'https://apps.lib.kth.se/alma/errorreport/index.php?payload=' + ctrl.parentCtrl.item.pnx.addata.btitle;
 							$http({method: method, url: url}).
 								then(function(response) {
 									console.log(response.data.status);
@@ -3378,10 +3346,80 @@ console.log(kth_vid);
 			});
 		};
 	}]);
+
+	//BETA
+	app.component('prmRecomendationsAfter', {
+		bindings: {parentCtrl: '<'},
+		controller: 'prmRecomendationsAfterController'
+	});
+
+	app.controller('prmRecomendationsAfterController',function ($scope) { 
+		var vm = this;
+		console.log("prmRecomendationsAfterController");
+		console.log(vm.parentCtrl);
+	});
+
+	//BETA prm-action-list-after
+	app.component('prmActionListAfter', {
+			bindings: {parentCtrl: '<'},
+			controller: 'prmActionListAfterController'
+	});
+
+	app.controller('prmActionListAfterController',function ($scope) { 
+		var vm = this;
+		console.log("prmActionListAfterController");
+		console.log(vm.parentCtrl);
+	});
 	
-	*/
+	
 	
 })();
+
+/****************************
+	 
+Övriga funktioner 
+
+****************************/
+
+/****************************** 
+
+Skapa en lyssnare för message från frames på sidan.
+Använd timeout för att fungera med primos egen.
+
+******************************/
+setTimeout(function(){
+	window.addEventListener("message", receiveMessagefromalma, false);
+}, 2000);
+
+function receiveMessagefromalma(event)
+{
+	if (event.origin == "https://eu01.alma.exlibrisgroup.com") {
+		setTimeout(function(){
+			msg = event.data;
+			if(msg.type == "licensinfo" && msg.action == "show"){
+				//skapa ett licenselement under "primo-explore" och sätt properties för layout etc
+				var s = document.createElement('div');
+				s.id = "licensinfo_KTH";
+				licelement = document.querySelector("primo-explore");
+				licelement.appendChild(s).innerHTML=msg.html;
+				licelement.appendChild(s).style.padding="10px";
+				licelement.appendChild(s).style.borderRadius="10px";
+				licelement.appendChild(s).style.color="white";
+				licelement.appendChild(s).style.backgroundColor="grey";
+				licelement.appendChild(s).style.display="block";
+				licelement.appendChild(s).style.position="fixed";
+				var x = (msg.screenX) + 20 + 'px', y = (msg.screenY) - 100 + 'px';
+				licelement.appendChild(s).style.top= y;
+				licelement.appendChild(s).style.left= x;
+				licelement.appendChild(s).style.zIndex="9999";
+			}else if(msg.type == "licensinfo" && msg.action == "remove"){
+				var element = document.getElementById("licensinfo_KTH");
+				element.parentNode.removeChild(element);
+			}
+		}, 50);
+	}
+}
+
 /*
 Funktion för att öppna beställningsformulär
 lang="en/" eller ""

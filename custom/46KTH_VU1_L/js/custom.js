@@ -63,9 +63,12 @@ console.log(kth_vid);
     });
 	
 	//Ändra de timeouts som ExLibris har satt
+	//Numera parameter i BO
+	//Starting from the Primo November 2017 Release, New UI users can define the Session Timeout per view via the Views Wizard General Views Attributes page
 	
 	app.config(['KeepaliveProvider', 'IdleProvider','$translateProvider', function(KeepaliveProvider, IdleProvider, $translateProvider) {
-		//KTHB Primo 60 minuter(eller ska vi ha nån timeout alls??)		
+		//KTHB Primo 60 minuter(eller ska vi ha nån timeout alls??)
+		//ingen timeout om man inte är inloggad låter mest logiskt.	
 		IdleProvider.idle(3600); //Idle är hur länge man kan vara inaktiv, efter x sekunder visas ExLibris "session upphör..."
 		IdleProvider.timeout(3600); //Styr hur lång tid användaren har på sig efter att ha blivit "idle" (att klicka på "håll mig inloggad")
 		KeepaliveProvider.interval(7200);
@@ -79,9 +82,6 @@ console.log(kth_vid);
 	app.component('prmExploreMainAfter', {
 			bindings: {parentCtrl: '<'},
 			controller: 'prmExploreMainAfterController',
-			/*template: 	'{{$ctrl.started}}<button type="button" class="btn btn-success" data-ng-hide="$ctrl.started" data-ng-click="$ctrl.start()">Start Demo</button>' +
-						'<button type="button" class="btn btn-danger" data-ng-show="$ctrl.started" data-ng-click="$ctrl.stop()">Stop Demo</button>',
-						*/
 			require: {
 				primoExploreCtrl: '^primoExplore'
 			}
@@ -617,7 +617,9 @@ console.log(kth_vid);
 					'<div style="flex: 1 1 10px;max-width: 10px"></div>' +
 					//Plusknappen
 					//'<div class="search-switch-buttons" layout-sm="column" layout-align-sm="start stretch" hide-xs ng-class="{\'facet-to-left-advanced-search\': $ctrl.facetToLeft}">' +
-						'<md-button style="min-height: 0px;min-width: 60px;line-height: 60px;background-color: rgb(255, 255, 255);color: #000;font-size: 46px;padding: 0;align-self: flex-end;font-weight: lighter;" aria-label="{{\'nui.aria.searchBar.advancedLink\' | translate}}" class="switch-to-advanced zero-margin button-with-icon" ng-if="!$ctrl.advancedSearch" ng-click="$ctrl.switchAdvancedSearch()">' +
+						//180822 inget plus på stora skärmar längre
+						//'<md-button style="min-height: 0px;min-width: 60px;line-height: 60px;background-color: rgb(255, 255, 255);color: #000;font-size: 46px;padding: 0;align-self: flex-end;font-weight: lighter;" aria-label="{{\'nui.aria.searchBar.advancedLink\' | translate}}" class="switch-to-advanced zero-margin button-with-icon" ng-if="!$ctrl.advancedSearch" ng-click="$ctrl.switchAdvancedSearch()">' +
+						'<md-button style="" aria-label="{{\'nui.aria.searchBar.advancedLink\' | translate}}" class="switch-to-advanced zero-margin button-with-icon" ng-if="!$ctrl.advancedSearch" ng-click="$ctrl.switchAdvancedSearch()">' +
 						//'<md-button aria-label="{{\'nui.aria.searchBar.advancedLink\' | translate}}" class="switch-to-advanced zero-margin button-with-icon" ng-if="!$ctrl.advancedSearch" ng-click="$ctrl.switchAdvancedSearch()">' +
 							'<span layout="row" layout-align="start center"><span translate="label.advanced_search"></span></span>' +
 							//tooltip (Primo BO Code Tables, Header/Footer Tiles)
@@ -625,8 +627,10 @@ console.log(kth_vid);
 								'<span translate="searchbar.tooltip.advanced_search"></span>' +
 							'</md-tooltip>' +
 						'</md-button>' +
+						//180822 inget plus på stora skärmar längre
 						//'<md-button class="switch-to-simple zero-margin button-with-icon" ng-if="$ctrl.advancedSearch" ng-click="$ctrl.switchAdvancedSearch()">' +
-						'<md-button style="max-height: 60px;min-height: 0px;min-width: 60px;line-height: 60px;background-color: rgb(255, 255, 255);color: #000;font-size: 46px;padding: 0;font-weight: lighter;" class="switch-to-simple zero-margin button-with-icon" ng-if="$ctrl.advancedSearch" ng-click="$ctrl.switchAdvancedSearch()">' +
+						//'<md-button style="max-height: 60px;min-height: 0px;min-width: 60px;line-height: 60px;background-color: rgb(255, 255, 255);color: #000;font-size: 46px;padding: 0;font-weight: lighter;" class="switch-to-simple zero-margin button-with-icon" ng-if="$ctrl.advancedSearch" ng-click="$ctrl.switchAdvancedSearch()">' +
+						'<md-button style="" class="switch-to-simple zero-margin button-with-icon" ng-if="$ctrl.advancedSearch" ng-click="$ctrl.switchAdvancedSearch()">' +
 							'<span layout="row" layout-align="start center"><span translate="label.simple_search"></span></span>' +
 						'</md-button>' +
 					//'</div>' +
@@ -974,30 +978,7 @@ console.log(kth_vid);
 		'</md-button>' +
 		'<prm-save-to-favorites-button-after parent-ctrl="$ctrl"></prm-save-to-favorites-button-after>'
 		);
-		/*
-		$templateCache.put('components/search/briefResult/briefResultContainer.html',
-		'<div ng-click="$ctrl.handleDetails($ctrl.item,$event, true)" role="listitem" class="list-item-primary-content result-item-primary-content" ng-class="::{\'has-checkbox\': $ctrl.isfavorites, \'new-result-item\' : ($ctrl.index && $ctrl.newMetalibItem())}" data-recordid="{{::$ctrl.recordId}}" id="SEARCH_RESULT_RECORDID_{{::$ctrl.recordId}}" layout="row">
-		<span class="list-item-count" ng-if="!$ctrl.isFullView">
-			<span>{{$ctrl.index}}</span>
-			<md-tooltip ng-if="::($ctrl.index && $ctrl.newMetalibItem())"><span translate="brief.New_Result"></span></md-tooltip>
-		</span>
-		<md-checkbox ng-if="::$ctrl.isfavorites" flex="5" aria-label="{{::(\'nui.aria.brief.select\' | translate)}}{{::$ctrl.index}}" ng-click="$event.stopPropagation()" ng-model="$ctrl.isChosen"></md-checkbox>
-		<div class="result-item-image" layout="column" ng-if="!$ctrl.mediaQueries.xs">
-			<div class="media-content-images">
-				<div class="media-thumbnail"><a tabindex="-1" ng-click="$event.preventDefault()" ng-href="{{::$ctrl.getDeepLinkPath()}}" class="a-tag-as-wrapper"><prm-search-result-thumbnail-container class="media-content-images" ng-class="::{\'dedup-images-holder\' : $ctrl.isMultipleVersions() && !$ctrl.isFavoriteState()}" [item]="$ctrl.item" [links]="$ctrl.links" [frbr]="::$ctrl.isMultipleVersions()" [is-frbr-generic]="::$ctrl.isFrbrGeneric()"></prm-search-result-thumbnail-container></a></div></div></div><div class="text-selector-spacer"></div><div class="result-item-text" layout="column" layout-fill flex><div class="media-content-type align-self-start"><span ng-if="::$ctrl.showItemType" translate="{{::$ctrl.getResourceTypeForDisplay()}}"></span><span ng-if="::($ctrl.isPc() && !$ctrl.isfavorites && $ctrl.isMultipleVersions() && !$ctrl.isFavoriteForDisplayFrbr)"><prm-search-result-frbr-line [result]="::$ctrl.item" [is-full-view]="::$ctrl.isFullView" [index]="::$ctrl.index"></prm-search-result-frbr-line></span></div><div ng-if="::(!$ctrl.isPc() && !$ctrl.isFrbrGeneric() && !$ctrl.isfavorites && $ctrl.isMultipleVersions() && !$ctrl.isFavoriteForDisplayFrbr)"><prm-search-result-frbr-line [result]="::$ctrl.item" [is-full-view]="::$ctrl.isFullView" [index]="::$ctrl.index"></prm-search-result-frbr-line></div>
-				<prm-brief-result class="result-item-details" [item]="$ctrl.item" [resource-type-for-display]="::$ctrl.getResourceTypeForDisplay()" [deep-link]="::$ctrl.getDeepLinkPath()" [is-full-view]="::$ctrl.isFullView" [is-collection-discovery-collection]="::$ctrl.isCollectionDiscoveryCollection" layout="column"></prm-brief-result>
-				<prm-snippet [record]="::$ctrl.item"></prm-snippet>
-				<prm-search-result-journal-indication-line [item]="::$ctrl.item"></prm-search-result-journal-indication-line>
-				<div class="peer-reviewed-mark" ng-if="::$ctrl.isPeerDocument"><prm-icon class="peer-reviewed-mark-icon" icon-type="{{$ctrl.actionsIcons.peerreviewed.type}}" svg-icon-set="{{$ctrl.actionsIcons.peerreviewed.iconSet}}" icon-definition="{{$ctrl.actionsIcons.peerreviewed.icon}}"></prm-icon><span translate="fulldisplay.constants.peer_reviewed_icon"><md-tooltip><span>{{\'fulldisplay.constants.peer_reviewed_tooltip\' | translate}}</span></md-tooltip></span></div>
-				<div class="search-result-availability-line-wrapper">
-					<prm-search-result-availability-line ng-if="($ctrl.delivery &&(!$ctrl.isGenericRecord() || $ctrl.isPc()))" tabindex="-1" [result]="::$ctrl.item" [is-full-view]="::$ctrl.isFullView" [is-overlay-full-view]="$ctrl.isOverlayFullView" [collection-discovery-data]="::$ctrl.collectionDiscoveryData" ng-click="$event.stopPropagation()" (open-full-display-with-getit1)="$ctrl.handleDetails($ctrl.item, $event, false);"></prm-search-result-availability-line>
-				</div>
-				<prm-search-result-frbr-line [result]="::$ctrl.item" [is-full-view]="::$ctrl.isFullView" [index]="::$ctrl.index" ng-if="::($ctrl.isFrbrGeneric() && !$ctrl.isfavorites && $ctrl.isMultipleVersions() && !$ctrl.isPc() && !$ctrl.isFavoriteForDisplayFrbr)"></prm-search-result-frbr-line>
-				<prm-favorites-record-labels [item]="::$ctrl.item" ng-if="::$ctrl.isfavorites"></prm-favorites-record-labels>
-				<form ng-if="$ctrl.displayCTOButton()" class="request-form" ng-cloak action="{{$ctrl.ctoUrl()}}" method="post" target="_blank"><input type="hidden" name="doc" id="doc" value="{{$ctrl.getItme()}}"/><md-button type="submit"><span>DISPLAY CTO</span></md-button></form></div></div><div ng-if="((!$ctrl.isGenericRecord() || $ctrl.isPc()) && $ctrl.showTimer)" class="result-item-actions" layout="row" ng-keydown="$ctrl.keyDownSupport($event)"><prm-citation-trails-indication-container ng-if="::($ctrl.isShowCitationTrails() && !$ctrl.isFullView)" [record]="::$ctrl.item"></prm-citation-trails-indication-container><md-button ng-repeat="action in ::$ctrl.upFrontActions" aria-label="{{::(\'nui.aria.action.nameTitle\' | translate: $ctrl.getNameTitleParams([\'name\',\'title\'],action))}}" ng-if="::(!$ctrl.isFullView)" class="md-icon-button custom-button prm-primary" data-custom-button="action" (click)="$ctrl.openTab($event, action)" hide-xs><md-tooltip md-delay="400"><span translate="{{::(\'fulldisplay.command.\'+$ctrl.getActionLabel(action))}}"></span></md-tooltip><prm-icon class="md-icon-button-custom" icon-type="{{::$ctrl.actionsIcons[$ctrl.getActionIconName(action)].type}}" svg-icon-set="{{::$ctrl.actionsIcons[$ctrl.getActionIconName(action)].iconSet}}" icon-definition="{{::$ctrl.actionsIcons[$ctrl.getActionIconName(action)].icon}}"></prm-icon></md-button>
-				<prm-save-to-favorites-button [item]="::$ctrl.item" [index]="::$ctrl.index" [is-favorites]="::$ctrl.isFavorites"></prm-save-to-favorites-button><md-button id="briefResultMoreOptionsButton" ng-if="::!$ctrl.isFullView" class="md-icon-button more-options-button" aria-label="{{::(\'nui.aria.moreActions\' | translate)}}" (click)="$ctrl.closeOpenTabs($event);$ctrl.toggleItemMenu($event);$event.stopPropagation();" hide-xs><md-tooltip md-delay="800" md-autohide="true"><span translate="eshelf.send_to.tooltip"></span></md-tooltip><prm-icon [icon-type]="::$ctrl.actionsIcons.moreActions.type" class="open-icon" [svg-icon-set]="::$ctrl.actionsIcons.moreActions.iconSet" [icon-definition]="::$ctrl.actionsIcons.moreActions.icon"></prm-icon><prm-icon [icon-type]="::$ctrl.actionsIcons.closeActions.type" class="close-icon" [svg-icon-set]="::$ctrl.actionsIcons.closeActions.iconSet" [icon-definition]="::$ctrl.actionsIcons.closeActions.icon"></prm-icon></md-button></div><div class="action-list-content" ng-style="{\'padding-top\': $ctrl.itemHeight}" ng-if="!$ctrl.isFullView" ng-keydown="$ctrl.keyDownSupport($event)"><md-content ng-if="$ctrl.isExpanded" ng-class="::{\'secondary-content-holder\': !$ctrl.isFullView}"><md-divider></md-divider>
-				<prm-action-list ng-if="$ctrl.isExpanded2 && !$ctrl.isGenericRecord() || $ctrl.isPc()" ng-class="{ \'visible\': $ctrl.isExpanded3 }" [display-all]="true" [display-close-icon]="false" [item]="::$ctrl.item" [(selected-action)]="$ctrl.selectedAction" (close-modal)="$ctrl.closeOpenTabs($event);$ctrl.toggleItemMenu($event);$event.stopPropagation();$ctrl.focusOnXButton()"></prm-action-list></md-content></div><prm-brief-result-container-after parent-ctrl="$ctrl"></prm-brief-result-container-after>');
-		*/
+		
 		/*************************************************************
 		prm-brief-result-container 
 		
@@ -1005,7 +986,7 @@ console.log(kth_vid);
 		//byt ut favoritikon till hjärta, visa actions till share
 		//Egna tillägg till actionmenyn
 		*************************************************************/
-		
+
 		$templateCache.put('components/search/briefResult/briefResultContainer.html',
 		//'<div ng-if="$ctrl.isPc()">' +
 		//lagt till selectable-text(se directive)
@@ -1239,24 +1220,31 @@ console.log(kth_vid);
 		
 		/****** prm-full-view-dialog-template ******/
 		//Här visas fulla posten i en md-dialog
+		
 		$templateCache.put('components/search/fullView/full-view-dialog-template.html', 
 		'<md-dialog flex-md="80" flex-lg="70" flex-xl="60" style="max-height: 80%;f1lex: 1 1 60%;m1ax-width: 60%;" id="kth_fulldetail" aria-label="List dialog">' +
 			'<md-toolbar class="_md _md-toolbar-transitions">' +
 				'<div class="md-toolbar-tools">' +
 					'<h2 flex class="md-truncate">{{$ctrl.item.pnx.display.title[0]}}</h2>' +
 					//'<span flex class="flex"></span>' +
+					//augustirelease 2018 gå till föregående post
+					'<md-button aria-label="{{::(\'nui.aria.fulldisplay.goToPreviousButton\' | translate)}}" class="md-icon-button md-button md-ink-ripple close-button full-view-navigation" ng-if="$ctrl.mediaQueries.gtsm && !$ctrl.isFirstRecord()" ng-click="$ctrl.getPreviousRecord()" style=""><md-tooltip md-direction="top"><span translate="nui.results.previous.tooltip"></span></md-tooltip><prm-icon icon-type="svg" svg-icon-set="primo-ui" icon-definition="chevron-left"></prm-icon></md-button>' +
 					'<md-button class="md-icon-button" (click)="$ctrl.handleHideDetails()" aria-label="{{\'nui.aria.fulldisplay.closeButton\' | translate}}">' +
 						'<prm-icon icon-type="svg" svg-icon-set="primo-ui" icon-definition="close">'+ 
 							'<md-icon md-svg-icon="primo-ui:close" aria-label="icon-close" class="md-primoExplore-theme" aria-hidden="true">' +
 							'</md-icon>' +
 						'</prm-icon>' +
 					'</md-button>' +
+					//augustirelease 2018 gå till nästa post
+					'<md-button aria-label="{{::(\'nui.aria.fulldisplay.goToNextButton\' | translate)}}" class="md-icon-button md-button md-ink-ripple close-button full-view-navigation" ng-if="$ctrl.mediaQueries.gtsm && !$ctrl.isLastRecordByState() " ng-click="$ctrl.getNextRecord()" style=""><md-tooltip md-direction="{{$ctrl.getPageWidgetDirection()}}"><span translate="nui.results.next.tooltip"></span></md-tooltip><prm-icon icon-type="svg" svg-icon-set="primo-ui" icon-definition="chevron-right"></prm-icon></md-button>' +
 				'</div>' +
 			'</md-toolbar>' +
 			'<md-dialog-content>'+
 				'<div class="md-dialog-content">' + 
-					'<prm-full-view flex="100" ng-if="$ctrl.dialogOpened.val" [load-full-view-additional-services]="$ctrl.loadFullViewAdditionalServices.val" [is-overlay-full-view]="true" [isfavorites]="$ctrl.isfavorites" [item]="::$ctrl.item" [focus-id]="$ctrl.focusId" [originator]="$ctrl.originator" id="fullView" tabindex="-1" role="contentinfo" ng-class="{\'padding-top-medium\':$ctrl.mediaQueries.xs}">' +
-					'</prm-full-view>' + 
+					//'<prm-full-view flex="100" ng-if="$ctrl.dialogOpened.val" [load-full-view-additional-services]="$ctrl.loadFullViewAdditionalServices.val" [is-overlay-full-view]="true" [isfavorites]="$ctrl.isfavorites" [item]="::$ctrl.item" [focus-id]="$ctrl.focusId" [originator]="$ctrl.originator" id="fullView" tabindex="-1" role="contentinfo" ng-class="{\'padding-top-medium\':$ctrl.mediaQueries.xs}">' +
+					//'</prm-full-view>' +
+					//augustirelease 2018 
+					'<prm-full-view flex="100" ng-repeat="item in $ctrl.currentStateResults()" ng-if="$ctrl.dialogOpened.val && $index === $ctrl.currentResultIndex()" [load-full-view-additional-services]="$ctrl.loadFullViewAdditionalServices.val" [is-overlay-full-view]="true" [isfavorites]="$ctrl.isfavorites" [item]="::item" [focus-id]="$ctrl.getFocusId()" [originator]="$ctrl.originator" id="fullView" tabindex="-1" role="contentinfo" [is-first-item]="$ctrl.isFirstRecord()" [is-last-item]="$ctrl.isLastRecordByState()" ng-class="{\'padding-top-medium\':$ctrl.mediaQueries.xs}"></prm-full-view>' +
 				'</div>' +
 			'</md-dialog-content>' +
 		'</md-dialog>');
@@ -1754,11 +1742,15 @@ console.log(kth_vid);
 	app.component('prmLogoAfter', {
 			bindings: {parentCtrl: '<'},
 			controller: 'prmLogoAfterController',
-			template: '<div><a href="{{$ctrl.parentCtrl.kthb_link}}"><span class="kth-sitenameheader" translate="nui.header.sitename"></span></a></div>'
+			template: 
+				'<div>' +
+					'<a href="{{$ctrl.parentCtrl.kthb_link}}"><span class="kth-sitenameheader" translate="nui.header.sitename"></span><span ng-if="$ctrl.kth_vid==\'46KTH_VU1_B\'">BETA!!!</span></a>' +
+				'</div>'
 	});
 	
 	app.controller('prmLogoAfterController',function ($scope, $translate,$timeout) { 
 		var vm = this;
+		vm.kth_vid = kth_vid;
 		//Se till att länken anpassas till valt språk
 		//engelska default?
 		
@@ -1864,6 +1856,16 @@ console.log(kth_vid);
         var vm = this;
 		vm.parentCtrl.requestlogin = false;
 		var data = vm.parentCtrl;
+
+
+
+
+
+
+
+
+
+
 		var session = vm.parentCtrl.primolyticsService.userSessionManagerService;	
 		//är det en loginruta för alma-p så gör om den till ickegul etc
 		if (typeof $scope.$parent.$parent.$parent.$ctrl != 'undefined'){
@@ -2541,6 +2543,25 @@ console.log(kth_vid);
 	
 	app.controller('FullViewAfterKthController', function (angularLoad, $http) {
 		var vm = this;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     });
 
 	/********************************************************
@@ -2579,7 +2600,27 @@ console.log(kth_vid);
 		kth_currenturl.addData($location.absUrl());
 		$rootScope.$broadcast('urldataAdded', $location.absUrl());
 
-    });
+	});
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
 	/**********************************************************
 	
@@ -2616,7 +2657,8 @@ console.log(kth_vid);
 	app.component('prmFullViewServiceContainerAfter', {
 			bindings: {parentCtrl: '<'},
 			controller: 'prmFullViewServiceContainerAfterController',
-			template: '<div ng-if="$ctrl.parentCtrl.service.title==\'nui.getit.alma_tab1_nofull\' || $ctrl.parentCtrl.service.title==\'nui.getit.alma_tab1_nofulltextlinktorsrc\'">' +
+			//visa endast på alma-service!
+			template: '<div ng-if="$ctrl.parentCtrl.service.title==\'nui.getit.alma_tab1_nofull\' || $ctrl.parentCtrl.service.title==\'nui.getit.alma_tab1_nofulltextlinktorsrc\' || $ctrl.parentCtrl.service.title==\'nui.getit.almaviewit_services\'">' +
 						'<div class="layout-full-width" ng-if="$ctrl.showOA">' +
 							'<div layout="column" layout-align="">' +
 								//TODO in i code table i Primo BO(översättning)
@@ -2638,21 +2680,22 @@ console.log(kth_vid);
 								'</div>' +
 							'</div>' +
 						'</div>' +
-					  '</div>'
+					'</div>'
 	});
 	
 	app.controller('prmFullViewServiceContainerAfterController',function ($scope, $http) {
 		var vm = this;
 		vm.showOA = false;
-
+		console.log("prmFullViewServiceContainerAfterController");
+		console.log(vm.parentCtrl);
 		//Brief eller full view?
 		//Bevaka (watch) eftersom värdet inte alltid hunnit sättas.
 		if (typeof(vm.parentCtrl.result) != "undefined") {
 			$scope.$watch(function() { return vm.parentCtrl.result.delivery; }, function(delivery) {
 				if (typeof(delivery) != "undefined") {
 					if (typeof(vm.parentCtrl.result.pnx.addata.doi) == "undefined") {
-					} else { //visa bara för de som inte har full text
-						if (vm.parentCtrl.result.delivery.displayedAvailability == "no_fulltext") {
+					} else { //visa bara för de som inte har full text /
+						if (vm.parentCtrl.result.delivery.displayedAvailability == "no_fulltext" ) {
 							vm.doi = vm.parentCtrl.result.pnx.addata.doi[0] || '';
 						}
 					}
@@ -2667,7 +2710,7 @@ console.log(kth_vid);
 				if (typeof(delivery) != "undefined") {
 					if (typeof(vm.parentCtrl.item.pnx.addata.doi) == "undefined") {
 					} else {
-						if (vm.parentCtrl.item.delivery.displayedAvailability == "no_fulltext") {
+						if (vm.parentCtrl.item.delivery.displayedAvailability == "no_fulltext" ) {
 							vm.doi = vm.parentCtrl.item.pnx.addata.doi[0] || '';
 						}
 					}
@@ -2784,6 +2827,8 @@ console.log(kth_vid);
 			);
 		});
 	}]);
+
+	
 	
 	/*******************
 	
@@ -2800,3 +2845,48 @@ console.log(kth_vid);
 	ga('send', 'pageview');
 	
 })();
+
+/****************************
+	 
+Övriga funktioner 
+
+****************************/
+
+/****************************** 
+
+Skapa en lyssnare för message från frames på sidan.
+Använd timeout för att fungera med primos egen.
+
+******************************/
+setTimeout(function(){
+	window.addEventListener("message", receiveMessagefromalma, false);
+}, 2000);
+
+function receiveMessagefromalma(event)
+{
+	if (event.origin == "https://eu01.alma.exlibrisgroup.com") {
+		setTimeout(function(){
+			msg = event.data;
+			if(msg.type == "licensinfo" && msg.action == "show"){
+				//skapa ett licenselement under "primo-explore" och sätt properties för layout etc
+				var s = document.createElement('div');
+				s.id = "licensinfo_KTH";
+				licelement = document.querySelector("primo-explore");
+				licelement.appendChild(s).innerHTML=msg.html;
+				licelement.appendChild(s).style.padding="10px";
+				licelement.appendChild(s).style.borderRadius="10px";
+				licelement.appendChild(s).style.color="white";
+				licelement.appendChild(s).style.backgroundColor="grey";
+				licelement.appendChild(s).style.display="block";
+				licelement.appendChild(s).style.position="fixed";
+				var x = (msg.screenX) + 20 + 'px', y = (msg.screenY) - 100 + 'px';
+				licelement.appendChild(s).style.top= y;
+				licelement.appendChild(s).style.left= x;
+				licelement.appendChild(s).style.zIndex="9999";
+			}else if(msg.type == "licensinfo" && msg.action == "remove"){
+				var element = document.getElementById("licensinfo_KTH");
+				element.parentNode.removeChild(element);
+			}
+		}, 50);
+	}
+}

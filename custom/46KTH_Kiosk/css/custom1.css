@@ -263,10 +263,12 @@ prm-spinner .loader .diamond:nth-child(2), prm-spinner .loader .diamond:nth-chil
  
  ******************/
 
- /* ta bort ex libris alert?? */
-prm-search .alert-bar {
-	/*display:none;*/
+/* ta bort ex libris alert?? */
+/*
+ prm-search .alert-bar {
+	display:none;
 }
+*/
 
 .bar.alert-bar {
 	background-color: #fff8c4; /*ex libris gul*/
@@ -712,9 +714,11 @@ prm-search-bar .search-wrapper>div:first-of-type {
 		border-radius: 5px;
 	}
 	
+	/*
 	prm-search-bar {
-		/*padding: 1em !important;*/
+		padding: 1em !important;
 	}
+	*/
 	
 	/* ordningen på sökrutan, så den hamnar före förstoringsglaset även på små skärmar*/
 	prm-journals-search-bar .search-input, prm-search-bar .search-input {
@@ -870,9 +874,11 @@ prm-search-bar .search-switch-buttons {
 		display: none !important;
 	}	
 	
+	/*
 	prm-search-bar .search-switch-buttons .md-button.switch-to-advanced, prm-search-bar .search-switch-buttons .md-button.switch-to-simple {
-		/*min-width: 24px;*/
+		min-width: 24px;
 	}
+	*/
 	
 	/* stängkrysset*/
 	prm-search-bar .advanced-search-wrapper .md-button.switch-to-simple {
@@ -1278,9 +1284,12 @@ prm-search-result-sort-by ._md-select-value ._md-select-icon {
     color: #e08303;
 }
 
+/*
 #sidebar-trigger span {
-   /*color: #e08303;*/
+	color: #e08303;
 }
+*/
+
 /*apply filterknapp*/
 .multiselect-submit .multiselect-submit-inner .md-button.md-primary, .prm-positive-bg, .multiselect-submit .multiselect-submit-inner .md-button.md-primary:focus, .multiselect-submit .multiselect-submit-inner .md-button.md-primary:hover {
     background-color: #4aa8ea;
@@ -1577,6 +1586,7 @@ prm-full-view-after {
 	.__xs .full-view-section, .full-view-section {
 		padding: 1em 0em;
 	}
+	
 	prm-full-view-after {
 		padding: 1em;
 		display: flex;
@@ -1814,9 +1824,11 @@ prm-account>md-content>div:nth-of-type(3) {
 }
 
 /* visa inte patron group, 2018-02-20 visa igen då vi uppdaterat användargrupperna*/
+/*
 span[translate="nui.details.patronstatus.group"] {
-	/*display: none;*/
+	display: none;
 }
+*/
 
 /* Dölj listan med utskick */
 prm-personal-info md-card-content>div:nth-of-type(3) {

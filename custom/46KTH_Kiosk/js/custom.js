@@ -69,9 +69,13 @@ Kioskanpassningar inlagda med "//Kiosk"
     });
 	
 	//Ändra de timeouts som ExLibris har satt
+	//Numera parameter i BO
+	//Starting from the Primo November 2017 Release, New UI users can define the Session Timeout per view via the Views Wizard General Views Attributes page
+
 	//Kiosktimeout via firefox kioskvy(mkiosk)
 	app.config(['KeepaliveProvider', 'IdleProvider','$translateProvider', function(KeepaliveProvider, IdleProvider, $translateProvider) {
 		//Kiosk 180 sekunder
+
 		IdleProvider.idle(180); //Idle är hur länge man kan vara inaktiv, efter x sekunder visas ExLibris "session upphör..."
 		IdleProvider.timeout(0); //Styr hur lång tid användaren har på sig efter att ha blivit "idle" (att klicka på "håll mig inloggad") 0 för att disabla!
 		KeepaliveProvider.interval(360);
@@ -1398,8 +1402,10 @@ Kioskanpassningar inlagda med "//Kiosk"
 			'</md-toolbar>' +
 			'<md-dialog-content>'+
 				'<div class="md-dialog-content">' + 
-					'<prm-full-view flex="100" ng-if="$ctrl.dialogOpened.val" [load-full-view-additional-services]="$ctrl.loadFullViewAdditionalServices.val" [is-overlay-full-view]="true" [isfavorites]="$ctrl.isfavorites" [item]="::$ctrl.item" [focus-id]="$ctrl.focusId" [originator]="$ctrl.originator" id="fullView" tabindex="-1" role="contentinfo" ng-class="{\'padding-top-medium\':$ctrl.mediaQueries.xs}">' +
-					'</prm-full-view>' + 
+					//'<prm-full-view flex="100" ng-if="$ctrl.dialogOpened.val" [load-full-view-additional-services]="$ctrl.loadFullViewAdditionalServices.val" [is-overlay-full-view]="true" [isfavorites]="$ctrl.isfavorites" [item]="::$ctrl.item" [focus-id]="$ctrl.focusId" [originator]="$ctrl.originator" id="fullView" tabindex="-1" role="contentinfo" ng-class="{\'padding-top-medium\':$ctrl.mediaQueries.xs}">' +
+					//'</prm-full-view>' + 
+					//augustirelease 2018 
+					'<prm-full-view flex="100" ng-repeat="item in $ctrl.currentStateResults()" ng-if="$ctrl.dialogOpened.val && $index === $ctrl.currentResultIndex()" [load-full-view-additional-services]="$ctrl.loadFullViewAdditionalServices.val" [is-overlay-full-view]="true" [isfavorites]="$ctrl.isfavorites" [item]="::item" [focus-id]="$ctrl.getFocusId()" [originator]="$ctrl.originator" id="fullView" tabindex="-1" role="contentinfo" [is-first-item]="$ctrl.isFirstRecord()" [is-last-item]="$ctrl.isLastRecordByState()" ng-class="{\'padding-top-medium\':$ctrl.mediaQueries.xs}"></prm-full-view>' +
 				'</div>' +
 			'</md-dialog-content>' +
 		'</md-dialog>');
@@ -2997,15 +3003,16 @@ Kioskanpassningar inlagda med "//Kiosk"
 		}
 		
 		vm.showOA = false;
-		
 		//Brief eller full view?
 		//Bevaka (watch) eftersom värdet inte alltid hunnit sättas.
 		if (typeof(vm.parentCtrl.result) != "undefined") {
 			$scope.$watch(function() { return vm.parentCtrl.result.delivery; }, function(delivery) {
 				if (typeof(delivery) != "undefined") {
 					if (typeof(vm.parentCtrl.result.pnx.addata.doi) == "undefined") {
-					} else { //visa bara för de som inte har full text
-						if (vm.parentCtrl.result.delivery.displayedAvailability == "no_fulltext") {
+					} else { //visa bara för de som inte har full text /
+						//viewit_NFT – View It services are available, but there is no full text.
+						//viewit_getit_NFT – View It and Get It services are available, but there is no full text.
+						if (vm.parentCtrl.result.delivery.displayedAvailability == "no_fulltext" || vm.parentCtrl.result.delivery.displayedAvailability == "viewit_NFT" || vm.parentCtrl.result.delivery.displayedAvailability == "viewit_getit_NFT" ) {
 							vm.doi = vm.parentCtrl.result.pnx.addata.doi[0] || '';
 						}
 					}
@@ -3020,7 +3027,7 @@ Kioskanpassningar inlagda med "//Kiosk"
 				if (typeof(delivery) != "undefined") {
 					if (typeof(vm.parentCtrl.item.pnx.addata.doi) == "undefined") {
 					} else {
-						if (vm.parentCtrl.item.delivery.displayedAvailability == "no_fulltext") {
+						if (vm.parentCtrl.item.delivery.displayedAvailability == "no_fulltext" || vm.parentCtrl.item.delivery.displayedAvailability == "viewit_NFT" || vm.parentCtrl.item.delivery.displayedAvailability == "viewit_getit_NFT" ) {
 							vm.doi = vm.parentCtrl.item.pnx.addata.doi[0] || '';
 						}
 					}
