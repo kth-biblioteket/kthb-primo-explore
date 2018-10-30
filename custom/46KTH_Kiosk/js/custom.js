@@ -756,7 +756,9 @@ Kioskanpassningar inlagda med "//Kiosk"
 					'<div style="flex: 1 1 10px;max-width: 10px"></div>' +
 					//Plusknappen
 					//'<div class="search-switch-buttons" layout-sm="column" layout-align-sm="start stretch" hide-xs ng-class="{\'facet-to-left-advanced-search\': $ctrl.facetToLeft}">' +
-						'<md-button style="min-height: 0px;min-width: 60px;line-height: 60px;background-color: rgb(255, 255, 255);color: #000;font-size: 46px;padding: 0;align-self: flex-end;font-weight: lighter;" aria-label="{{\'nui.aria.searchBar.advancedLink\' | translate}}" class="switch-to-advanced zero-margin button-with-icon" ng-if="!$ctrl.advancedSearch" ng-click="$ctrl.switchAdvancedSearch()">' +
+						//180822 inget plus på stora skärmar längre
+						//'<md-button style="min-height: 0px;min-width: 60px;line-height: 60px;background-color: rgb(255, 255, 255);color: #000;font-size: 46px;padding: 0;align-self: flex-end;font-weight: lighter;" aria-label="{{\'nui.aria.searchBar.advancedLink\' | translate}}" class="switch-to-advanced zero-margin button-with-icon" ng-if="!$ctrl.advancedSearch" ng-click="$ctrl.switchAdvancedSearch()">' +
+						'<md-button style="" aria-label="{{\'nui.aria.searchBar.advancedLink\' | translate}}" class="switch-to-advanced zero-margin button-with-icon" ng-if="!$ctrl.advancedSearch" ng-click="$ctrl.switchAdvancedSearch()">' +
 						//'<md-button aria-label="{{\'nui.aria.searchBar.advancedLink\' | translate}}" class="switch-to-advanced zero-margin button-with-icon" ng-if="!$ctrl.advancedSearch" ng-click="$ctrl.switchAdvancedSearch()">' +
 							'<span layout="row" layout-align="start center"><span translate="label.advanced_search"></span></span>' +
 							//tooltip (Primo BO Code Tables, Header/Footer Tiles)
@@ -764,8 +766,10 @@ Kioskanpassningar inlagda med "//Kiosk"
 								'<span translate="searchbar.tooltip.advanced_search"></span>' +
 							'</md-tooltip>' +
 						'</md-button>' +
+						//180822 inget plus på stora skärmar längre
 						//'<md-button class="switch-to-simple zero-margin button-with-icon" ng-if="$ctrl.advancedSearch" ng-click="$ctrl.switchAdvancedSearch()">' +
-						'<md-button style="max-height: 60px;min-height: 0px;min-width: 60px;line-height: 60px;background-color: rgb(255, 255, 255);color: #000;font-size: 46px;padding: 0;font-weight: lighter;" class="switch-to-simple zero-margin button-with-icon" ng-if="$ctrl.advancedSearch" ng-click="$ctrl.switchAdvancedSearch()">' +
+						//'<md-button style="max-height: 60px;min-height: 0px;min-width: 60px;line-height: 60px;background-color: rgb(255, 255, 255);color: #000;font-size: 46px;padding: 0;font-weight: lighter;" class="switch-to-simple zero-margin button-with-icon" ng-if="$ctrl.advancedSearch" ng-click="$ctrl.switchAdvancedSearch()">' +
+						'<md-button style="" class="switch-to-simple zero-margin button-with-icon" ng-if="$ctrl.advancedSearch" ng-click="$ctrl.switchAdvancedSearch()">' +
 							'<span layout="row" layout-align="start center"><span translate="label.simple_search"></span></span>' +
 						'</md-button>' +
 					//'</div>' +
@@ -1386,18 +1390,23 @@ Kioskanpassningar inlagda med "//Kiosk"
 		
 		/****** prm-full-view-dialog-template ******/
 		//Här visas fulla posten i en md-dialog
+		
 		$templateCache.put('components/search/fullView/full-view-dialog-template.html', 
 		'<md-dialog flex-md="80" flex-lg="70" flex-xl="60" style="max-height: 80%;f1lex: 1 1 60%;m1ax-width: 60%;" id="kth_fulldetail" aria-label="List dialog">' +
 			'<md-toolbar class="_md _md-toolbar-transitions">' +
 				'<div class="md-toolbar-tools">' +
 					'<h2 flex class="md-truncate">{{$ctrl.item.pnx.display.title[0]}}</h2>' +
 					//'<span flex class="flex"></span>' +
-					'<md-button class="md-icon-button" (click)="$ctrl.handleHideDetails()" aria-label="{{\'nui.aria.fulldisplay.closeButton\' | translate}}">' +
+					//augustirelease 2018 gå till föregående post
+					'<md-button aria-label="{{::(\'nui.aria.fulldisplay.goToPreviousButton\' | translate)}}" class="md-icon-button md-button md-ink-ripple close-button full-view-navigation" ng-if="$ctrl.mediaQueries.gtsm && !$ctrl.isFirstRecord()" ng-click="$ctrl.getPreviousRecord()" style=""><md-tooltip md-direction="top"><span translate="nui.results.previous.tooltip"></span></md-tooltip><prm-icon icon-type="svg" svg-icon-set="primo-ui" icon-definition="chevron-left"></prm-icon></md-button>' +
+					'<md-button class="md-icon-button" (click)="$ctrl.$mdDialog.hide();" aria-label="{{\'nui.aria.fulldisplay.closeButton\' | translate}}">' +
 						'<prm-icon icon-type="svg" svg-icon-set="primo-ui" icon-definition="close">'+ 
 							'<md-icon md-svg-icon="primo-ui:close" aria-label="icon-close" class="md-primoExplore-theme" aria-hidden="true">' +
 							'</md-icon>' +
 						'</prm-icon>' +
 					'</md-button>' +
+					//augustirelease 2018 gå till nästa post
+					'<md-button aria-label="{{::(\'nui.aria.fulldisplay.goToNextButton\' | translate)}}" class="md-icon-button md-button md-ink-ripple close-button full-view-navigation" ng-if="$ctrl.mediaQueries.gtsm && !$ctrl.isLastRecordByState() " ng-click="$ctrl.getNextRecord()" style=""><md-tooltip md-direction="{{$ctrl.getPageWidgetDirection()}}"><span translate="nui.results.next.tooltip"></span></md-tooltip><prm-icon icon-type="svg" svg-icon-set="primo-ui" icon-definition="chevron-right"></prm-icon></md-button>' +
 				'</div>' +
 			'</md-toolbar>' +
 			'<md-dialog-content>'+
@@ -1903,14 +1912,14 @@ Kioskanpassningar inlagda med "//Kiosk"
 		
 		//Ta bort de vi inte vill ha
 		for(var i = window.appConfig['mapping-tables']['Citation styles'].length - 1; i >= 0; i--) {
-			if(window.appConfig['mapping-tables']['Citation styles'][i].target === "apa") {
-			   window.appConfig['mapping-tables']['Citation styles'].splice(i, 1);
-			}
+			//if(window.appConfig['mapping-tables']['Citation styles'][i].target === "apa") {
+			  // window.appConfig['mapping-tables']['Citation styles'].splice(i, 1);
+			//}
 		}
 		//Lägg till de vi saknar
 		window.appConfig['mapping-tables']['Citation styles'].push({ source1: '10', target: 'vancouver' });
 		window.appConfig['mapping-tables']['Citation styles'].push({ source1: '11', target: 'ieee' });
-		window.appConfig['mapping-tables']['Citation styles'].push({ source1: '12', target: 'oscola' });
+		//window.appConfig['mapping-tables']['Citation styles'].push({ source1: '12', target: 'oscola' });
 	});
 	
 
@@ -2893,7 +2902,27 @@ Kioskanpassningar inlagda med "//Kiosk"
 		kth_currenturl.addData($location.absUrl());
 		$rootScope.$broadcast('urldataAdded', $location.absUrl());
 
-    });
+	});
+	
+	/*****************************************************************
+	
+	Service för oadoi
+	
+	*****************************************************************/
+	app.factory('kth_oadoi', function ($http) {
+
+		var data = {
+		};
+		
+		//Exempelsökning: "postprandial oxytocin"
+		data.getoaDOI = function(doi) {
+			var method = 'GET';
+			var url = 'https://api.oadoi.org/v2/' + doi + '?email=ask-kthb@kth.se';
+			return $http({method: method, url: url, headers: {"X-From-ExL-API-Gateway": undefined},});
+		};
+
+		return data;
+	});
 	
 	/*****************************************
 	
@@ -2931,7 +2960,8 @@ Kioskanpassningar inlagda med "//Kiosk"
 	app.component('prmFullViewServiceContainerAfter', {
 			bindings: {parentCtrl: '<'},
 			controller: 'prmFullViewServiceContainerAfterController',
-			template: '<div ng-if="$ctrl.parentCtrl.service.title==\'nui.getit.alma_tab1_nofull\' || $ctrl.parentCtrl.service.title==\'nui.getit.alma_tab1_nofulltextlinktorsrc\'">' +
+			//visa endast på alma-service!
+			template: '<div ng-if="$ctrl.parentCtrl.service.title.indexOf(\'alma\')> -1">' +
 						'<div class="layout-full-width" ng-if="$ctrl.showOA">' +
 							'<div layout="column" layout-align="">' +
 								//TODO in i code table i Primo BO(översättning)
@@ -2960,7 +2990,7 @@ Kioskanpassningar inlagda med "//Kiosk"
 	});
 
 	
-	app.controller('prmFullViewServiceContainerAfterController', function ($scope,$mdDialog, $http) {
+	app.controller('prmFullViewServiceContainerAfterController', function ($scope,$mdDialog, $http, kth_oadoi) {
         var vm = this;
 		vm.parentCtrl.noaccess = noaccess;
 				
@@ -3003,13 +3033,13 @@ Kioskanpassningar inlagda med "//Kiosk"
 		}
 		
 		vm.showOA = false;
-		//Brief eller full view?
 		//Bevaka (watch) eftersom värdet inte alltid hunnit sättas.
+		//träfflista
 		if (typeof(vm.parentCtrl.result) != "undefined") {
 			$scope.$watch(function() { return vm.parentCtrl.result.delivery; }, function(delivery) {
 				if (typeof(delivery) != "undefined") {
 					if (typeof(vm.parentCtrl.result.pnx.addata.doi) == "undefined") {
-					} else { //visa bara för de som inte har full text /
+					} else { //visa bara för de som inte har full text(unpaywall önskar max 100 000 uppslag per dag)
 						//viewit_NFT – View It services are available, but there is no full text.
 						//viewit_getit_NFT – View It and Get It services are available, but there is no full text.
 						if (vm.parentCtrl.result.delivery.displayedAvailability == "no_fulltext" || vm.parentCtrl.result.delivery.displayedAvailability == "viewit_NFT" || vm.parentCtrl.result.delivery.displayedAvailability == "viewit_getit_NFT" ) {
@@ -3017,50 +3047,50 @@ Kioskanpassningar inlagda med "//Kiosk"
 						}
 					}
 					if(vm.doi) {	
-						getoaDOI(vm.doi);
+						kth_oadoi.getoaDOI(vm.doi).then(function(data, status) {
+							if (data.data.best_oa_location) {
+								vm.best_oa_location_url = data.data.best_oa_location.url;
+								vm.best_oa_location_evidence = data.data.best_oa_location.evidence;
+								vm.showOA = true;
+							} else {
+								vm.doi = false;
+							}
+						});
 					}
 				}
 			});
 		}
+		//fullpost/servicesida
 		if (typeof(vm.parentCtrl.item) != "undefined") {
-			$scope.$watch(function() { return vm.parentCtrl.item.delivery; }, function(delivery) {
-				if (typeof(delivery) != "undefined") {
-					if (typeof(vm.parentCtrl.item.pnx.addata.doi) == "undefined") {
-					} else {
-						if (vm.parentCtrl.item.delivery.displayedAvailability == "no_fulltext" || vm.parentCtrl.item.delivery.displayedAvailability == "viewit_NFT" || vm.parentCtrl.item.delivery.displayedAvailability == "viewit_getit_NFT" ) {
-							vm.doi = vm.parentCtrl.item.pnx.addata.doi[0] || '';
+			//Bara för "almaframen"
+			$scope.$watch(function() { return vm.parentCtrl.service; }, function(service) {
+				if(service.title.indexOf('alma')>-1 && vm.parentCtrl.service.scrollId.indexOf('getit_link2')<0) {
+					$scope.$watch(function() { return vm.parentCtrl.item.delivery; }, function(delivery) {
+						if (typeof(delivery) != "undefined") {
+							if (typeof(vm.parentCtrl.item.pnx.addata.doi) == "undefined") {
+							} else {
+								//Visa även för de som har fulltext
+								//if (vm.parentCtrl.item.delivery.displayedAvailability == "no_fulltext" || vm.parentCtrl.item.delivery.displayedAvailability == "viewit_NFT" || vm.parentCtrl.item.delivery.displayedAvailability == "viewit_getit_NFT" ) {
+									vm.doi = vm.parentCtrl.item.pnx.addata.doi[0] || '';
+								//}
+							}
+							if(vm.doi) {
+								console.log("getoaDOI");
+								kth_oadoi.getoaDOI(vm.doi).then(function(data, status) {
+									if (data.data.best_oa_location) {
+										vm.best_oa_location_url = data.data.best_oa_location.url;
+										vm.best_oa_location_evidence = data.data.best_oa_location.evidence;
+										vm.showOA = true;
+									} else {
+										vm.doi = false;
+									}
+								});	
+							}
 						}
-					}
-					if(vm.doi) {	
-						getoaDOI(vm.doi);
-					}
+					});
 				}
 			});
-		}
-		
-		//Exempelsökning: "postprandial oxytocin"
-		function getoaDOI(doi) {
-			vm.parentCtrl.oaDOIisLoading = true;
-			vm.oaDOIdata = "";
-			var method = 'GET';
-			var url = 'https://api.oadoi.org/v2/' + doi + '?email=ask-kthb@kth.se';
-			$http({method: method, url: url, headers: {"X-From-ExL-API-Gateway": undefined},}).
-				then(function(response) {
-					var status = response.status;
-					var data = response.data;
-					vm.best_oa_location = response.data.best_oa_location;
-					if (vm.best_oa_location) {
-						vm.best_oa_location_url = response.data.best_oa_location.url;
-						vm.best_oa_location_evidence = response.data.best_oa_location.evidence;
-						vm.showOA = true;
-					} else {
-						vm.doi = false;
-					}
-				}, function(response) {
-					vm.doi = false;
-				});
-		}
-			
+		}	
 	});
 	
 	/**********************************************************
@@ -3160,3 +3190,48 @@ Kioskanpassningar inlagda med "//Kiosk"
 	ga('send', 'pageview');
 	
 })();
+
+/****************************
+	 
+Övriga funktioner 
+
+****************************/
+
+/****************************** 
+
+Skapa en lyssnare för message från frames på sidan.
+Använd timeout för att fungera med primos egen.
+
+******************************/
+setTimeout(function(){
+	window.addEventListener("message", receiveMessagefromalma, false);
+}, 2000);
+
+function receiveMessagefromalma(event)
+{
+	if (event.origin == "https://eu01.alma.exlibrisgroup.com") {
+		setTimeout(function(){
+			msg = event.data;
+			if(msg.type == "licensinfo" && msg.action == "show"){
+				//skapa ett licenselement under "primo-explore" och sätt properties för layout etc
+				var s = document.createElement('div');
+				s.id = "licensinfo_KTH";
+				licelement = document.querySelector("primo-explore");
+				licelement.appendChild(s).innerHTML=msg.html;
+				licelement.appendChild(s).style.padding="10px";
+				licelement.appendChild(s).style.borderRadius="10px";
+				licelement.appendChild(s).style.color="white";
+				licelement.appendChild(s).style.backgroundColor="grey";
+				licelement.appendChild(s).style.display="block";
+				licelement.appendChild(s).style.position="fixed";
+				var x = (msg.screenX) - window.screenX + 20 + 'px', y = (msg.screenY) - window.screenY - 100 + 'px';
+				licelement.appendChild(s).style.top= y;
+				licelement.appendChild(s).style.left= x;
+				licelement.appendChild(s).style.zIndex="9999";
+			}else if(msg.type == "licensinfo" && msg.action == "remove"){
+				var element = document.getElementById("licensinfo_KTH");
+				element.parentNode.removeChild(element);
+			}
+		}, 50);
+	}
+}

@@ -1,4 +1,4 @@
-var kth_vid = "46KTH_VU1_B"
+var kth_vid = "46KTH_VU1_L"
 console.log(kth_vid);
 
 (function () {
@@ -68,7 +68,7 @@ console.log(kth_vid);
 	
 	app.config(['KeepaliveProvider', 'IdleProvider','$translateProvider', function(KeepaliveProvider, IdleProvider, $translateProvider) {
 		//KTHB Primo 60 minuter(eller ska vi ha nån timeout alls??)
-		//ingen timeout om man inte är inloggad låter mest logiskt.
+		//ingen timeout om man inte är inloggad låter mest logiskt.	
 		IdleProvider.idle(3600); //Idle är hur länge man kan vara inaktiv, efter x sekunder visas ExLibris "session upphör..."
 		IdleProvider.timeout(3600); //Styr hur lång tid användaren har på sig efter att ha blivit "idle" (att klicka på "håll mig inloggad")
 		KeepaliveProvider.interval(7200);
@@ -112,7 +112,7 @@ console.log(kth_vid);
 				primoExploreCtrl: '^primoExplore'
 			}
 	});	
-		
+	
 	/*****************************************
 	
 	prm-tags ange samma controller som prmExploreMainAfter
@@ -125,7 +125,7 @@ console.log(kth_vid);
 				primoExploreCtrl: '^primoExplore'
 			}
 	});
-
+	
 	/*****************************************
 	
 	prm-services-page ange samma controller som prmExploreMainAfter
@@ -139,7 +139,7 @@ console.log(kth_vid);
 			}
 	});
 	
-	app.controller('prmExploreMainAfterController', function ($compile, $scope, $http,$rootScope,$timeout,$templateCache, $element,Idle, $location,$translate) {
+	app.controller('prmExploreMainAfterController', function ($compile, $scope, $http,$rootScope,$timeout,$templateCache, $element,Idle,$location,$translate) {
         var vm = this;
 		
 		/*************************************************************
@@ -253,7 +253,7 @@ console.log(kth_vid);
 			'</div>' +
 		'</div>' +
 		'<prm-saved-queries-list-after parent-ctrl="$ctrl"></prm-saved-queries-list-after>');
-			
+					
 		/******	prm-top-bar ******/
 		$templateCache.put('components/search/topbar/topbar.html',
 		'<prm-top-bar-before parent-ctrl="ctrl"></prm-top-bar-before>' +
@@ -442,7 +442,7 @@ console.log(kth_vid);
 		prm-change-lang 
 		
 		***************************/
-		
+
 		$templateCache.put('components/infra/lang/change-lang.html',
 		'<div ng-if="::($ctrl.getLabelType() == \'text\')">' +
 			'<span translate="nui.mypref.label.interface_languages"></span>' +
@@ -548,7 +548,7 @@ console.log(kth_vid);
 		'<prm-alert-bar flex [alert-object]="::$ctrl.citedByAlert " ng-if="$ctrl.citationTraisLength && !$ctrl.activeSeedTypeCiting"></prm-alert-bar>' +
 		'<prm-search></prm-search>' +
 		'<prm-citation-trails-breadcrumbs-after parent-ctrl="$ctrl"></prm-citation-trails-breadcrumbs-after>');
-		
+
 		/****************
 
 		prm-search-bar
@@ -650,7 +650,7 @@ console.log(kth_vid);
 		'</div>' +
 		'<div class="advanced-search-backdrop" ng-class="{\'visible\': $ctrl.advancedSearch}"></div>' +
 		'<prm-search-bar-after parent-ctrl="$ctrl"></prm-search-bar-after>');
-		
+
 		/*************************************
 		
 		prm-search-result-availability-line	
@@ -879,7 +879,7 @@ console.log(kth_vid);
 			'<prm-view-overlay ng-class="{\'visible\': viewOverlayVisible}" layout="row"><div class="prm-view-overlay-close-button" layout="column" layout-align="center center" ng-if="viewOverlayVisible" flex><md-button class="button-large" ng-click="viewOverlayVisible = false">Close</md-button></div><div class="prm-view-overlay-inner" ng-if="viewOverlayVisible"></div><div class="prm-view-overlay-backdrop" ng-if="viewOverlayVisible"></div></prm-view-overlay>' +
 			'<prm-search-after parent-ctrl="$ctrl"></prm-search-after>' +
 		'</div>');
-		
+
 		/*************************************************************
 		
 		prm-action-list 
@@ -941,7 +941,7 @@ console.log(kth_vid);
 		'</div>' +
 		*/
 		'<prm-action-list-after parent-ctrl="$ctrl"></prm-action-list-after>');
-
+		
 		/*************************************************************
 		save-to-favorites-button 
 		
@@ -986,7 +986,7 @@ console.log(kth_vid);
 		//byt ut favoritikon till hjärta, visa actions till share
 		//Egna tillägg till actionmenyn
 		*************************************************************/
-		
+
 		$templateCache.put('components/search/briefResult/briefResultContainer.html',
 		//'<div ng-if="$ctrl.isPc()">' +
 		//lagt till selectable-text(se directive)
@@ -1081,7 +1081,7 @@ console.log(kth_vid);
 		//november release
 		'<div ng-if="$ctrl.links" ng-init="$ctrl.go()"></div>' +
 		'<prm-search-result-thumbnail-container-after parent-ctrl="$ctrl"></prm-search-result-thumbnail-container-after>');
-
+		
 		/****** prm-no-search-result ******/
 		$templateCache.put('components/search/searchResult/searchResultList/noSearchResult.html',
 		'<md-card class="default-card zero-margin">' +
@@ -1229,7 +1229,7 @@ console.log(kth_vid);
 					//'<span flex class="flex"></span>' +
 					//augustirelease 2018 gå till föregående post
 					'<md-button aria-label="{{::(\'nui.aria.fulldisplay.goToPreviousButton\' | translate)}}" class="md-icon-button md-button md-ink-ripple close-button full-view-navigation" ng-if="$ctrl.mediaQueries.gtsm && !$ctrl.isFirstRecord()" ng-click="$ctrl.getPreviousRecord()" style=""><md-tooltip md-direction="top"><span translate="nui.results.previous.tooltip"></span></md-tooltip><prm-icon icon-type="svg" svg-icon-set="primo-ui" icon-definition="chevron-left"></prm-icon></md-button>' +
-					'<md-button class="md-icon-button" (click)="$ctrl.$mdDialog.hide();" aria-label="{{\'nui.aria.fulldisplay.closeButton\' | translate}}">' +
+					'<md-button class="md-icon-button" (click)="$ctrl.handleHideDetails()" aria-label="{{\'nui.aria.fulldisplay.closeButton\' | translate}}">' +
 						'<prm-icon icon-type="svg" svg-icon-set="primo-ui" icon-definition="close">'+ 
 							'<md-icon md-svg-icon="primo-ui:close" aria-label="icon-close" class="md-primoExplore-theme" aria-hidden="true">' +
 							'</md-icon>' +
@@ -1509,7 +1509,7 @@ console.log(kth_vid);
 						//'<prm-icon class="pointer" ng-click="$ctrl.togglefacets()" flex="10" ng-if="!ctrl.isExpandAll" icon-type="svg" svg-icon-set="primo-ui" icon-definition="expand-list" aria-label="Expand all items"></prm-icon>' +
 					//'</md-button>' +
 				//'</div>' +
-				//Aria label
+				//Aria label				
 				'<md-button aria-label="show/collapse facets" ng-click="$ctrl.togglefacets()" style="display:flex" tabindex="-1" ng-if="$ctrl.totalResults > 1 || $ctrl.isFiltered()" class="section-title sidebar-section margin-top-small compensate-padding-left">' +
 					'<h2 flex="90" class="sidebar-title margin-bottom-zero" translate="nui.facets.title" style="font-size: 1.6em;text-align:left" ></h2>' +
 					//veckla ut/ihop facetter, text i st f ikkonen?
@@ -1732,8 +1732,8 @@ console.log(kth_vid);
 		window.appConfig['mapping-tables']['Citation styles'].push({ source1: '11', target: 'ieee' });
 		//window.appConfig['mapping-tables']['Citation styles'].push({ source1: '12', target: 'oscola' });
 	});
-
-			
+	
+		
 	/*****************************************
 	
 	KTHB Primo rubrik
@@ -1837,31 +1837,7 @@ console.log(kth_vid);
 		this.getData = function () {
 			return data;
 		};
-	});
-
-	/*****************************************************************
-	
-	Service för loggning
-	
-	*****************************************************************/
-	app.factory('kth_logg', function ($http) {
-
-		var data = {
-		};
-
-		data.kthlogg = function(type,info) {
-			var method = 'POST';
-			var url = 'https://apps.lib.kth.se/webservices/primo/api/v1/systemlog';
-			return $http({
-				method: method, 
-				url: url, 
-				headers: {"X-From-ExL-API-Gateway": undefined, 'Content-Type': 'application/json'},
-				data: {type: type, info: info}
-			});
-		};
-
-		return data;
-	});
+	});	
 	
 	/*****************************************
 	prm-authentication-after
@@ -1876,20 +1852,20 @@ console.log(kth_vid);
 			//'<md-button ng-click="$ctrl.endsession()">End Session</md-button>'
 	});
 	
-	app.controller('AuthenticationAfterController', function ($scope, $http, $rootScope, kth_loginservice, kth_session,Idle, $timeout) {
+	app.controller('AuthenticationAfterController', function ($scope, $http, $rootScope, kth_loginservice, kth_session, Idle) {
         var vm = this;
 		vm.parentCtrl.requestlogin = false;
 		var data = vm.parentCtrl;
-		//BETA ingen session timeout om inte inloggad
-		//lång timeout så appl är helt klar
-		if (!data.isLoggedIn) {
-			$timeout(function(){
-				console.log("unwatch");
-				Idle.unwatch();
-			},2000);
-			
-		}
-		
+
+
+
+
+
+
+
+
+
+
 		var session = vm.parentCtrl.primolyticsService.userSessionManagerService;	
 		//är det en loginruta för alma-p så gör om den till ickegul etc
 		if (typeof $scope.$parent.$parent.$parent.$ctrl != 'undefined'){
@@ -1918,7 +1894,7 @@ console.log(kth_vid);
 		controller: 'prmUserAreaAfterController',
 		template: ''
 	});
-
+	
 	app.controller('prmUserAreaAfterController', function ($scope,$rootScope,$timeout,$translate) {
 		var vm = this;
 		vm.vid = vm.parentCtrl.primolyticsService.userSessionManagerService.vid;
@@ -1948,7 +1924,7 @@ console.log(kth_vid);
 				location.href = 'https://www.kth.se/en/kthb/sokverktyg/databaser-och-soktjanster-1.544252';
 			}
 		}
-	
+		
 	});
 	
 	/*****************************************
@@ -2039,7 +2015,7 @@ console.log(kth_vid);
 	app.controller('prmSearchAfterController', function ($scope,$location,$rootScope,kth_currenturl,kth_loginservice,$timeout,$templateCache, $translate, $http, $sce) {
 		var vm = this;
 		vm.parentCtrl.kthinfotext = '0';
-
+		
 		/******************************************************
 		
 		kthinfotext som ska visas vid fel eller annan info
@@ -2170,7 +2146,7 @@ console.log(kth_vid);
 			$rootScope.showkthinfomessage = false;
 			vm.parentCtrl.showkthinfomessage = $rootScope.showkthinfomessage;
 		}
-	});	
+	});
 	
 	/*****************************************
 	
@@ -2231,10 +2207,10 @@ console.log(kth_vid);
 	app.controller('prmSearchResultListAfterController', function ($scope,$location,$rootScope,kth_currenturl,kth_loginservice,$timeout,$mdMedia) {
 		
 		var vm = this;
-			
+		
 		/***********************************
 		
-		för att visa "utöka" vid 0 träffar 
+		för att visa "utöka" vid 0 träffar
 		som förslag på små skärmar
 		
 		***********************************/
@@ -2566,27 +2542,27 @@ console.log(kth_vid);
 	});
 	
 	app.controller('FullViewAfterKthController', function (angularLoad, $http) {
-        var vm = this;
-		//BETA
-		//Språkval
-		//en variant är $translate.use()
-		vm.parentCtrl.kth_language = vm.parentCtrl.primolyticsService.userSessionManagerService.getUserLanguage();
-		
-		/*****
-		
-		Öppna beställningsformulär och skicka med data
-		
-		******/
-		
-		vm.parentCtrl.openurl = function(){
-			//språk default
-			var lang = "en/";
-			if(vm.parentCtrl.kth_language == 'sv_SE') {
-				lang = ""
-			}
-			openRequestForm(vm.parentCtrl.item, lang);
-		}
-	});
+		var vm = this;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    });
 
 	/********************************************************
 	
@@ -2626,29 +2602,29 @@ console.log(kth_vid);
 
 	});
 	
-	/*****************************************************************
-	
-	Service för oadoi
-	
-	*****************************************************************/
-	app.factory('kth_oadoi', function ($http) {
 
-		var data = {
-		};
-		
-		//Exempelsökning: "postprandial oxytocin"
-		data.getoaDOI = function(doi) {
-			var method = 'GET';
-			var url = 'https://api.oadoi.org/v2/' + doi + '?email=ask-kthb@kth.se';
-			return $http({method: method, url: url, headers: {"X-From-ExL-API-Gateway": undefined},});
-		};
 
-		return data;
-	});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
 	/**********************************************************
 	
-	prm-search-result-availability-line Träfflista
+	prm-search-result-availability-line
 	
 	**********************************************************/
 	app.component('prmSearchResultAvailabilityLineAfter', {
@@ -2660,10 +2636,7 @@ console.log(kth_vid);
 								'<div class="spaced-rows" layout="column">' +
 									'<div>' +
 										'<a style="color: #0f7d00" target="_new" href="{{$ctrl.best_oa_location_url}}">' +
-											'<span>Online open access</span>' +
-											'<span ng-if="$ctrl.gold">(Gold)</span>' +
-											'<span ng-if="$ctrl.greenpublished">(Green published)</span>' +
-											'<span ng-if="$ctrl.greenaccepted">(Green accepted)</span>' +
+											'Online open access' +
 											'<img style="width:14px;position: relative;top: 2px;" src="custom/' + kth_vid + '/img/open-access-icon.png"></img>' +
 											'<prm-icon external-link="" icon-type="svg" svg-icon-set="primo-ui" icon-definition="open-in-new" aria-label="externalLink">' +
 											'</prm-icon>' +
@@ -2677,7 +2650,7 @@ console.log(kth_vid);
 	
 	/*****************************************
 	
-	prm-full-view-service-container-after Fullpost
+	prm-full-view-service-container-after
 	
 	*****************************************/
 	
@@ -2685,7 +2658,7 @@ console.log(kth_vid);
 			bindings: {parentCtrl: '<'},
 			controller: 'prmFullViewServiceContainerAfterController',
 			//visa endast på alma-service!
-			template: '<div ng-if="$ctrl.parentCtrl.service.title.indexOf(\'alma\')> -1">' +
+			template: '<div ng-if="$ctrl.parentCtrl.service.title==\'nui.getit.alma_tab1_nofull\' || $ctrl.parentCtrl.service.title==\'nui.getit.alma_tab1_nofulltextlinktorsrc\' || $ctrl.parentCtrl.service.title==\'nui.getit.almaviewit_services\'">' +
 						'<div class="layout-full-width" ng-if="$ctrl.showOA">' +
 							'<div layout="column" layout-align="">' +
 								//TODO in i code table i Primo BO(översättning)
@@ -2698,100 +2671,77 @@ console.log(kth_vid);
 						'<div class="" ng-if="$ctrl.showOA">' +
 							'<div class="section-body" layout="row" layout-align="">' +
 								'<div class="spaced-rows" layout="column">' +
-									'<div>' +
-										'<a style="color: #0f7d00" target="_new" href="{{$ctrl.best_oa_location_url}}">' +
-											'<span>Online open access</span>' +
-											'<span ng-if="$ctrl.gold">(Gold)</span>' +
-											'<span ng-if="$ctrl.greenpublished">(Green published)</span>' +
-											'<span ng-if="$ctrl.greenaccepted">(Green accepted)</span>' +
-											'<img style="width:14px;position: relative;top: 2px;" src="custom/' + kth_vid + '/img/open-access-icon.png"></img>' +
-											'<prm-icon external-link="" icon-type="svg" svg-icon-set="primo-ui" icon-definition="open-in-new" aria-label="externalLink">' +
-											'</prm-icon>' +
-										'</a>' +
-									'</div>' +
+									'<div><a style="color: #0f7d00" target="_new" href="{{$ctrl.best_oa_location_url}}">' +
+										'Online open access' +
+										'<img style="width:14px;position: relative;top: 2px;" src="custom/' + kth_vid + '/img/open-access-icon.png"></img>' +
+										'<prm-icon external-link="" icon-type="svg" svg-icon-set="primo-ui" icon-definition="open-in-new" aria-label="externalLink">' +
+										'</prm-icon>' +
+									'</a></div>' +
 								'</div>' +
 							'</div>' +
 						'</div>' +
 					'</div>'
 	});
-
-	app.controller('prmFullViewServiceContainerAfterController',function ($scope, $http, kth_oadoi, kth_logg) {
+	
+	app.controller('prmFullViewServiceContainerAfterController',function ($scope, $http) {
 		var vm = this;
 		vm.showOA = false;
-		vm.gold = false;
-		vm.greenpublished = false;
-		vm.greenaccepted = false;
-		//Bevaka (watch) eftersom värden inte alltid hunnit sättas.
-		//träfflista
+		//Brief eller full view?
+		//Bevaka (watch) eftersom värdet inte alltid hunnit sättas.
 		if (typeof(vm.parentCtrl.result) != "undefined") {
 			$scope.$watch(function() { return vm.parentCtrl.result.delivery; }, function(delivery) {
 				if (typeof(delivery) != "undefined") {
 					if (typeof(vm.parentCtrl.result.pnx.addata.doi) == "undefined") {
-					} else { //visa bara för de som inte har full text(unpaywall önskar max 100 000 uppslag per dag, vi verkar generera ca 15-16000 per dag)
-						//viewit_NFT – View It services are available, but there is no full text.
-						//viewit_getit_NFT – View It and Get It services are available, but there is no full text.
-						//if (vm.parentCtrl.result.delivery.displayedAvailability == "no_fulltext" || vm.parentCtrl.result.delivery.displayedAvailability == "viewit_NFT" || vm.parentCtrl.result.delivery.displayedAvailability == "viewit_getit_NFT" ) {
+					} else { //visa bara för de som inte har full text /
+						if (vm.parentCtrl.result.delivery.displayedAvailability == "no_fulltext" ) {
 							vm.doi = vm.parentCtrl.result.pnx.addata.doi[0] || '';
-						//}
-					}
-					if(vm.doi) {
-						kth_logg.kthlogg("oaDOIfromunpaywall", vm.doi);	
-						kth_oadoi.getoaDOI(vm.doi).then(function(data, status) {
-							if (data.data.best_oa_location) {
-								vm.best_oa_location_url = data.data.best_oa_location.url;
-								vm.best_oa_location_evidence = data.data.best_oa_location.evidence;
-								//Hantera att OA kan ha lite olika typer av publicerat material
-								//Är journal_is_in_doaj=true => Gold: Fully published articles available from the publisher
-								//Är journal_is_in_doaj=false och best_oa_location.version = publishedVersion =>  Green published: published articles available from repository
-								//Är journal_is_in_doaj=false och best_oa_location.version = acceptedVersion => Green accepted: final peer-reviewed manuscripts available without charge from a repository
-								//Vad är en som varken har journal_is_in_doaj eller publishedVersion/acceptedVersion??
-								vm.gold = data.data.journal_is_in_doaj;
-								if(data.data.best_oa_location.version == 'publishedVersion' && !vm.gold) {
-									vm.greenpublished = true;
-								}
-								if(data.data.best_oa_location.version == 'acceptedVersion' && !vm.gold) {
-									vm.greenaccepted = true;
-								}
-								vm.showOA = true;
-							} else {
-								vm.doi = false;
-							}
-						});
-					}
-				}
-			});
-		}
-		//fullpost/servicesida
-		if (typeof(vm.parentCtrl.item) != "undefined") {
-			//Bara för "almaframen"
-			$scope.$watch(function() { return vm.parentCtrl.service; }, function(service) {
-				if(service.title.indexOf('alma')>-1 && vm.parentCtrl.service.scrollId.indexOf('getit_link2')<0) {
-					$scope.$watch(function() { return vm.parentCtrl.item.delivery; }, function(delivery) {
-						if (typeof(delivery) != "undefined") {
-							if (typeof(vm.parentCtrl.item.pnx.addata.doi) == "undefined") {
-							} else {
-								//Visa även för de som har fulltext
-								//if (vm.parentCtrl.item.delivery.displayedAvailability == "no_fulltext" || vm.parentCtrl.item.delivery.displayedAvailability == "viewit_NFT" || vm.parentCtrl.item.delivery.displayedAvailability == "viewit_getit_NFT" ) {
-									vm.doi = vm.parentCtrl.item.pnx.addata.doi[0] || '';
-								//}
-							}
-							if(vm.doi) {
-								kth_logg.kthlogg("oaDOIfromunpaywall", vm.doi);
-								kth_oadoi.getoaDOI(vm.doi).then(function(data, status) {
-									if (data.data.best_oa_location) {
-										vm.best_oa_location_url = data.data.best_oa_location.url;
-										vm.best_oa_location_evidence = data.data.best_oa_location.evidence;
-										vm.showOA = true;
-									} else {
-										vm.doi = false;
-									}
-								});	
-							}
 						}
-					});
+					}
+					if(vm.doi) {	
+						getoaDOI(vm.doi);
+					}
 				}
 			});
 		}
+		if (typeof(vm.parentCtrl.item) != "undefined") {
+			$scope.$watch(function() { return vm.parentCtrl.item.delivery; }, function(delivery) {
+				if (typeof(delivery) != "undefined") {
+					if (typeof(vm.parentCtrl.item.pnx.addata.doi) == "undefined") {
+					} else {
+						if (vm.parentCtrl.item.delivery.displayedAvailability == "no_fulltext" ) {
+							vm.doi = vm.parentCtrl.item.pnx.addata.doi[0] || '';
+						}
+					}
+					if(vm.doi) {	
+						getoaDOI(vm.doi);
+					}
+				}
+			});
+		}
+		
+		//Exempelsökning: "postprandial oxytocin"
+		function getoaDOI(doi) {
+			vm.parentCtrl.oaDOIisLoading = true;
+			vm.oaDOIdata = "";
+			var method = 'GET';
+			var url = 'https://api.oadoi.org/v2/' + doi + '?email=ask-kthb@kth.se';
+			$http({method: method, url: url, headers: {"X-From-ExL-API-Gateway": undefined},}).
+				then(function(response) {
+					var status = response.status;
+					var data = response.data;
+					vm.best_oa_location = response.data.best_oa_location;
+					if (vm.best_oa_location) {
+						vm.best_oa_location_url = response.data.best_oa_location.url;
+						vm.best_oa_location_evidence = response.data.best_oa_location.evidence;
+						vm.showOA = true;
+					} else {
+						vm.doi = false;
+					}
+				}, function(response) {
+					vm.doi = false;
+				});
+		}
+		
 	});
 	
 	/**********************************************************
@@ -2875,555 +2825,20 @@ console.log(kth_vid);
 			);
 		});
 	}]);
-
-	/*****************************************
-	ALLT NEDAN ÄR BETA för VU1_B(eta)
-	UTOM det som kommer efter ANGULAR-delen!!!
 	
-	BETA prm-alma-mashup-after
-	*****************************************/
-	//ANVÄNDS INTE FÖR TILLFÄLLET. Visa almas uresolver istället. (visa i BETA?)
-	app.component('1prmAlmaMashupAfter', {
-			bindings: {parentCtrl: '<'},
-			controller: 'prmAlmaMashupAfterController',
-			template:
-					//Hämta info om tryckt material från Alma via API-anrop nedan
-					'<div ng-if="$ctrl.parentCtrl.almap">' +
-						//iframe test
-						'<iframe scrolling="no" style="display:none;border:none" width="800px" height="300px" id="almamashup"></iframe>' +
-						//visa userstatus i alma (aktiv patronroll?)
-						//TODO Lägg in länkar och översättningar
-						'<div ng-if="$ctrl.almauserstatus == \'MISSING\'"><a>Länk till ask-kthb</a></div>' +
-						'<div ng-if="$ctrl.almauserstatus == \'INACTIVE\'"><a>Länk till aktiverasidan</a></div>' +
-						'<div ng-if="$ctrl.parentCtrl.almadata == \'error\'">ERROR</div>' + 
-						//extra holdningsinfo(exempelvis vilka årgångar av en tidskrift som finns, "1981-;luckor")
-						'<div ng-if="$ctrl.holdinginfo !== \'\'">' +
-							'<div>{{$ctrl.wehave}}</div>' +
-							'<div ng-repeat="x in $ctrl.holdinginfo" style="color:green">' +
-								'{{x}}' +
-							'</div>' +
-						'</div>' + 
-						//Länk till beställningsformulär (visa alltid om ingen "almadata" finns)
-						'<div ng-if="$ctrl.showorderform || $ctrl.holdinginfo !== \'\'" style="margin: 0.5em 0 0.3em 0;">' +
-							'<a translate="nui.getit.kth_requestorsuggest" id="openRSRequest1" class="submitAsLink popout" type="submit" ng-click="$ctrl.openurl()" style="color: tomato"></a>' +
-						'</div>' +
-						'<div ng-if="$ctrl.almadata!=\'\'">' +
-							'<table class="">' +
-								'<thead>' +
-									'<th ng-repeat="x in $ctrl.headers">{{x}}</th>' +
-								'</thead>' +
-								'<tbody>' +
-									'<tr ng-repeat="x in $ctrl.almadata | orderBy:\'[library, -location, description]\'">{{ x.name }}</a>' +
-										'<td data-th="library">{{x.library}}' +
-										'</td>' +
-										'<td data-th="location">{{x.location}}' +
-										'</td>' + 
-										'<td data-th="description">{{x.description || \'&nbsp;\'}}</td>' +
-										'<td data-th="shelf">{{ x.shelf }}' +
-											'<div class="1locationmap tooltip" ng-if="x.map!=\'\'">' +
-												//Kartbildens html
-												'<div style="position:fixed;top:70px;left: 50%;transform: translate(-50%, 0%);z-index:100;display:none;background-color:#fff;border: #a0a0a0 1px solid;max-height: 500px;overflow: auto;" class="1locationmap 1tooltiptext" ng-bind-html="x.map">' +
-												'</div>' +
-												//kartnålen
-												'<prm-icon class="pointer" onclick="this.parentElement.firstChild.style.display=\'block\';" aria-label="{{::(\'nui.aria.favorites.pin\' | translate:\'{index: \\\'\'+ $ctrl.index+\'\\\'}\')}}" [icon-type]="::$ctrl.actionsIcons.pin.type" svg-icon-set="maps" icon-definition="ic_place_24px"></prm-icon>' +
-												//länk till wagnerguiden
-												'<a class="" target="_new" href="{{ x.almamapurl }}">Map</a>' +
-											'</div>' +
-										'</td>' +
-										'<td data-th="status">{{ x.status }}</td>' +
-										'<td data-th="requests" 1ng-if="x.requests > 0">{{ x.requests }}</td>' +
-										'<td data-th="policy">{{ x.policy }} ' +
-											'<div class="tooltip">' +
-												'<div class="tooltiptext">' +
-													'<h3>{{$ctrl.policyinformationheader}}</h3>' + 
-													//Var ska denna info hämtas? Primo-labels? Array här? Array i php?
-													//För tillfället en array i den PHP som hämtar data nedan (almagetprinteditem.php)
-													'<p>{{ x.policyinformation }}</p>' +
-												'</div>' +
-												'<prm-icon aria-label="{{::(\'nui.aria.favorites.pin\' | translate:\'{index: \\\'\'+ $ctrl.index+\'\\\'}\')}}" [icon-type]="::$ctrl.actionsIcons.pin.type" svg-icon-set="action" icon-definition="ic_info_24px"></prm-icon>' +
-											'</div>' +
-										'</td>' +
-										//Requestlänkar för tidskrifter, artiklar etc (det som är på itemnivå??)
-										//Visa endast om inloggad
-										'<td data-th="request">' +
-											//'<a ng-if="x.physical_material_type!=\'BOOK\' && x.physical_material_type!=\'CDROM\'" target="_blank" href="https://eu01.alma.exlibrisgroup.com/view/uresolver/46KTH_INST/openRequest?requestType=available&hasHoldRequestServices=true&hasBookingRequestServices=false&physicalServicesResultId={{$ctrl.physicalServicesResultId}}&institutionCode=46KTH_INST&userId={{$ctrl.almainternaluserid}}&skinName=' + kth_vid + '&newUI=true&mmsId={{x.mmsid}}&itemId={{x.pid}}&description={{x.description}}&differentIssue=&changeValue=&directResourceSharingRequest=false">Request</a>' +
-											'<md-button ng-if="$ctrl.almausername != \'\' && x.physical_material_type!=\'BOOK\' && x.physical_material_type!=\'CDROM\'" ng-click="$ctrl.changeiframeurl($ctrl.physicalServicesResultId,$ctrl.almainternaluserid,x.mmsid,x.pid,x.description)">Request</md-button>' +
-										'</td>' +										
-									'</tr>' +
-								'</tbody>' +
-							'</table>' +
-						'</div>' +
-						//Visa laddningsikon
-						'<div ng-if="$ctrl.AlmaisLoading" layout="column" layout-align="center"><div layout="row" layout-align="center"><md-progress-circular style="stroke:#106cc8" md-mode="indeterminate"></md-progress-circular></div></div>' + 
-					'</div>'
-	});
+	/*******************
 	
-	app.controller('prmAlmaMashupAfterController',function ($scope, $http, $sce, $window, $translate, kth_session, kth_loginservice, $timeout) { 
-		var vm = this;
-		var self = this;
-		vm.holdingsarray = [];
-		vm.itemsarrary = [];
-		vm.licenseinfohtmlarray = [];
-		vm.showlicenseinfo = false;
-		vm.isLoading = true;
-		vm.AlmaisLoading = true;
-		vm.parentCtrl.fulltext = "";
-		self.maptrustedhtml = "";
-		vm.holdinginfo = "";
-		vm.showorderform = false;
-		console.log("$scope.$parent.$parent.$parent.$parent.$ctrl");
-		console.log($scope.$parent.$parent.$parent.$parent.$ctrl);
-		console.log("vm.parentCtrl");
-		console.log(encodeURIComponent(vm.parentCtrl.getLink().toString()));
-		//språk
-		//en variant är 
-		vm.kth_language = $translate.use();
-		
-		/*****
-		
-		Öppna beställningsformulär och skicka med data
-		
-		******/
-		vm.openurl = function(){
-			//språk default
-			var lang = "en/";
-			if(vm.kth_language == 'sv_SE') {
-				lang = ""
-			}
-			openRequestForm($scope.$parent.$parent.$parent.$parent.$ctrl.item, lang);
-		}
-		
-		/**************************************************
-		
-		Hämta username från alma via sessionusername
-		kolla om inloggad (anonymous om inte inloggad)
-		
-		**************************************************/
-		vm.session = kth_session.getData();
-		vm.almausername = vm.session.jwtUtilService.getDecodedToken().user;
-		console.log("vm.session");
-		console.log(vm.session);
-		//Behövs timeout för att inte "almausername" ska vara undefined?
-		$timeout(function(){
-			if (vm.almausername.search(/anonymous/i)===-1) {
-				almagetuserinfo(vm.almausername);
-				almagetinternaluserid(vm.almausername);
-				almagetphysicalServicesResultId();
-			} else {
-				vm.almausername = '';
-			}
-		},200);
-		
-		
-		function almagetuserinfo(username) {
-			vm.almauserstatus = "";
-			var method = 'GET';
-			var html = '';
-			var url = 'https://apps.lib.kth.se/alma/primo/almagetuserinfo.php?username=' + username;
-			$http({method: method, url: url}).
-				then(function(response) {
-					vm.almauserstatus = response.data.status;
-				}, function(response) {
-				});	
-		}
-		
-		
-		//Hämta Almas interna id för en användare via analytics(går också att få via ureslover)
-		//Behövs om det ska gå att göra reservationslänkar för exemplar
-		function almagetinternaluserid(username) {
-			vm.almainternaluserid = "";
-			var method = 'GET';
-			var html = '';
-			var url = 'https://apps.lib.kth.se/alma/primo/almagetinternaluserid.php?identifier=' + username;
-			$http({method: method, url: url}).
-				then(function(response) {
-					vm.almainternaluserid = response.data.internalidentifier[0];
-				}, function(response) {
-				});	
-		}
-		
-		//Hämta almagetphysicalServicesResultId från uresolver
-		//Behövs om det ska gå att göra reservationslänkar för exemplar
-		function almagetphysicalServicesResultId() {
-			vm.physicalServicesResultId = "";
-			var method = 'GET';
-			var html = '';
-			var url = 'https://apps.lib.kth.se/alma/primo/almagetphysicalServicesResultId.aspx?url=' + encodeURIComponent(vm.parentCtrl.getLink().toString());
-			$http({method: method, url: url}).
-				then(function(response) {
-					vm.physicalServicesResultId = response.data.physicalServicesResultId;
-				}, function(response) {
-				});	
-		}
-		
-		/* Funktion som byter src i en iframe vid klick på object inne i iframe*/
-		vm.changeiframeurl = function (physicalServicesResultId,internaluserid,mmsid,itemid,description) {
-
-			function findPos(obj) {
-				var curtop = 0;
-				if (obj.offsetParent) {
-					do {
-						curtop += obj.offsetTop;
-					} while (obj = obj.offsetParent);
-				return [curtop];
-				}
-			}		
-			
-			var url = 'https://eu01.alma.exlibrisgroup.com/view/uresolver/46KTH_INST/openRequest?requestType=available&hasHoldRequestServices=true&hasBookingRequestServices=false&physicalServicesResultId='+ physicalServicesResultId + 
-					'&institutionCode=46KTH_INST&userId=' + internaluserid + 
-					'&skinName=' + kth_vid + '&newUI=true&mmsId=' + mmsid +
-					'&itemId=' + itemid + 
-					'&description=' + description + '&differentIssue=&changeValue=&directResourceSharingRequest=false'
-			console.log(url);		
-			document.getElementById('almamashup').src = url;
-			document.getElementById('almamashup').style.display = "block";
-			console.log("findPos");
-			console.log(findPos(document.getElementById("almamashup")));
-			//window.scroll(0,findPos(document.getElementById("almamashup"))-100);
-			window.document.getElementById("almamashup").scrollIntoView( true );
-			
-			var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
-			var eventer = window[eventMethod];
-			var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
-			// Lyssna på message från iframe
-			eventer(messageEvent,function(e) {
-				console.log("iframeaction");
-				if(e.data == "iframeaction")
-				{
-					window.document.getElementById("almamashup").style.display = "none";
-				}
-			},false);
-			
-			//skicka message till iframe
-			//window.document.getElementById("almamashup").contentWindow.postMessage("iframeaction","*");
-
-		}
-		
-		/*************************
-		
-		Hämta tryckt material från Alma
-		
-		*************************/
-
-		function almagetprinteditem(mmsids) {
-			vm.isLoading = true;
-			vm.AlmaisLoading = true;
-			vm.almadata = "";
-			vm.policyinformationheader = "";
-			var method = 'GET';
-			var url = 'https://apps.lib.kth.se/alma/primo/almagetprinteditem.php?mmsids=' + mmsids + '&lang=' + $translate.use();
-			$http({method: method, url: url}).
-				then(function(response) {
-					var status = response.status;
-					//extra info(exempelvis vilka årgångar av en tidskrift som finns, "1981-;luckor")
-					vm.holdinginfo = response.data.holding_info;
-					if($translate.use() == "en_US") {
-						vm.wehave = "We have: ";
-					} else {
-						vm.wehave = "Vi har: ";
-					}
-					if (response.data.total_record_count > 0){
-						//Tryckt material(alma har holdings)
-						
-						//För varje holding hämta karta om det finns
-						for (var item in response.data.records) {
-							if (response.data.records[item].map === 'true') {
-								//lägg in karthtml i "map"
-								response.data.records[item].map = map(response.data.records[item].locations, response.data.records[item].location, response.data.records[item].shelf);
-							}
-							/*
-							if($translate.use() == "en_US") {
-								if(response.data.records[item].requests != "0") {
-									vm.headers = ["Library", "Location", "Description", "Shelf", "Status", "Requests", "Loan period"];
-								}
-								else {
-									vm.headers = ["Library", "Location", "Description", "Shelf", "Status", "Loan period"];
-								}
-							} else {
-								if(response.data.records[item].requests != "0") {
-									vm.headers = ["Bibliotek", "Lokation", "Beskrivning", "Hylla", "Status", "Reservationer", "Låneperiod"];	
-								}
-								else {
-									vm.headers = ["Bibliotek", "Lokation", "Beskrivning", "Hylla", "Status", "Låneperiod"];	
-								}
-							}
-							*/
-						}
-						if($translate.use() == "en_US") {
-							vm.headers = ["Library", "Location", "Description", "Shelf", "Status", "Requests", "Loan period"];
-							vm.policyinformationheader = "These are our loan policies";
-						} else {
-							vm.headers = ["Bibliotek", "Lokation", "Beskrivning", "Hylla", "Status", "Reservationer", "Låneperiod"];	
-							vm.policyinformationheader = "Detta är våra lånevillkor";
-						}
-						vm.almadata = response.data.records;
-						if(vm.almadata.length==0) {
-							vm.showorderform = true;
-						}
-					} else {
-						vm.showorderform = true;
-					}
-					vm.AlmaisLoading = false;
-				}, function(response) {
-				});
-		}
-
-		vm.parentCtrl.almap = false;
-		vm.parentCtrl.almae = false;
-		vm.parentCtrl.almaother = false;
-		if ($scope.$parent.$parent.$parent.$parent.$ctrl.service.linkElement.category == "Alma-P") {
-			vm.parentCtrl.almap = true;
-			//Vilka mmsid innehåller fullposten?
-			vm.mms_ids = "";
-			console.log("PNX frbrgroupid:  ");
-			console.log($scope.$parent.$parent.$parent.$parent.$ctrl.item.pnx);
-			
-			if ($scope.$parent.$parent.$parent.$parent.$ctrl.item.pnx.search.addsrcrecordid) {
-				for (var i=0;i<$scope.$parent.$parent.$parent.$parent.$ctrl.item.pnx.search.addsrcrecordid.length;i++) {
-					if (i==0){
-						vm.mms_ids += $scope.$parent.$parent.$parent.$parent.$ctrl.item.pnx.search.addsrcrecordid[i];
-					} else {
-						vm.mms_ids += ',' + $scope.$parent.$parent.$parent.$parent.$ctrl.item.pnx.search.addsrcrecordid[i];
-					}				
-				}
-				almagetprinteditem(vm.mms_ids);
-			}
-		} else {
-			if ($scope.$parent.$parent.$parent.$parent.$ctrl.service.linkElement.category == "Alma-E") {
-				vm.parentCtrl.almae = true;
-			} else {
-				vm.parentCtrl.almaother = true;
-			}
-		}
-		
-		/******************************
-		
-		Kartinfo att visa på fullposten
-		
-		******************************/
-		function map(locations, locationname, shelfname) {
-			if (self.parentCtrl.almap == true) {
-				//sätt kartbildernas originalproportioner
-				self.mapwidthdefault = 1256;
-				self.mapheigthdefault = 726;
-				
-				//hämta bredden på elementet
-				if (document.querySelector('body').offsetWidth > 600) {
-					self.containerWidth = 300;
-				} else {
-					self.containerWidth = 300;
-				}
-				//self.containerWidth = 380;
-				self.mapsize = 1;
-				
-				//sätt kartproportioner
-				//bredden
-				self.mapWidth = self.containerWidth * self.mapsize
-				//ta hänsyn till originalproportionerna för att få höjden rätt
-				self.mapHeight = self.mapheigthdefault / self.mapwidthdefault * self.mapWidth; 
-				
-				//räkna ut förhållande mellan bredderna för att kunna rita ut lokation på samma plats vid olika storlekar
-				self.mapratio = self.mapWidth / self.mapwidthdefault;
-				
-				//Skapa en toolbar för att simulera en dialogruta
-				self.TrustedHtml =
-							'<md-toolbar class="_md _md-toolbar-transitions">' +
-								'<div class="md-toolbar-tools">' +
-									//TODO Översättning
-									'<h2>Här hittar du materialet</h2>' +
-									'<span flex="" class="flex"></span>' +
-									'<button class="md-icon-button md-button md-ink-ripple" type="button" onclick="this.parentElement.parentElement.parentElement.style.display=\'none\'">' +
-											'<md-icon md-svg-icon="primo-ui:close" aria-label="icon-close" class="md-primoExplore-theme" aria-hidden="true">' +
-												'<svg id="close_cache41" width="100%" height="100%" viewBox="0 0 24 24" y="240" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false">' +
-													'<path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"></path>' +
-												'</svg>' +		
-											'</md-icon>' +
-									'</button>' +
-									
-								'</div>' +
-							'</md-toolbar>' + 
-							'<div style="padding:10px">';
-				var maphtml = "";
-				var j = 0;
-				self.hasMap = false;
-				//Loopa igenom alla locations 
-				for (var loc in locations) {
-					var breakloop = false;
-					if (breakloop !== true ) {								
-						var k = 0;
-						var pulsatingDIV = "";
-						self.floor = -1;
-						//loopa igenom alla koordinater för aktuell lokation och spara en DIV med "kartplupp" för varje plats
-						self.TrustedHtml += '<div class="mapheader" style="width:' + self.mapWidth * 0.9 + 'px"><h4>' + locationname + ' ' +  shelfname + '</h4><div>'+locations[loc].coordinates.info +'</div></div>'
-						for (var q in locations[loc].coordinates.index) {
-							self.hasMap = true;
-							//om ny floor spara html
-							if (self.floor != locations[loc].coordinates.index[q].floor&&self.floor != -1) {
-								self.TrustedHtml += '<div class="ic-map-div" style="width:' + self.mapWidth + 'px;height:' + self.mapHeight + 'px"><img class="ic-map-img" width="' + self.mapWidth + '" height="' + self.mapHeight + '" id="ic-map-img' + i + '" src="custom/' + vm.parentCtrl.fullViewService.vid + '/img/kartor_kibblan_plan' + self.floor + '.png">'+ pulsatingDIV +'<canvas class="ic-map-canvas" width="' + self.mapWidth + '" height="' + self.mapHeight + '" id="ic-map-canvas' + i + '"></canvas></div>';
-								pulsatingDIV = "";
-							}
-							self.floor = locations[loc].coordinates.index[q].floor;
-							if (self.floor == 0) {
-								var incorrect = "INTE KORREKT LOKATION!";
-							} else {
-								var incorrect = "";
-							}
-							//if (k == 0) {
-								//pulsatingDIV += '<div style="left: ' + locations[loc].coordinates.index[q].x * self.mapratio + 'px;top: ' + locations[loc].coordinates.index[q].y * self.mapratio + 'px" class="pulse"><div class="loc">' + loc + '</div></div><div>' + incorrect + '</div>'
-								
-							//} else {
-								pulsatingDIV += '<div orgx="' + locations[loc].coordinates.index[q].x + '" orgy="' + locations[loc].coordinates.index[q].y + '" style="left: ' + locations[loc].coordinates.index[q].x * self.mapratio + 'px;top: ' + locations[loc].coordinates.index[q].y * self.mapratio + 'px" class="pulse"><div class="loc">' + loc + '</div>' + incorrect + '</div>'
-							//}
-							
-							k++;
-						}
-						// spara HTML-kod för varje lokation med rätt kartbild och koordinater
-						self.TrustedHtml += '<div class="ic-map-div" style="width:' + self.mapWidth + 'px;height:' + self.mapHeight + 'px"><img class="ic-map-img" width="' + self.mapWidth + '" height="' + self.mapHeight + '" id="ic-map-img' + i + '" src="custom/' + vm.parentCtrl.fullViewService.vid + '/img/kartor_kibblan_plan' + self.floor + '.png">'+ pulsatingDIV +'<canvas class="ic-map-canvas" width="' + self.mapWidth + '" height="' + self.mapHeight + '" id="ic-map-canvas' + i + '"></canvas></div>';
-						j++;
-						breakloop = true; //bryt loopen om en holding matchats så att det inte visas dubletter av kartorna.
-					}
-				}
-				self.maptrustedhtml += '</div>';
-				if(self.hasMap) {
-					self.maptrustedhtml = $sce.trustAsHtml(self.TrustedHtml);
-				} else {
-					self.maptrustedhtml = "";
-				}
-				return self.maptrustedhtml;
-			}
-		}
-	});
+	Google Analytics
 	
-	/*******************************************************************
+	********************/
 	
-	Dialogformulär BETA, Används INTE
-	
-	********************************************************************/
-	
-	app.component('prmContactUs', {
-		bindings: {
-			parentCtrl: '<'
-		},
-		controller: 'prmContacUsController',
-		template: 
-				"<md-button class='md-raised md-primary' aria-label=\"{{'nui.search.search_tips' | translate}}\" ng-click='$ctrl.showErrorReport($event,$ctrl)'>" +
-					"<md-tooltip md-direction='bottom'>{{'nui.search.search_tips' | translate}}</md-tooltip>" +
-					"Rapportera problem" +
-				"</md-button>"
-	});
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-	app.controller('prmContacUsController', ['$mdDialog', '$http', function ($mdDialog, $http) {
-		var ctrl = this;	
-		console.log("prmContacUsController");
-		console.log(ctrl);
-		//console.log("prmContacUsController2");
-		function sendreport(){
-							console.log("sending report");
-						}
-		ctrl.$onInit = function () {
-			ctrl.$mdDialog = $mdDialog;
-		};
-		ctrl.showErrorReport = function (event,item) {
-			console.log(ctrl.parentCtrl.item);
-			console.log("item above");
-			ctrl.$mdDialog.show({
-				controller: function controller() {
-					return {
-						hide: function hide() {
-							ctrl.$mdDialog.hide();
-						},
-						cancel: function cancel() {
-							ctrl.$mdDialog.cancel();
-						},
-						sendreport: function sendreport(){
-							console.log("sending report");
-							var method = 'GET';
-							var html = '';
-							var url = 'https://apps.lib.kth.se/alma/errorreport/index.php?payload=' + ctrl.parentCtrl.item.pnx.addata.btitle;
-							$http({method: method, url: url}).
-								then(function(response) {
-									console.log(response.data.status);
-								}, function(response) {
-								});
-							ctrl.$mdDialog.hide();
-						}
-					};
-				},
-				controllerAs: '$ctrl',
-				//templateUrl: 'custom/MUSE/html/searchTips_' + ctrl.locale.current() + '.html', // View name!
-				template: '<md-dialog id="mapdialog" aria-label="List dialog">' +
-							'<md-toolbar class="_md _md-toolbar-transitions">' +
-								'<div class="md-toolbar-tools">' +
-									'<h2>Rapportera problem</h2>' +
-									'<span flex="" class="flex"></span>' +
-									'<button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.cancel()">' +
-										'<prm-icon icon-type="svg" svg-icon-set="primo-ui" icon-definition="close">'+ 
-											'<md-icon md-svg-icon="primo-ui:close" aria-label="icon-close" class="md-primoExplore-theme" aria-hidden="true">' +
-											'</md-icon>' +
-										'</prm-icon>' +
-									'</button>' +
-								'</div>' +
-							'</md-toolbar>' +
-							'<md-dialog-content>'+
-								//skapa ett formulär här:
-								'<div class="md-dialog-content">' + 
-									'<div class="md-dialog-content">' +
-										'<form role="form">' +
-											'<div layout-gt-xs="row">' +
-												'<md-input-container class="md-block" flex-gt-xs="">' +
-													'<label>Test</label>' +
-													'<input ng-model="Test1"  size="30" placeholder="Test">' +
-												'</md-input-container>' +
-												//'<md-datepicker ng-model="questList.data" md-placeholder="Inserisci data">' +
-												//'</md-datepicker>' +
-												'<md-input-container class="md-block" flex-gt-xs="">' +
-													'<label>Test 2</label>' +
-													'<input ng-model="questList.Test2"  size="30" placeholder="Test2">' +
-												'</md-input-container>' +
-												'<md-input-container class="md-block">' +
-													'<label>Test3</label>' +
-													'<textarea ng-model="questList.Test3" md-maxlength="150" rows="5" md-select-on-focus placeholder="Test3"></textarea>' +
-												'</md-input-container>' +
-												'<md-button ng-click="$ctrl.sendreport(questList)" class="md-raised md-primary">Skicka</md-button>' +
-											'</div>' +
-										'</form>' +
-									'</div>' + 
-								'</div>' +
-							'</md-dialog-content>' +
-						'</md-dialog>', // View name!
-				//parent: angular.element(document.body),
-				targetEvent: event,
-				clickOutsideToClose: true,
-				fullscreen: false // Only for -xs, -sm breakpoints.
-			});
-		};
-	}]);
-
-	//BETA
-	app.component('prmRecomendationsAfter', {
-		bindings: {parentCtrl: '<'},
-		controller: 'prmRecomendationsAfterController'
-	});
-
-	app.controller('prmRecomendationsAfterController',function ($scope) { 
-		var vm = this;
-		console.log("prmRecomendationsAfterController");
-		console.log(vm.parentCtrl);
-	});
-
-	//BETA prm-action-list-after
-	app.component('prmActionListAfter', {
-			bindings: {parentCtrl: '<'},
-			controller: 'prmActionListAfterController'
-	});
-
-	app.controller('prmActionListAfterController',function ($scope) { 
-		var vm = this;
-		console.log("prmActionListAfterController");
-		console.log(vm.parentCtrl);
-	});
-	
-	
+	ga('create', 'UA-58303056-2', 'auto');
+	ga('send', 'pageview');
 	
 })();
 
@@ -3471,137 +2886,3 @@ function receiveMessagefromalma(event)
 		}, 50);
 	}
 }
-
-/* BETA
-Funktion för att öppna beställningsformulär
-lang="en/" eller ""
-
-*/
-function openRequestForm(item,lang) {
-	//Init
-	rsrctype = "";
-	booktitle = "";
-	journaltitle = "";
-	articletitle = "";
-	issue = "";
-	volume = "";
-	spage = "";
-	epage = "";
-	isbn = "";
-	issn = "";
-	au = "";
-	doi = "";
-	creationdate = "";
-	publisher = "";
-	//hantera de parametrar som inte har nåt värde
-	if (item.pnx.search.rsrctype) {
-		//hantera typ(book,book_chapter,journal,article
-		rsrctype = item.pnx.search.rsrctype[0];
-		if (rsrctype == "book" || rsrctype == "book_chapter") {
-			if (item.pnx.display.title) {
-				booktitle = item.pnx.display.title[0];
-			}
-		}
-		if (rsrctype == "journal") {
-			if (item.pnx.display.title) {
-				journaltitle = item.pnx.display.title[0];
-			}
-		}
-		if (rsrctype == "article") {
-			if (item.pnx.display.title) {
-				articletitle = item.pnx.display.title[0];
-			}
-		}
-	}
-	if (item.pnx.addata.issue) {
-		issue = item.pnx.addata.issue[0];
-	}
-	if (item.pnx.addata.volume) {
-		volume = item.pnx.addata.volume[0];
-	}
-	if (item.pnx.addata.spage) {
-		spage = item.pnx.addata.spage[0];
-	}
-	if (item.pnx.addata.epage) {
-		epage = item.pnx.addata.epage[0];
-	}
-	if (item.pnx.addata.isbn) {
-		isbn = item.pnx.addata.isbn[0];
-	}
-	if (item.pnx.addata.issn) {
-		issn = item.pnx.addata.issn[0];
-	}
-	if (item.pnx.addata.au) {
-		au = item.pnx.addata.au[0];
-	}
-	if (item.pnx.addata.doi) {
-		doi = item.pnx.addata.doi[0];
-	}
-	if (item.pnx.display.creationdate) {
-		creationdate = item.pnx.display.creationdate[0];
-	}
-	if (item.pnx.display.publisher) {
-		publisher = item.pnx.display.publisher[0];
-	}
-	window.open('https://www.kth.se/' + lang + 'kthb/lana-och-bestall/lana-och-bestall/bestall-material?source=primo&genre=' + rsrctype + '&bookTitle=' + booktitle + '&abbrev=&article=' + articletitle + '&journal=' + journaltitle + '&day=&month=&volume=' + volume + '&issue=' + issue + '&rft.number=&pages=' + spage + '-' + epage + '&rft.edition=&ISBN=' + isbn + '&EISBN=&author=' + au + '&rft.pub=' + publisher + '&publisher=' + publisher + '&publiPlace=&rft.doi=' + doi + '&ISSN=' + issn + '&EISSN=&year=' + creationdate, '_newTab');
-}
-		
-/******************************************************************************
-
-BETA Funktion som konverterar XML to JSON
-//http://coursesweb.net/javascript/convert-xml-json-javascript_s2
-
-******************************************************************************/
-function XMLtoJSON() {
-	var me = this;
-	
-	me.fromStr = function(xml, rstr) {
-		if(window.DOMParser) {
-			var getxml = new DOMParser();
-			var xmlDoc = getxml.parseFromString(xml,"text/xml");
-		}
-		else {
-		var xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-		xmlDoc.async = "false";
-		}
-		var json_str = jsontoStr(setJsonObj(xmlDoc));
-		return (typeof(rstr) == 'undefined') ? JSON.parse(json_str) : json_str;
-	}
-
-	var setJsonObj = function(xml) {
-		var js_obj = {};
-		if (xml.nodeType == 1) {
-			if (xml.attributes.length > 0) {
-				js_obj["@attributes"] = {};
-				for (var j = 0; j < xml.attributes.length; j++) {
-					var attribute = xml.attributes.item(j);
-					js_obj["@attributes"][attribute.nodeName] = attribute.value;
-				}
-			}
-		} else if (xml.nodeType == 3) {
-			js_obj = xml.nodeValue;
-		}            
-		if (xml.hasChildNodes()) {
-			for (var i = 0; i < xml.childNodes.length; i++) {
-				var item = xml.childNodes.item(i);
-				var nodeName = item.nodeName;
-				if (typeof(js_obj[nodeName]) == "undefined") {
-					js_obj[nodeName] = setJsonObj(item);
-				} else {
-					if (typeof(js_obj[nodeName].push) == "undefined") {
-						var old = js_obj[nodeName];
-						js_obj[nodeName] = [];
-						js_obj[nodeName].push(old);
-					}
-					js_obj[nodeName].push(setJsonObj(item));
-				}
-			}
-		}
-		return js_obj;
-	}
-
-	var jsontoStr = function(js_obj) {
-		var rejsn = JSON.stringify(js_obj, undefined, 2).replace(/(\\t|\\r|\\n)/g, '').replace(/"",[\n\t\r\s]+""[,]*/g, '').replace(/(\n[\t\s\r]*\n)/g, '').replace(/[\s\t]{2,}""[,]{0,1}/g, '').replace(/"[\s\t]{1,}"[,]{0,1}/g, '').replace(/\[[\t\s]*\]/g, '""');
-		return (rejsn.indexOf('"parsererror": {') == -1) ? rejsn : 'Invalid XML format';
-	}
-};

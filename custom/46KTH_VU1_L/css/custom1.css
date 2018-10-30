@@ -1422,7 +1422,7 @@ FULL DETAILS / FULL VIEW
 }
 
 /* Bort med klammer som visar vilken avdelning man är vid */
-.section-focused .full-view-section-content:after {
+.full-view-section-content:after {
 	display: none;
 }
 
@@ -1436,8 +1436,10 @@ FULL DETAILS / FULL VIEW
 }
 
 /*180822 marginaler etc vid visning av fullpost utan dialogruta*/
-prm-full-view-page .full-view-section, prm-full-view-page>prm-full-view-cont>md-content, prm-full-view-page>prm-full-view-cont>md-content .full-view-container>div
-, prm-full-view-page>prm-full-view-cont>md-content .full-view-container prm-full-view-service-container prm-brief-result-container>div:first-of-type {
+prm-full-view-page .full-view-section, 
+prm-full-view-page>prm-full-view-cont>md-content, 
+prm-full-view-page>prm-full-view-cont>md-content .full-view-container>div, 
+prm-full-view-page>prm-full-view-cont>md-content .full-view-container prm-full-view-service-container prm-brief-result-container>div:first-of-type {
 	padding-left: 0px !important;
 }
 /*180822 marginaler etc vid visning av fullpost utan dialogruta*/
@@ -1690,7 +1692,7 @@ prm-full-view-after {
 	.__xs prm-full-view prm-brief-result-container .list-item-primary-content {
 		padding: 1em 1.5em; /* 180801 */
 	}
-	
+
 	prm-full-view-after {
 		padding: 1em;
 		display: flex;
@@ -1984,7 +1986,9 @@ SERVICE PAGE
 
 ***************************/
 /*180822 marginaler etc vid visning av fullpost utan dialogruta*/
-prm-services-page .full-view-section, prm-services-page .full-view-inner-container, prm-services-page>prm-full-view-cont>md-content, prm-brief-result-container>div:first-of-type {
+prm-services-page .full-view-section, 
+prm-services-page .full-view-inner-container, 
+prm-services-page>prm-full-view-cont>md-content prm-brief-result-container>div:first-of-type {
 	padding-left: 0px !important;
 }
 /*180822 marginaler etc vid visning av fullpost utan dialogruta*/

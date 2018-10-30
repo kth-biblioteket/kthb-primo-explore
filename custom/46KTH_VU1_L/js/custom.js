@@ -1229,7 +1229,7 @@ console.log(kth_vid);
 					//'<span flex class="flex"></span>' +
 					//augustirelease 2018 gå till föregående post
 					'<md-button aria-label="{{::(\'nui.aria.fulldisplay.goToPreviousButton\' | translate)}}" class="md-icon-button md-button md-ink-ripple close-button full-view-navigation" ng-if="$ctrl.mediaQueries.gtsm && !$ctrl.isFirstRecord()" ng-click="$ctrl.getPreviousRecord()" style=""><md-tooltip md-direction="top"><span translate="nui.results.previous.tooltip"></span></md-tooltip><prm-icon icon-type="svg" svg-icon-set="primo-ui" icon-definition="chevron-left"></prm-icon></md-button>' +
-					'<md-button class="md-icon-button" (click)="$ctrl.handleHideDetails()" aria-label="{{\'nui.aria.fulldisplay.closeButton\' | translate}}">' +
+					'<md-button class="md-icon-button" (click)="$ctrl.$mdDialog.hide();" aria-label="{{\'nui.aria.fulldisplay.closeButton\' | translate}}">' +
 						'<prm-icon icon-type="svg" svg-icon-set="primo-ui" icon-definition="close">'+ 
 							'<md-icon md-svg-icon="primo-ui:close" aria-label="icon-close" class="md-primoExplore-theme" aria-hidden="true">' +
 							'</md-icon>' +
@@ -1838,6 +1838,30 @@ console.log(kth_vid);
 			return data;
 		};
 	});	
+
+	/*****************************************************************
+	
+	Service för loggning
+	
+	*****************************************************************/
+	app.factory('kth_logg', function ($http) {
+
+		var data = {
+		};
+		
+		data.kthlogg = function(type,info) {
+			var method = 'POST';
+			var url = 'https://apps.lib.kth.se/webservices/primo/api/v1/systemlog';
+			return $http({
+				method: method, 
+				url: url, 
+				headers: {"X-From-ExL-API-Gateway": undefined, 'Content-Type': 'application/json'},
+				data: {type: type, info: info}
+			});
+		};
+
+		return data;
+	});
 	
 	/*****************************************
 	prm-authentication-after
@@ -2602,26 +2626,26 @@ console.log(kth_vid);
 
 	});
 	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	/*****************************************************************
 	
+	Service för oadoi
+	
+	*****************************************************************/
+	app.factory('kth_oadoi', function ($http) {
+
+		var data = {
+		};
+		
+		//Exempelsökning: "postprandial oxytocin"
+		data.getoaDOI = function(doi) {
+			var method = 'GET';
+			var url = 'https://api.oadoi.org/v2/' + doi + '?email=ask-kthb@kth.se';
+			return $http({method: method, url: url, headers: {"X-From-ExL-API-Gateway": undefined},});
+		};
+
+		return data;
+	});
+
 	/**********************************************************
 	
 	prm-search-result-availability-line
@@ -2658,7 +2682,7 @@ console.log(kth_vid);
 			bindings: {parentCtrl: '<'},
 			controller: 'prmFullViewServiceContainerAfterController',
 			//visa endast på alma-service!
-			template: '<div ng-if="$ctrl.parentCtrl.service.title==\'nui.getit.alma_tab1_nofull\' || $ctrl.parentCtrl.service.title==\'nui.getit.alma_tab1_nofulltextlinktorsrc\' || $ctrl.parentCtrl.service.title==\'nui.getit.almaviewit_services\'">' +
+			template: '<div ng-if="$ctrl.parentCtrl.service.title.indexOf(\'alma\')> -1">' +
 						'<div class="layout-full-width" ng-if="$ctrl.showOA">' +
 							'<div layout="column" layout-align="">' +
 								//TODO in i code table i Primo BO(översättning)
@@ -2683,67 +2707,68 @@ console.log(kth_vid);
 					'</div>'
 	});
 	
-	app.controller('prmFullViewServiceContainerAfterController',function ($scope, $http) {
+	app.controller('prmFullViewServiceContainerAfterController',function ($scope, $http, kth_oadoi, kth_logg) {
 		var vm = this;
 		vm.showOA = false;
-		console.log("prmFullViewServiceContainerAfterController");
-		console.log(vm.parentCtrl);
-		//Brief eller full view?
 		//Bevaka (watch) eftersom värdet inte alltid hunnit sättas.
+		//träfflista
 		if (typeof(vm.parentCtrl.result) != "undefined") {
 			$scope.$watch(function() { return vm.parentCtrl.result.delivery; }, function(delivery) {
 				if (typeof(delivery) != "undefined") {
 					if (typeof(vm.parentCtrl.result.pnx.addata.doi) == "undefined") {
-					} else { //visa bara för de som inte har full text /
-						if (vm.parentCtrl.result.delivery.displayedAvailability == "no_fulltext" ) {
+					} else { //visa bara för de som inte har full text(unpaywall önskar max 100 000 uppslag per dag)
+						//viewit_NFT – View It services are available, but there is no full text.
+						//viewit_getit_NFT – View It and Get It services are available, but there is no full text.
+						//if (vm.parentCtrl.result.delivery.displayedAvailability == "no_fulltext" || vm.parentCtrl.result.delivery.displayedAvailability == "viewit_NFT" || vm.parentCtrl.result.delivery.displayedAvailability == "viewit_getit_NFT" ) {
 							vm.doi = vm.parentCtrl.result.pnx.addata.doi[0] || '';
-						}
+						//}
 					}
-					if(vm.doi) {	
-						getoaDOI(vm.doi);
+					if(vm.doi) {
+						kth_logg.kthlogg("oaDOIfromunpaywall", vm.doi);		
+						kth_oadoi.getoaDOI(vm.doi).then(function(data, status) {
+							if (data.data.best_oa_location) {
+								vm.best_oa_location_url = data.data.best_oa_location.url;
+								vm.best_oa_location_evidence = data.data.best_oa_location.evidence;
+								vm.showOA = true;
+							} else {
+								vm.doi = false;
+							}
+						});
 					}
 				}
 			});
 		}
+		//fullpost/servicesida
 		if (typeof(vm.parentCtrl.item) != "undefined") {
-			$scope.$watch(function() { return vm.parentCtrl.item.delivery; }, function(delivery) {
-				if (typeof(delivery) != "undefined") {
-					if (typeof(vm.parentCtrl.item.pnx.addata.doi) == "undefined") {
-					} else {
-						if (vm.parentCtrl.item.delivery.displayedAvailability == "no_fulltext" ) {
-							vm.doi = vm.parentCtrl.item.pnx.addata.doi[0] || '';
+			//Bara för "almaframen"
+			$scope.$watch(function() { return vm.parentCtrl.service; }, function(service) {
+				if(service.title.indexOf('alma')>-1 && vm.parentCtrl.service.scrollId.indexOf('getit_link2')<0) {
+					$scope.$watch(function() { return vm.parentCtrl.item.delivery; }, function(delivery) {
+						if (typeof(delivery) != "undefined") {
+							if (typeof(vm.parentCtrl.item.pnx.addata.doi) == "undefined") {
+							} else {
+								//Visa även för de som har fulltext
+								//if (vm.parentCtrl.item.delivery.displayedAvailability == "no_fulltext" || vm.parentCtrl.item.delivery.displayedAvailability == "viewit_NFT" || vm.parentCtrl.item.delivery.displayedAvailability == "viewit_getit_NFT" ) {
+									vm.doi = vm.parentCtrl.item.pnx.addata.doi[0] || '';
+								//}
+							}
+							if(vm.doi) {
+								kth_logg.kthlogg("oaDOIfromunpaywall", vm.doi);
+								kth_oadoi.getoaDOI(vm.doi).then(function(data, status) {
+									if (data.data.best_oa_location) {
+										vm.best_oa_location_url = data.data.best_oa_location.url;
+										vm.best_oa_location_evidence = data.data.best_oa_location.evidence;
+										vm.showOA = true;
+									} else {
+										vm.doi = false;
+									}
+								});	
+							}
 						}
-					}
-					if(vm.doi) {	
-						getoaDOI(vm.doi);
-					}
+					});
 				}
 			});
 		}
-		
-		//Exempelsökning: "postprandial oxytocin"
-		function getoaDOI(doi) {
-			vm.parentCtrl.oaDOIisLoading = true;
-			vm.oaDOIdata = "";
-			var method = 'GET';
-			var url = 'https://api.oadoi.org/v2/' + doi + '?email=ask-kthb@kth.se';
-			$http({method: method, url: url, headers: {"X-From-ExL-API-Gateway": undefined},}).
-				then(function(response) {
-					var status = response.status;
-					var data = response.data;
-					vm.best_oa_location = response.data.best_oa_location;
-					if (vm.best_oa_location) {
-						vm.best_oa_location_url = response.data.best_oa_location.url;
-						vm.best_oa_location_evidence = response.data.best_oa_location.evidence;
-						vm.showOA = true;
-					} else {
-						vm.doi = false;
-					}
-				}, function(response) {
-					vm.doi = false;
-				});
-		}
-		
 	});
 	
 	/**********************************************************
@@ -2827,8 +2852,6 @@ console.log(kth_vid);
 			);
 		});
 	}]);
-
-	
 	
 	/*******************
 	
@@ -2879,7 +2902,7 @@ function receiveMessagefromalma(event)
 				licelement.appendChild(s).style.backgroundColor="grey";
 				licelement.appendChild(s).style.display="block";
 				licelement.appendChild(s).style.position="fixed";
-				var x = (msg.screenX) + 20 + 'px', y = (msg.screenY) - 100 + 'px';
+				var x = (msg.screenX) - window.screenX + 20 + 'px', y = (msg.screenY) - window.screenY - 100 + 'px';
 				licelement.appendChild(s).style.top= y;
 				licelement.appendChild(s).style.left= x;
 				licelement.appendChild(s).style.zIndex="9999";
