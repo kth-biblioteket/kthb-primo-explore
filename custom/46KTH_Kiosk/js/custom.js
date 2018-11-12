@@ -3075,7 +3075,6 @@ Kioskanpassningar inlagda med "//Kiosk"
 								//}
 							}
 							if(vm.doi) {
-								console.log("getoaDOI");
 								kth_oadoi.getoaDOI(vm.doi).then(function(data, status) {
 									if (data.data.best_oa_location) {
 										vm.best_oa_location_url = data.data.best_oa_location.url;
