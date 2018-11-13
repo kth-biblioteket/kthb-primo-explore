@@ -32,26 +32,20 @@ prm-search>md-content>div:nth-of-type(1), prm-search>md-content>div:nth-of-type(
 }
 
 /* se till att skapa tomrummet på varje sida av sidhuvudet och att de tar lika mycket plats*/
-
-prm-topbar {
-	display: flex; /* gör om till flex*/
-	padding: 0 1.5em; /* samma sidopadding som sökrutan*/
-}
-
-prm-top-bar-before, prm-topbar-after {
+prm-skip-to, prm-user-area-expandable {
 	flex: 1 1 15% !important; /* se till att alla sidotomrum tar upp lika mkt plats.*/
 	max-width: 15% !important;
-	background-color: darksalmon;
+	background-color: darksalmon !important;
 }
 
-.top-nav-bar {
-	flex:1; /* se till att själva sidhuvudet tar upp resten av flexutrymmet*/
+/* samma sidopadding som sökrutan*/
+prm-topbar {
+	padding: 0 1.5em; 
 }
 
 /* se till att skapa tomrummet på varje sida av sökrutan och att de tar lika mycket plats*/
-
 prm-search-bar>div:nth-of-type(1)>div:nth-of-type(1)>div:nth-of-type(1),prm-search-bar>div:nth-of-type(1)>div:nth-of-type(1)>div:nth-of-type(4) {
-	flex: 1 1 15% !important; /* se till att alla sidotomrum tar upp lika mkt plats.*/
+	flex: 1 1 15% !important;
 	max-width: 15% !important;
 	background-color: darksalmon;
 }
@@ -68,18 +62,22 @@ prm-search-bar>div:nth-of-type(1)>div:nth-of-type(1)>div:nth-of-type(3) {
     max-width: 8% !important;
 }
 
-
 /*****************************************************
 
 Layout
 
-Sidhuvudet, logga + menyer
+Sidhuvudet, logga + egen meny
 
 ******************************************************/
 
-/* Sätt bakgrund */
+/* Rätt höjd */
+prm-topbar {
+	height: unset;
+}
+/* vit bakgrund, padding*/
 prm-topbar .top-nav-bar {
-	background-color: #ffffff;
+	padding: 1em 0;
+	background-color: #ffffff; 
 }
 
 /* dölj de divs som upptar mellanrum i sidhuvudet */
@@ -87,18 +85,23 @@ prm-topbar>div:nth-of-type(1)>div:nth-of-type(1),prm-topbar>div:nth-of-type(1)>d
 	display: none;
 }
 
-/* Dölj ExLibris Meny*/
+/* Dölj ExLibris Meny */
 prm-main-menu {
 	display: none;
 }
 
-
-/* se till att logga plus text tar upp flexutrymme och att loggan hamnar centrerat i höjd*/
+/* se till att logga plus text tar upp flexutrymme och att loggan hamnar centrerat i höjd */
 prm-topbar prm-logo {
-	flex: 1 1 50%;
-	max-width: 50%;
+	flex: 1 1 27%;
+	max-width: 27%;
 	display: flex;
 	align-items: center;
+}
+
+/* se till vår egen meny tar upp rätt utrymme */
+prm-search-bookmark-filter {
+	flex: 1 1 43% !important;
+	max-width: 43% !important;
 }
 
 /* sätt loggans höjd/storlek */
@@ -153,3 +156,37 @@ Layout
 Egen Meny
 
 ******************************************************/
+
+/* dölj logga in*/
+
+prm-user-area-expandable .md-button, prm-user-area-expandable md-menu {
+	display: none;
+}
+
+/* dölj favoriter och sökhistorik*/
+prm-search-bookmark-filter>div:nth-of-type(1),prm-search-bookmark-filter>a:nth-of-type(1) {
+	display: none;
+}
+
+/* se till att knapparna får rätt storlek och färger */
+prm-search-bookmark-filter-after .md-button {
+	line-height: 24px;
+	background-color: #ffffff;
+	text-transform: uppercase;
+	color: #1954a6 !important;
+	display: flex;
+	flex-direction: column;
+}
+
+prm-search-bookmark-filter-after md-icon, prm-search-bookmark-filter-after prm-icon {
+	margin: 0;
+	height: 24px;
+}
+
+prm-search-bookmark-filter-after span {
+	line-height: 100%;
+}
+
+prm-search-bookmark-filter-after a{
+	box-shadow: none !important;
+}
