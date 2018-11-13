@@ -1,0 +1,155 @@
+/*********************************************
+
+KTH-Anpassningar för Primo New UI
+
+**********************************************
+
+/****************************************************
+
+Rättning för iPhone IOS 11 från Ex libris 2017-11-01
+
+*****************************************************/
+.md-dialog-container {
+  height: 100% !important;
+  position: fixed !important;
+  top: 0px !important;
+}
+
+/*****************************************************
+
+Layout
+
+Fixa till tomrummen som finns på sidan om
+Sidhuvud, sökruta och resultat
+
+******************************************************/
+
+/* se till att tomrummet på varje sida av sökresultat+facetter tar lika mycket plats*/
+prm-search>md-content>div:nth-of-type(1), prm-search>md-content>div:nth-of-type(4) {
+	flex: 1 1 15% !important;/* se till att alla sidotomrum tar upp lika mkt plats.*/
+	max-width: 15% !important;
+	background-color: darksalmon !important;
+}
+
+/* se till att skapa tomrummet på varje sida av sidhuvudet och att de tar lika mycket plats*/
+
+prm-topbar {
+	display: flex; /* gör om till flex*/
+	padding: 0 1.5em; /* samma sidopadding som sökrutan*/
+}
+
+prm-top-bar-before, prm-topbar-after {
+	flex: 1 1 15% !important; /* se till att alla sidotomrum tar upp lika mkt plats.*/
+	max-width: 15% !important;
+	background-color: darksalmon;
+}
+
+.top-nav-bar {
+	flex:1; /* se till att själva sidhuvudet tar upp resten av flexutrymmet*/
+}
+
+/* se till att skapa tomrummet på varje sida av sökrutan och att de tar lika mycket plats*/
+
+prm-search-bar>div:nth-of-type(1)>div:nth-of-type(1)>div:nth-of-type(1),prm-search-bar>div:nth-of-type(1)>div:nth-of-type(1)>div:nth-of-type(4) {
+	flex: 1 1 15% !important; /* se till att alla sidotomrum tar upp lika mkt plats.*/
+	max-width: 15% !important;
+	background-color: darksalmon;
+}
+
+/* se till div för sökrutan tar rätt utrymme*/
+prm-search-bar>div:nth-of-type(1)>div:nth-of-type(1)>div:nth-of-type(2) {
+	flex: 1 1 62% !important;
+    max-width: 62% !important;
+}
+
+/* se till div för advanced search-knappen tar rätt utrymme*/
+prm-search-bar>div:nth-of-type(1)>div:nth-of-type(1)>div:nth-of-type(3) {
+	flex: 1 1 8% !important;
+    max-width: 8% !important;
+}
+
+
+/*****************************************************
+
+Layout
+
+Sidhuvudet, logga + menyer
+
+******************************************************/
+
+/* Sätt bakgrund */
+prm-topbar .top-nav-bar {
+	background-color: #ffffff;
+}
+
+/* dölj de divs som upptar mellanrum i sidhuvudet */
+prm-topbar>div:nth-of-type(1)>div:nth-of-type(1),prm-topbar>div:nth-of-type(1)>div:nth-of-type(2) {
+	display: none;
+}
+
+/* Dölj ExLibris Meny*/
+prm-main-menu {
+	display: none;
+}
+
+
+/* se till att logga plus text tar upp flexutrymme och att loggan hamnar centrerat i höjd*/
+prm-topbar prm-logo {
+	flex: 1 1 50%;
+	max-width: 50%;
+	display: flex;
+	align-items: center;
+}
+
+/* sätt loggans höjd/storlek */
+prm-logo .product-logo {
+    padding: 0px;
+    height: 40px;
+}
+
+/* placera "KTH Biblioteket" rätt och sätt fontstorlek */
+prm-topbar prm-logo-after {
+	top: 8px;
+    position: relative;
+    padding-left: 10px;
+	font-size: 2em;
+}
+
+/*  */
+prm-logo prm-logo-after a {
+	color: #525252 !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+
+/*****************************************************
+
+Layout
+
+Advanced search-knappen
+
+******************************************************/
+
+prm-search-bar .search-switch-buttons {
+	padding-top: 0px;
+}
+
+prm-search-bar .search-switch-buttons .md-button.switch-to-advanced {
+	line-height: 60px;
+	background-color: rgb(255, 255, 255);
+    padding: 10px 10px 10px 10px;
+    color: #1954a6;
+    line-height: 20px;
+    white-space: pre-wrap;
+    width: 100px;
+    max-height: 60px;	
+}
+
+/*****************************************************
+
+Layout
+
+Egen Meny
+
+******************************************************/
