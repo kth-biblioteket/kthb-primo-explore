@@ -142,23 +142,12 @@ console.log(kth_vid);
 	app.controller('prmExploreMainAfterController', function ($compile, $scope, $http,$rootScope,$timeout,$templateCache, $element,Idle,$location,$translate) {
         var vm = this;
 		
-		/*************************************************************
-		
-		Templates(i $templateCache) för Primo directives som KTH-anpassats.
-		
-		Dessa måste ses över vid varje ny release!!
-		
-		Ändra strategi till att endast använda  After - "placeholder directives" som 
-		exlibris har lagt in sist i varje eget directive: prm-[whatever]-after.
-		
-		*************************************************************/
-		
 		//språkinställning om det finns i URL ("lang=sv_SE" eller "prefLang=sv_SE") default = en_US
 		
 		$rootScope.$on('$translateChangeSuccess', function () {
 			vm.absUrl = $location.absUrl();
 			if ((vm.absUrl.indexOf("lang=sv_SE")!== -1 || vm.absUrl.indexOf("prefLang=sv_SE")!== -1) && $translate.use()=="en_US") {
-				$translate.use("sv_SE");
+				//$translate.use("sv_SE");
 			}
 		});
 		
@@ -191,7 +180,7 @@ console.log(kth_vid);
 		controller: 'prmSearchBookmarkFilterAfterController',
 		template: 
 		'<div layout="row">' +
-		//KTHB Meny (ordningen ändrad)
+		//KTHB Meny
 			//Help
 			'<div>' +
 				'<md-button aria-label="{{$ctrl.getLibraryCardAriaLabel() | translate}}" class="button-with-icon zero-margin" ng-click="$ctrl.goToHELP()">' +
@@ -233,17 +222,19 @@ console.log(kth_vid);
 			'</div>' +
 			'<prm-library-card-menu></prm-library-card-menu>' +
 			//Flytta till extra toppsiduhvud
-			//'<prm-change-lang aria-label="{{\'eshelf.signin.title\' | translate}}" ng-if="$ctrl.displayLanguage" label-type="icon"></prm-change-lang>' +
+			//'<prm-change-lang aria-label="{{\'eshelf.signin.title\' | translate}}" label-type="icon">asdad</prm-change-lang>' +
 			'<prm-authentication layout="flex" [is-logged-in]="$ctrl.userName().length > 0"></prm-authentication>' + 
 		'</div>'
 	});
 
-	app.controller('prmSearchBookmarkFilterAfterController', function ($translate,$rootScope,$state) {
+	app.controller('prmSearchBookmarkFilterAfterController', function ($translate,$rootScope) {
 		var vm = this;
 		console.log($rootScope);
 		vm.vid = vm.parentCtrl.primolyticsService.userSessionManagerService.vid;
 		vm.goToHELP = goToHELP;
 		vm.goToKTHDatabases = goToKTHDatabases;
+
+		//$ctrl.displayLanguage
 
 		//Anpassa länkar till valt språk
 		vm.kth_language = $translate.use();	
@@ -270,20 +261,37 @@ console.log(kth_vid);
 		}
 	});
 
-	/*****************************************
-	
-	prm-user-area-after
-		
-	*****************************************/
-	app.component('prmUserAreaAfter', {
+	app.component('prmTopBarBefore', {
 		bindings: {parentCtrl: '<'},
-		controller: 'prmUserAreaAfterController',
+		controller: 'prmTopBarBeforeController',
+		template: 
+		//Visa vem som är inloggad / språkbyte
+		//Gör om till att använda flaggor och ingen selectbox
+		'<div ng-if="$ctrl.kth_language == \'en_US\'">' +
+			'<a class="kth_link" layout="row" layout-align="center center" ng-click="changelang(\'sv_SE\')">' +
+				'<span>Svenska&nbsp</span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="12.5" viewBox="0 0 16 10"><rect width="16" height="10" fill="#005293"/><rect width="2" height="10" x="5" fill="#FECB00"/><rect width="16" height="2" y="4" fill="#FECB00"/></svg>' +
+			'</a>' +
+		'</div>' +
+		'<div ng-if="$ctrl.kth_language == \'sv_SE\'">' +
+			'<a class="kth_link" layout="row" layout-align="center center" ng-click="changelang(\'en_US\')">' +
+				'English&nbsp<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 30" width="20" height="12"><clipPath id="t"><path d="M25,15 h25 v15 z v15 h-25 z h-25 v-15 z v-15 h25 z"/></clipPath><path d="M0,0 v30 h50 v-30 z" fill="#00247d"/><path d="M0,0 L50,30 M50,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L50,30 M50,0 L0,30" clip-path="url(#t)" stroke="#cf142b" stroke-width="4"/><path d="M25,0 v30 M0,15 h50" stroke="#fff" stroke-width="10"/><path d="M25,0 v30 M0,15 h50" stroke="#cf142b" stroke-width="6"/></svg>' +
+			'</a>' +
+		'</div>'
+		//'<prm-change-lang-after parent-ctrl="$ctrl"></prm-change-lang-after>'
 	});
+
+	app.controller('prmTopBarBeforeController', function ($scope, $translate) {
+		var vm = this;
+		vm.kth_language = $translate.use();	
+		$scope.changelang = function (langKey) {
+			$translate.use(langKey).then((la) => {
+				vm.kth_language = la;
+			});
+		};
+	});
+
 	
-	app.controller('prmUserAreaAfterController', function ($scope,$rootScope,$timeout,$translate) {
-		
-		
-	});
+
 	app.component('prmTopbarAfter', {
 		bindings: {parentCtrl: '<'},
 		controller: 'prmTopbarAfterController',
