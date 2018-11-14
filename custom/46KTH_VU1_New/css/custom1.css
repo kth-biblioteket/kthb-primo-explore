@@ -43,6 +43,21 @@ prm-topbar {
 	padding: 0 1.5em; 
 }
 
+@media (max-width: 1279px) and (min-width: 200px) {
+
+	prm-search>md-content>div:nth-of-type(1), prm-search>md-content>div:nth-of-type(4) {
+		display: none;
+	}
+	
+	prm-skip-to, prm-user-area-expandable {
+		display: none;
+	}
+
+	prm-topbar {
+		padding: 0; 
+	}
+}
+
 /* se till att skapa tomrummet på varje sida av sökrutan och att de tar lika mycket plats*/
 prm-search-bar>div:nth-of-type(1)>div:nth-of-type(1)>div:nth-of-type(1),prm-search-bar>div:nth-of-type(1)>div:nth-of-type(1)>div:nth-of-type(4) {
 	flex: 1 1 15% !important;
@@ -52,14 +67,15 @@ prm-search-bar>div:nth-of-type(1)>div:nth-of-type(1)>div:nth-of-type(1),prm-sear
 
 /* se till div för sökrutan tar rätt utrymme*/
 prm-search-bar>div:nth-of-type(1)>div:nth-of-type(1)>div:nth-of-type(2) {
-	flex: 1 1 62% !important;
-    max-width: 62% !important;
+	flex: 1 !important;
+	max-width: 1180px !important;
 }
 
 /* se till div för advanced search-knappen tar rätt utrymme*/
 prm-search-bar>div:nth-of-type(1)>div:nth-of-type(1)>div:nth-of-type(3) {
-	flex: 1 1 8% !important;
-    max-width: 8% !important;
+	flex: 1 !important;
+	max-width: 110px !important;
+	padding-left: 10px !important;
 }
 
 /*****************************************************
@@ -78,6 +94,12 @@ prm-topbar {
 prm-topbar .top-nav-bar {
 	padding: 1em 0;
 	background-color: #ffffff; 
+}
+
+@media (max-width: 1279px) and (min-width: 200px) {
+	prm-topbar .top-nav-bar {
+		padding: 1em;
+	}
 }
 
 /* dölj de divs som upptar mellanrum i sidhuvudet */
@@ -104,6 +126,19 @@ prm-search-bookmark-filter {
 	max-width: 43% !important;
 }
 
+@media (max-width: 1279px) and (min-width: 200px) {
+	
+	prm-topbar prm-logo {
+		flex: 1 1 40%;
+		max-width: 40%;
+	}
+
+	prm-search-bookmark-filter {
+		flex: 1 1 60% !important;
+		max-width: 60% !important;
+	}
+}
+
 /* sätt loggans höjd/storlek */
 prm-logo .product-logo {
     padding: 0px;
@@ -124,6 +159,16 @@ prm-logo prm-logo-after a {
     background-color: transparent !important;
     box-shadow: none !important;
 }
+
+
+/*****************************************************
+
+Layout
+
+Sökrutan
+
+******************************************************/
+
 
 
 /*****************************************************
