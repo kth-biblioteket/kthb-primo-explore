@@ -223,18 +223,19 @@ console.log(kth_vid);
 			'<prm-library-card-menu></prm-library-card-menu>' +
 			//Flytta till extra toppsiduhvud
 			//'<prm-change-lang aria-label="{{\'eshelf.signin.title\' | translate}}" label-type="icon">asdad</prm-change-lang>' +
-			'<prm-authentication layout="flex" [is-logged-in]="$ctrl.userName().length > 0"></prm-authentication>' + 
+			'<prm-authentication layout="flex" [is-logged-in]="$ctrl.userName.length > 0"></prm-authentication>' + 
 		'</div>'
 	});
 
 	app.controller('prmSearchBookmarkFilterAfterController', function ($translate,$rootScope) {
 		var vm = this;
-		console.log($rootScope);
+
+		//Hämta username att visa i översta sidhuvudet
+		vm.userName = $rootScope.$$childTail.$ctrl.userSessionManagerService.getUserName();
+		
 		vm.vid = vm.parentCtrl.primolyticsService.userSessionManagerService.vid;
 		vm.goToHELP = goToHELP;
 		vm.goToKTHDatabases = goToKTHDatabases;
-
-		//$ctrl.displayLanguage
 
 		//Anpassa länkar till valt språk
 		vm.kth_language = $translate.use();	
@@ -280,8 +281,10 @@ console.log(kth_vid);
 		//'<prm-change-lang-after parent-ctrl="$ctrl"></prm-change-lang-after>'
 	});
 
-	app.controller('prmTopBarBeforeController', function ($scope, $translate) {
+	app.controller('prmTopBarBeforeController', function ($rootScope, $scope, $translate) {
 		var vm = this;
+		
+		/* Funktion för att ändra språk */
 		vm.kth_language = $translate.use();	
 		$scope.changelang = function (langKey) {
 			$translate.use(langKey).then((la) => {

@@ -153,8 +153,8 @@ prm-topbar prm-logo-after {
 	font-size: 2em;
 }
 
-/*  */
-prm-logo prm-logo-after a {
+/* fixa länkar */
+prm-logo a, prm-logo prm-logo-after a {
 	color: #525252 !important;
     background-color: transparent !important;
     box-shadow: none !important;
@@ -223,15 +223,18 @@ prm-search-bookmark-filter-after .md-button {
 	flex-direction: column;
 }
 
+/* storlek/höjd på knappikoner */
 prm-search-bookmark-filter-after md-icon, prm-search-bookmark-filter-after prm-icon {
 	margin: 0;
 	height: 24px;
 }
 
+/* höjd på text under menyikoner */
 prm-search-bookmark-filter-after span {
 	line-height: 100%;
 }
 
-prm-search-bookmark-filter-after a{
+/* fixa länkar */
+prm-search-bookmark-filter-after a, {
 	box-shadow: none !important;
 }
