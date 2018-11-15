@@ -305,6 +305,7 @@ console.log(kth_vid);
 
 	app.controller('IconAfterController', [function() {
 		var vm = this;
+		// Byt ut pin ikkonen till hjärta.
 		var icon = vm.parentCtrl.iconDefinition;
 		if (icon === 'prm_pin' || icon === 'prm_unpin') {
 		  var icons = {
@@ -312,7 +313,6 @@ console.log(kth_vid);
 			'prm_unpin': '<svg width="100%" height="100%" viewBox="0 0 24 24" y="1032" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>'
 		  };
 		  var element = vm.parentCtrl.$element[0];
-		  element.classList.remove('rotate-25');
 		  element.innerHTML = '<md-icon md-svg-icon="primo-ui:' + icon + '" alt="" class="md-primoExplore-theme" aria-hidden="true">' + icons[icon] + '</md-icon>';
 		}
 	}]);
