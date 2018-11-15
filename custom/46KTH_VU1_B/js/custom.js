@@ -2783,22 +2783,22 @@ console.log(kth_vid);
 										//best_oa_location.host_type = publisher
 									//"grön" villkor
 									//acceptedVersion
-										//best_oa_location.host_type = repository && version = acceptedVersion
+										//best_oa_location.host_type == repository && version = acceptedVersion
 									//publishedVersion
-										//best_oa_location.host_type = repository && version = publishedVersion
+										//best_oa_location.host_type == repository && version = publishedVersion
 									//submittedVersion
-										//best_oa_location.host_type = repository && version = submittedVersion
+										//best_oa_location.host_type == repository && version = submittedVersion
 								
 								if(data.data.best_oa_location.host_type == 'publisher') {
 									vm.gold = true;
 								}
-								if(data.data.best_oa_location.version == 'publishedVersion' && !vm.gold) {
+								if(data.data.best_oa_location.host_type == "repository" && data.data.best_oa_location.version == 'publishedVersion') {
 									vm.greenpublished = true;
 								}
-								if(data.data.best_oa_location.version == 'acceptedVersion' && !vm.gold) {
+								if(data.data.best_oa_location.host_type == "repository" && data.data.best_oa_location.version == 'acceptedVersion') {
 									vm.greenaccepted = true;
 								}
-								if(data.data.best_oa_location.version == 'submittedVersion' && !vm.gold) {
+								if(data.data.best_oa_location.host_type == "repository" && data.data.best_oa_location.version == 'submittedVersion') {
 									vm.greensubmittedVersion = true;
 								}
 								vm.showOA = true;

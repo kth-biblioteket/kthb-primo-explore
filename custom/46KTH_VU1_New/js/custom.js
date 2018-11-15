@@ -181,7 +181,7 @@ console.log(kth_vid);
 		template: 
 		'<div layout="row">' +
 		//KTHB Meny
-			//Help
+			//Hjälp
 			'<div>' +
 				'<md-button aria-label="{{$ctrl.getLibraryCardAriaLabel() | translate}}" class="button-with-icon zero-margin" ng-click="$ctrl.goToHELP()">' +
 					'<md-icon class="md-primoExplore-theme" aria-hidden="true" style="">' + 
@@ -205,10 +205,9 @@ console.log(kth_vid);
 					'<span translate="mainmenu.label.find_db"></span>'+
 				'</a>' + 
 			'</div>' +
-			//Favourites
+			//Favoriter
 			'<div>' +
-				//vid från $ctrl 
-				'<md-button class="button-with-icon zero-margin" ng-if="!ctrl.isFavorites" id="favorites-button" aria-label="Go to my favorites" ng-click="ctrl.goToFavorties()">' +
+				'<md-button class="button-with-icon zero-margin" ng-if="!ctrl.isFavorites" id="favorites-button" aria-label="Go to my favorites" ng-click="$ctrl.goToFavorites()">' +
 					'<prm-icon aria-label="Go to my favorites" icon-type="svg" svg-icon-set="action" icon-definition="ic_favorite_outline_24px">' + 
 						'<md-icon ng-if="::(!(ctrl.iconType === \'fa\'))" md-svg-icon="action:ic_favorite_outline_24px" aria-label="nui.favorites.goFavorites.tooltip" class="md-primoExplore-theme" aria-hidden="true"><svg width="100%" height="100%" viewBox="0 0 24 24" y="1056" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"></path></svg>' +
 						'</md-icon>' + 
@@ -221,21 +220,19 @@ console.log(kth_vid);
 				'</md-button>' +
 			'</div>' +
 			'<prm-library-card-menu></prm-library-card-menu>' +
-			//Flytta till extra toppsiduhvud
-			//'<prm-change-lang aria-label="{{\'eshelf.signin.title\' | translate}}" label-type="icon">asdad</prm-change-lang>' +
 			'<prm-authentication layout="flex" [is-logged-in]="$ctrl.userName.length > 0"></prm-authentication>' + 
 		'</div>'
 	});
 
-	app.controller('prmSearchBookmarkFilterAfterController', function ($translate,$rootScope) {
+	app.controller('prmSearchBookmarkFilterAfterController', function ($translate, $rootScope, $location) {
 		var vm = this;
 
-		//Hämta username att visa i översta sidhuvudet
 		vm.userName = $rootScope.$$childTail.$ctrl.userSessionManagerService.getUserName();
 		
-		vm.vid = vm.parentCtrl.primolyticsService.userSessionManagerService.vid;
-		vm.goToHELP = goToHELP;
-		vm.goToKTHDatabases = goToKTHDatabases;
+		vm.goToFavorites = goToFavorites;
+		function goToFavorites() {
+			$location.path( "/favorites" );
+		}
 
 		//Anpassa länkar till valt språk
 		vm.kth_language = $translate.use();	
@@ -245,6 +242,7 @@ console.log(kth_vid);
 			vm.kth_databaseurl = 'https://www.kth.se/en/kthb/sokverktyg/databaser-och-soktjanster-1.546373';
 		}
 
+		vm.goToHELP = goToHELP;
 		function goToHELP() {
 			if(vm.kth_language == 'sv_SE') {
 				window.open('https://www.kth.se/kthb/sokverktyg/sokguider/primo-help-1.614252', 'Help', 'height=800,width=600');
@@ -253,6 +251,7 @@ console.log(kth_vid);
 			}
 		}
 
+		vm.goToKTHDatabases = goToKTHDatabases;
 		function goToKTHDatabases() {
 			if(vm.kth_language == 'sv_SE') {
 				location.href = 'https://www.kth.se/kthb/sokverktyg/databaser-och-soktjanster-1.546373';
@@ -270,23 +269,27 @@ console.log(kth_vid);
 		//skapa tomrummet på sidorna och linjera till höger
 		'<div flex="15" flex-md="0" flex-sm="0" flex-xs="0" class="flex-xs-0 flex-sm-0 flex-md-0 flex-15"></div>' +
 		'<div flex layout="row" layout-align="end center" ng-if="$ctrl.kth_language == \'en_US\'">' +
+			'<div style="padding-bottom: .1em;">Logged in as: {{$ctrl.username}}&nbsp</div>' +
 			'<a class="kth_link" ng-click="changelang(\'sv_SE\')">' +
 				'<span>Svenska&nbsp</span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="12.5" viewBox="0 0 16 10"><rect width="16" height="10" fill="#005293"/><rect width="2" height="10" x="5" fill="#FECB00"/><rect width="16" height="2" y="4" fill="#FECB00"/></svg>' +
 			'</a>' +
 		'</div>' +
 		'<div flex layout="row" layout-align="end center" ng-if="$ctrl.kth_language == \'sv_SE\'">' +
+			'<div style="padding-bottom: .1em;">Inloggad som: {{$ctrl.username}}&nbsp</div>' +
 			'<a class="kth_link" ng-click="changelang(\'en_US\')">' +
 				'English&nbsp<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 30" width="20" height="12"><clipPath id="t"><path d="M25,15 h25 v15 z v15 h-25 z h-25 v-15 z v-15 h25 z"/></clipPath><path d="M0,0 v30 h50 v-30 z" fill="#00247d"/><path d="M0,0 L50,30 M50,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L50,30 M50,0 L0,30" clip-path="url(#t)" stroke="#cf142b" stroke-width="4"/><path d="M25,0 v30 M0,15 h50" stroke="#fff" stroke-width="10"/><path d="M25,0 v30 M0,15 h50" stroke="#cf142b" stroke-width="6"/></svg>' +
 			'</a>' +
 		'</div>' +
 		'<div flex="15" flex-md="0" flex-sm="0" flex-xs="0" class="flex-xs-0 flex-sm-0 flex-md-0 flex-15"></div>'
-		//'<prm-change-lang-after parent-ctrl="$ctrl"></prm-change-lang-after>'
 	});
 
 	app.controller('prmTopBarBeforeController', function ($rootScope, $scope, $translate) {
 		var vm = this;
 		
-		/* Funktion för att ändra språk */
+		//Hämta username att visa i översta sidhuvudet
+		vm.username = $rootScope.$$childTail.$ctrl.userSessionManagerService.getUserName();
+
+		//Funktion för att ändra språk 
 		vm.kth_language = $translate.use();	
 		$scope.changelang = function (langKey) {
 			$translate.use(langKey).then((la) => {
@@ -295,18 +298,24 @@ console.log(kth_vid);
 		};
 	});
 
-	
-
-	app.component('prmTopbarAfter', {
-		bindings: {parentCtrl: '<'},
-		controller: 'prmTopbarAfterController',
+	app.component('prmIconAfter', {
+		'bindings': { 'parentCtrl': '<' },
+		'controller': 'IconAfterController'
 	});
 
-	app.controller('prmTopbarAfterController', function ($scope, $http, $rootScope,$timeout) {
+	app.controller('IconAfterController', [function() {
 		var vm = this;
-		//Hämta username att visa i översta sidhuvudet
-		vm.parentCtrl.username = $rootScope.$$childTail.$ctrl.userSessionManagerService.getUserName();
-	});
+		var icon = vm.parentCtrl.iconDefinition;
+		if (icon === 'prm_pin' || icon === 'prm_unpin') {
+		  var icons = {
+			'prm_pin': '<svg width="100%" height="100%" viewBox="0 0 24 24" y="1056" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"></path></svg>',
+			'prm_unpin': '<svg width="100%" height="100%" viewBox="0 0 24 24" y="1032" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>'
+		  };
+		  var element = vm.parentCtrl.$element[0];
+		  element.classList.remove('rotate-25');
+		  element.innerHTML = '<md-icon md-svg-icon="primo-ui:' + icon + '" alt="" class="md-primoExplore-theme" aria-hidden="true">' + icons[icon] + '</md-icon>';
+		}
+	}]);
 
 	/*****************************************
 	

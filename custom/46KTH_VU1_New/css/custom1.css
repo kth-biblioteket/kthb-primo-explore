@@ -246,6 +246,11 @@ prm-search-bookmark-filter-after span {
 	line-height: 100%;
 }
 
+/* Favorithjärtat rakt */
+prm-search-bookmark-filter #favorites-button md-icon {
+	transform: rotate(0deg);
+}
+
 /* fixa länkar */
 prm-search-bookmark-filter-after a {
 	box-shadow: none !important;
@@ -323,8 +328,17 @@ prm-search-result-list .results-title {
     top: 0px;
 }
 
-/* dölj personalized result switch */
+/* spara sökning */
+prm-add-query-to-saved-searches .md-button {
+	color: #97abba !important;
+}
 
+/* snurra inte pin ikkonen (hjärtat) */
+prm-icon.pin-icon md-icon {
+	transform: rotate(0deg);
+}
+
+/* dölj personalized result switch */
 prm-search-result-list prm-personalize-results-button {
 	display: none;
 }
