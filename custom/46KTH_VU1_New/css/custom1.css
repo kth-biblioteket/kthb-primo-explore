@@ -17,7 +17,14 @@ Rättning för iPhone IOS 11 från Ex libris 2017-11-01
 
 /*****************************************************
 
-Layout
+vit bakgrund för hela sidan 
+
+*****************************************************/
+primo-explore>div {
+    background-color: #ffffff;
+}
+
+/*****************************************************
 
 Fixa till tomrummen som finns på sidan om
 Sidhuvud, sökruta och resultat
@@ -43,6 +50,7 @@ prm-topbar {
 	padding: 0 1.5em; 
 }
 
+/* anpassningar till mindre skärmar */
 @media (max-width: 1279px) and (min-width: 200px) {
 
 	prm-search>md-content>div:nth-of-type(1), prm-search>md-content>div:nth-of-type(4) {
@@ -80,11 +88,14 @@ prm-search-bar>div:nth-of-type(1)>div:nth-of-type(1)>div:nth-of-type(3) {
 
 /*****************************************************
 
-Layout
-
 Sidhuvudet, logga + egen meny
 
 ******************************************************/
+
+/* eget litet minisidhuvud med användarnamn och språkbyte */
+prm-top-bar-before {
+	display: flex;
+}
 
 /* Rätt höjd */
 prm-topbar {
@@ -92,10 +103,11 @@ prm-topbar {
 }
 /* vit bakgrund, padding*/
 prm-topbar .top-nav-bar {
-	padding: 1em 0;
-	background-color: #ffffff; 
+	background-color: #ffffff;
+	height: 60px; 
 }
 
+/* anpassningar till mindre skärmar */
 @media (max-width: 1279px) and (min-width: 200px) {
 	prm-topbar .top-nav-bar {
 		padding: 1em;
@@ -124,8 +136,10 @@ prm-topbar prm-logo {
 prm-search-bookmark-filter {
 	flex: 1 1 43% !important;
 	max-width: 43% !important;
+	margin: 0;
 }
 
+/* anpassningar till mindre skärmar */
 @media (max-width: 1279px) and (min-width: 200px) {
 	
 	prm-topbar prm-logo {
@@ -145,7 +159,7 @@ prm-logo .product-logo {
     height: 40px;
 }
 
-/* placera "KTH Biblioteket" rätt och sätt fontstorlek */
+/* placera rubriken "KTH Biblioteket" rätt och sätt fontstorlek */
 prm-topbar prm-logo-after {
 	top: 8px;
     position: relative;
@@ -163,17 +177,16 @@ prm-logo a, prm-logo prm-logo-after a {
 
 /*****************************************************
 
-Layout
-
 Sökrutan
 
 ******************************************************/
-
+/* KTH-blå bakgrund */
+prm-search-bar  {
+	background-color: #1954a6;
+}
 
 
 /*****************************************************
-
-Layout
 
 Advanced search-knappen
 
@@ -195,8 +208,6 @@ prm-search-bar .search-switch-buttons .md-button.switch-to-advanced {
 }
 
 /*****************************************************
-
-Layout
 
 Egen Meny
 
@@ -221,6 +232,7 @@ prm-search-bookmark-filter-after .md-button {
 	color: #1954a6 !important;
 	display: flex;
 	flex-direction: column;
+	padding: 10px 0px;
 }
 
 /* storlek/höjd på knappikoner */
@@ -235,6 +247,94 @@ prm-search-bookmark-filter-after span {
 }
 
 /* fixa länkar */
-prm-search-bookmark-filter-after a, {
+prm-search-bookmark-filter-after a {
 	box-shadow: none !important;
+}
+
+/*****************************************************
+
+Alert bar
+
+******************************************************/
+/* samma sidopadding som övriga*/ 
+prm-alert-bar>div {
+	padding: 0 1.5em;
+	background-color: #fff8c4 !important;
+}
+
+/* skapa tomrummet på sidorna */
+prm-alert-bar .bar {
+	padding: 0.5em 15%;
+	justify-content: flex-start;
+	background-color: #fff8c4 !important;
+	border: none !important;
+}
+
+/*****************************************************
+
+Egna facetter ovanför sökresultat
+
+******************************************************/
+/* gör om till flex och omvänd ordning*/
+prm-search-result-list {
+	display: flex;
+	flex-direction: column-reverse;
+}
+
+prm-search-result-list-after {
+    background-color: #ffffff;
+    padding-bottom: 10px;
+    padding-left: 7px;
+}
+
+#facettmenudiv {
+    display: flex;
+    background-color: transparent;
+    padding: .5em .75em;
+    padding: 0;
+}
+
+#facettmenu {
+    margin: 0;
+    padding: 2px 0px;
+}
+
+#facettmenu li {
+    display: inline;
+}
+
+#facettmenu a {
+    font-weight: normal;
+    color: #24A0D8;
+}
+
+#facettmenu span {
+    font-size: 0.9em;
+    font-style: italic;
+}
+
+/* sidnummers placering */
+prm-search-result-list .pages-separated-with-gaps .list-item-wrapper.first-in-page:first-of-type .md-subheader ._md-subheader-inner {
+	top: -27px;
+}
+
+/* antal sökträffars placering */
+prm-search-result-list .results-title {
+    top: 0px;
+}
+
+/* dölj personalized result switch */
+
+prm-search-result-list prm-personalize-results-button {
+	display: none;
+}
+
+/*****************************************************
+
+Resultat/Content
+
+******************************************************/
+/* Endast tillagd för att tomrummen på sidan om resultatet ska "synas" vid utveckling av layout*/
+md-content {
+	align-items: stretch !important;
 }

@@ -145,6 +145,7 @@ TODO: Anpassa till små skärmar
     display: inline-block;
 	overflow: visible;
 	white-space: initial;
+	top: 5px;
 }
 
 .tooltip .locationmap.tooltiptext {
@@ -157,33 +158,35 @@ TODO: Anpassa till små skärmar
 	content: none;
 }
 
+.tooltip-top {
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+}
+
 .tooltip .tooltiptext {
-	white-space: initial;
-    visibility: hidden;
-    width: 330px;
+	visibility: hidden;
+    position: absolute;
+    width: 520px;
     background-color: #8e8e8e;
     color: #fff;
     text-align: center;
-    border-radius: 6px;
     padding: 5px 5px;
-    position: absolute;
+    border-radius: 6px;
     z-index: 1;
-    top: 125%;
-    left: 50%;
-    margin-left: -310px;
     opacity: 0;
-    transition: opacity 1s;
+    transition: opacity 0.3s;
 }
 
 .tooltip .tooltiptext::after {
     content: "";
     position: absolute;
-    bottom: 100%;
+    top: 100%;
     left: 50%;
-    margin-left: 140px;
+    margin-left: -205px;
     border-width: 5px;
     border-style: solid;
-    border-color: transparent transparent #8e8e8e transparent;
+    border-color: #8e8e8e transparent transparent  transparent;
 }
 
 .tooltip:hover .tooltiptext {

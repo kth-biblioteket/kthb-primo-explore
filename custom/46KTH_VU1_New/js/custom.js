@@ -267,17 +267,19 @@ console.log(kth_vid);
 		controller: 'prmTopBarBeforeController',
 		template: 
 		//Visa vem som är inloggad / språkbyte
-		//Gör om till att använda flaggor och ingen selectbox
-		'<div ng-if="$ctrl.kth_language == \'en_US\'">' +
-			'<a class="kth_link" layout="row" layout-align="center center" ng-click="changelang(\'sv_SE\')">' +
+		//skapa tomrummet på sidorna och linjera till höger
+		'<div flex="15" flex-md="0" flex-sm="0" flex-xs="0" class="flex-xs-0 flex-sm-0 flex-md-0 flex-15"></div>' +
+		'<div flex layout="row" layout-align="end center" ng-if="$ctrl.kth_language == \'en_US\'">' +
+			'<a class="kth_link" ng-click="changelang(\'sv_SE\')">' +
 				'<span>Svenska&nbsp</span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="12.5" viewBox="0 0 16 10"><rect width="16" height="10" fill="#005293"/><rect width="2" height="10" x="5" fill="#FECB00"/><rect width="16" height="2" y="4" fill="#FECB00"/></svg>' +
 			'</a>' +
 		'</div>' +
-		'<div ng-if="$ctrl.kth_language == \'sv_SE\'">' +
-			'<a class="kth_link" layout="row" layout-align="center center" ng-click="changelang(\'en_US\')">' +
+		'<div flex layout="row" layout-align="end center" ng-if="$ctrl.kth_language == \'sv_SE\'">' +
+			'<a class="kth_link" ng-click="changelang(\'en_US\')">' +
 				'English&nbsp<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 30" width="20" height="12"><clipPath id="t"><path d="M25,15 h25 v15 z v15 h-25 z h-25 v-15 z v-15 h25 z"/></clipPath><path d="M0,0 v30 h50 v-30 z" fill="#00247d"/><path d="M0,0 L50,30 M50,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L50,30 M50,0 L0,30" clip-path="url(#t)" stroke="#cf142b" stroke-width="4"/><path d="M25,0 v30 M0,15 h50" stroke="#fff" stroke-width="10"/><path d="M25,0 v30 M0,15 h50" stroke="#cf142b" stroke-width="6"/></svg>' +
 			'</a>' +
-		'</div>'
+		'</div>' +
+		'<div flex="15" flex-md="0" flex-sm="0" flex-xs="0" class="flex-xs-0 flex-sm-0 flex-md-0 flex-15"></div>'
 		//'<prm-change-lang-after parent-ctrl="$ctrl"></prm-change-lang-after>'
 	});
 
@@ -812,8 +814,7 @@ console.log(kth_vid);
 		vm.absUrl = $location.absUrl();
 		vm.showfacets = false;
 		$scope.$on('urldataAdded', function(event, data) {
-			$timeout(function(){
-				vm.facetservice_results = vm.parentCtrl.facetService.results;
+			$scope.$watch(function() { return vm.parentCtrl.facetService.results; }, function(facetServiceresults) {
 				vm.physical_item_enabled = false;
 				vm.online_resources_enabled = false;
 				vm.books_enabled = false;
@@ -829,7 +830,7 @@ console.log(kth_vid);
 				vm.isfavorites = vm.parentCtrl.isFavorites;
 				//gå igenom alla facetter
 				//hittas en facett här så är den alltså aktiv och möjlig att begränsa resultatet med
-				vm.parentCtrl.facetService.results.forEach( 
+				facetServiceresults.forEach( 
 					function (item, index) {
 						if (item.name=='tlevel') {
 							item.values.forEach( 
@@ -896,7 +897,7 @@ console.log(kth_vid);
 					vm.bibldbfasett = "&facet=rtype,include,bibldbfasett";
 				}
 				vm.showfacets = true;
-			},2000); //slut timeout
+			}); //slut watch
 		});
 	
 	});	

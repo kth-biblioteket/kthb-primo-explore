@@ -2646,6 +2646,14 @@ console.log(kth_vid);
 		return data;
 	});
 	
+
+	app.filter('prettyJSON', function () {
+		function prettyPrintJson(json) {
+		  return JSON ? JSON.stringify(json, null, '  ') : 'your browser doesnt support JSON so cant pretty print';
+		}
+		return prettyPrintJson;
+	});
+
 	/**********************************************************
 	
 	prm-search-result-availability-line Träfflista
@@ -2661,13 +2669,21 @@ console.log(kth_vid);
 									'<div>' +
 										'<a style="color: #0f7d00" target="_new" href="{{$ctrl.best_oa_location_url}}">' +
 											'<span>Online open access</span>' +
-											'<span ng-if="$ctrl.gold">(Gold)</span>' +
+											'<span ng-if="$ctrl.gold">(Gold/Bronze)</span>' +
 											'<span ng-if="$ctrl.greenpublished">(Green published)</span>' +
 											'<span ng-if="$ctrl.greenaccepted">(Green accepted)</span>' +
+											'<span ng-if="$ctrl.greensubmittedVersion">(Green submitted)</span>' +
 											'<img style="width:14px;position: relative;top: 2px;" src="custom/' + kth_vid + '/img/open-access-icon.png"></img>' +
 											'<prm-icon external-link="" icon-type="svg" svg-icon-set="primo-ui" icon-definition="open-in-new" aria-label="externalLink">' +
 											'</prm-icon>' +
 										'</a>' +
+										'<span class="tooltip">' +
+											'<svg width="20px" height="20px" viewBox="0 0 24 24" id="ic_info_24px" y="1368" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path></svg>' +
+											'<span class="tooltiptext tooltip-top">' +
+												'<div>Text som möjligen Tage kan ha skrivit!</div>' +
+												'<div style="padding-top:10px">{{$ctrl.unpaywalljson | json}}</div>' +
+											'</span>' +
+										'</span>' +
 									'</div>' +
 								'</div>' +
 							'</div>' +
@@ -2701,13 +2717,22 @@ console.log(kth_vid);
 									'<div>' +
 										'<a style="color: #0f7d00" target="_new" href="{{$ctrl.best_oa_location_url}}">' +
 											'<span>Online open access</span>' +
-											'<span ng-if="$ctrl.gold">(Gold)</span>' +
+											'<span ng-if="$ctrl.gold">(Gold/Bronze)</span>' +
 											'<span ng-if="$ctrl.greenpublished">(Green published)</span>' +
 											'<span ng-if="$ctrl.greenaccepted">(Green accepted)</span>' +
+											'<span ng-if="$ctrl.greensubmittedVersion">(Green submitted)</span>' +
 											'<img style="width:14px;position: relative;top: 2px;" src="custom/' + kth_vid + '/img/open-access-icon.png"></img>' +
 											'<prm-icon external-link="" icon-type="svg" svg-icon-set="primo-ui" icon-definition="open-in-new" aria-label="externalLink">' +
 											'</prm-icon>' +
 										'</a>' +
+										'<span style="white-space: nowrap;">' + 
+											'<div class="tooltip" ng-mouseout="$ctrl.togglepolicy(this)" ng-mouseover="$ctrl.togglepolicy(this)" style="vertical-align: middle; position: relative;display: inline-block;overflow: visible;white-space: initial;">' +
+												'<div class="tooltiptext" style="white-space: initial;visibility: hidden;width: 330px;background-color: #8e8e8e;color: #fff;text-align: left;border-radius: 6px;padding: 10px 10px;position: absolute;z-index: 1;bottom: 125%;left: -25px;opacity: 0;transition: opacity 0.4s;">' +
+													'<div>Text som möjligen Tage kan ha skrivit!</div>' +
+												'</div>' +
+												'<svg width="20px" height="20px" viewBox="0 0 24 24" id="ic_info_24px" y="1368" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path></svg>' +
+											'</div>' +
+										'</span>' +
 									'</div>' +
 								'</div>' +
 							'</div>' +
@@ -2717,17 +2742,29 @@ console.log(kth_vid);
 
 	app.controller('prmFullViewServiceContainerAfterController',function ($scope, $http, kth_oadoi, kth_logg) {
 		var vm = this;
+		vm.unpaywalljson = "";
 		vm.showOA = false;
 		vm.gold = false;
 		vm.greenpublished = false;
 		vm.greenaccepted = false;
+
+		vm.togglepolicy = togglepolicy;
+		function togglepolicy(element) {
+			if (element.querySelector(".tooltiptext").style.visibility == "hidden") {
+				element.querySelector(".tooltiptext").style.visibility = "visible";
+				element.querySelector(".tooltiptext").style.opacity = "1";
+			} else {
+				element.querySelector(".tooltiptext").style.visibility = "hidden";
+				element.querySelector(".tooltiptext").style.opacity = "0";
+			}
+		}
 		//Bevaka (watch) eftersom värden inte alltid hunnit sättas.
 		//träfflista
 		if (typeof(vm.parentCtrl.result) != "undefined") {
 			$scope.$watch(function() { return vm.parentCtrl.result.delivery; }, function(delivery) {
 				if (typeof(delivery) != "undefined") {
 					if (typeof(vm.parentCtrl.result.pnx.addata.doi) == "undefined") {
-					} else { //visa bara för de som inte har full text(unpaywall önskar max 100 000 uppslag per dag, vi verkar generera ca 15-16000 per dag)
+					} else { //visa bara för de som inte har full text(unpaywall önskar max 100 000 uppslag per dag, vi verkar generera ca 15-25000 per dag)
 						//viewit_NFT – View It services are available, but there is no full text.
 						//viewit_getit_NFT – View It and Get It services are available, but there is no full text.
 						//if (vm.parentCtrl.result.delivery.displayedAvailability == "no_fulltext" || vm.parentCtrl.result.delivery.displayedAvailability == "viewit_NFT" || vm.parentCtrl.result.delivery.displayedAvailability == "viewit_getit_NFT" ) {
@@ -2738,19 +2775,31 @@ console.log(kth_vid);
 						kth_logg.kthlogg("oaDOIfromunpaywall", vm.doi);	
 						kth_oadoi.getoaDOI(vm.doi).then(function(data, status) {
 							if (data.data.best_oa_location) {
+								vm.unpaywalljson = data.data;
 								vm.best_oa_location_url = data.data.best_oa_location.url;
 								vm.best_oa_location_evidence = data.data.best_oa_location.evidence;
 								//Hantera att OA kan ha lite olika typer av publicerat material
-								//Är journal_is_in_doaj=true => Gold: Fully published articles available from the publisher
-								//Är journal_is_in_doaj=false och best_oa_location.version = publishedVersion =>  Green published: published articles available from repository
-								//Är journal_is_in_doaj=false och best_oa_location.version = acceptedVersion => Green accepted: final peer-reviewed manuscripts available without charge from a repository
-								//Vad är en som varken har journal_is_in_doaj eller publishedVersion/acceptedVersion??
-								vm.gold = data.data.journal_is_in_doaj;
+									//guld/bronze villkor:
+										//best_oa_location.host_type = publisher
+									//"grön" villkor
+									//acceptedVersion
+										//best_oa_location.host_type = repository && version = acceptedVersion
+									//publishedVersion
+										//best_oa_location.host_type = repository && version = publishedVersion
+									//submittedVersion
+										//best_oa_location.host_type = repository && version = submittedVersion
+								
+								if(data.data.best_oa_location.host_type == 'publisher') {
+									vm.gold = true;
+								}
 								if(data.data.best_oa_location.version == 'publishedVersion' && !vm.gold) {
 									vm.greenpublished = true;
 								}
 								if(data.data.best_oa_location.version == 'acceptedVersion' && !vm.gold) {
 									vm.greenaccepted = true;
+								}
+								if(data.data.best_oa_location.version == 'submittedVersion' && !vm.gold) {
+									vm.greensubmittedVersion = true;
 								}
 								vm.showOA = true;
 							} else {
