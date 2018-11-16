@@ -142,16 +142,8 @@ console.log(kth_vid);
 	app.controller('prmExploreMainAfterController', function ($compile, $scope, $http,$rootScope,$timeout,$templateCache, $element,Idle,$location,$translate) {
         var vm = this;
 		
-		//språkinställning om det finns i URL ("lang=sv_SE" eller "prefLang=sv_SE") default = en_US
-		
-		$rootScope.$on('$translateChangeSuccess', function () {
-			vm.absUrl = $location.absUrl();
-			if ((vm.absUrl.indexOf("lang=sv_SE")!== -1 || vm.absUrl.indexOf("prefLang=sv_SE")!== -1) && $translate.use()=="en_US") {
-				//$translate.use("sv_SE");
-			}
-		});
-		
-		//Citation Styles(men var är dessa egentligen konfigurerade?? Hittar inte i primo BO, men hämtas här: /primo_library/libweb/webservices/rest/v1/configuration/46KTH_VU1_L)
+		//Citation Styles(men var är dessa egentligen konfigurerade?? 
+		//Hittar inte i primo BO, men hämtas här: /primo_library/libweb/webservices/rest/v1/configuration/46KTH_VU1_L)
 		//Lägg även in dem i Primo BO för att få rätt namn/översättning (exvis default.citation.labels.vancouver)
 		
 		//Ta bort de vi inte vill ha
@@ -180,7 +172,6 @@ console.log(kth_vid);
 		controller: 'prmSearchBookmarkFilterAfterController',
 		template: 
 		'<div layout="row">' +
-		//KTHB Meny
 			//Hjälp
 			'<div>' +
 				'<md-button aria-label="{{$ctrl.getLibraryCardAriaLabel() | translate}}" class="button-with-icon zero-margin" ng-click="$ctrl.goToHELP()">' +
@@ -219,7 +210,9 @@ console.log(kth_vid);
 					'<span translate="nui.favorites.header"></span>' + 
 				'</md-button>' +
 			'</div>' +
+			//Mitt konto
 			'<prm-library-card-menu></prm-library-card-menu>' +
+			//Logga in/ut
 			'<prm-authentication layout="flex" [is-logged-in]="$ctrl.userName.length > 0"></prm-authentication>' + 
 		'</div>'
 	});
@@ -315,6 +308,14 @@ console.log(kth_vid);
 		  var element = vm.parentCtrl.$element[0];
 		  element.innerHTML = '<md-icon md-svg-icon="primo-ui:' + icon + '" alt="" class="md-primoExplore-theme" aria-hidden="true">' + icons[icon] + '</md-icon>';
 		}
+		//Byt ut open actions more-ikkonen till "share"
+		if (icon === 'ic_more_horiz_24px') {
+			var icons = {
+			  'ic_share_24px': '<svg width="100%" height="100%" viewBox="0 0 24 24" id="ic_share_24px" x="120" y="72" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"></path></svg>'
+			};
+			var element = vm.parentCtrl.$element[0];
+			element.innerHTML = '<md-icon md-svg-icon="social:ic_share_24px" alt="" class="md-primoExplore-theme" aria-hidden="true">' + icons['ic_share_24px'] + '</md-icon>';
+		  }
 	}]);
 
 	/*****************************************
@@ -497,14 +498,35 @@ console.log(kth_vid);
 	Egenskaper vid ny sökning, fler resultat(exempelvis alla utfällda eller inte vid refresh eller ny sökning)
 		
 	*****************************************/
+
+	app.component('prmPersonalizeResultsButtonAfter', {
+		bindings: {parentCtrl: '<'},
+		require: {
+			searchResultCtrl: '^primoExplore'
+		},
+		controller: 'prmPersonalizeResultsButtonAfterController',
+		template: ''
+	});
+
+	app.controller('prmPersonalizeResultsButtonAfterController', function ($scope, kth_facetdata) {
+		var vm = this;
+		console.log(vm.searchResultCtrl);
+	});
+
 	app.component('prmFacetAfter', {
 		bindings: {parentCtrl: '<'},
 		controller: 'prmFacetAfterController',
-		template: ''
+		template: '<prm-personalize-results-button"></prm-personalize-results-button>'
 	});
 	
 	app.controller('prmFacetAfterController', function ($scope, kth_facetdata) {
-        var vm = this;
+		var vm = this;
+		vm.isCitationState = vm.parentCtrl.isCitationState;
+		vm.isJournalSearch = vm.parentCtrl.isJournalSearch;
+		vm.isBrowsHeaderResults = vm.parentCtrl.isBrowsHeaderResults;
+		vm.notLocal = vm.parentCtrl.notLocal;
+
+
 		//hämta parameter från factory kth_facetdata för defaultvärde
 		vm.parentCtrl.allfacetscollapsed = kth_facetdata.getallfacetscollapsed()
 		

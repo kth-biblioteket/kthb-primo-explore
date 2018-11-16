@@ -35,14 +35,14 @@ Sidhuvud, sökruta och resultat
 prm-search>md-content>div:nth-of-type(1), prm-search>md-content>div:nth-of-type(4) {
 	flex: 1 1 15% !important;/* se till att alla sidotomrum tar upp lika mkt plats.*/
 	max-width: 15% !important;
-	background-color: darksalmon !important;
+	/*background-color: darksalmon !important;*/
 }
 
 /* se till att skapa tomrummet på varje sida av sidhuvudet och att de tar lika mycket plats*/
 prm-skip-to, prm-user-area-expandable {
 	flex: 1 1 15% !important; /* se till att alla sidotomrum tar upp lika mkt plats.*/
 	max-width: 15% !important;
-	background-color: darksalmon !important;
+	/*background-color: darksalmon !important;*/
 }
 
 /* samma sidopadding som sökrutan*/
@@ -70,7 +70,7 @@ prm-topbar {
 prm-search-bar>div:nth-of-type(1)>div:nth-of-type(1)>div:nth-of-type(1),prm-search-bar>div:nth-of-type(1)>div:nth-of-type(1)>div:nth-of-type(4) {
 	flex: 1 1 15% !important;
 	max-width: 15% !important;
-	background-color: darksalmon;
+	/*background-color: darksalmon;*/
 }
 
 /* se till div för sökrutan tar rätt utrymme*/
@@ -280,17 +280,6 @@ prm-alert-bar .bar {
 Egna facetter ovanför sökresultat
 
 ******************************************************/
-/* gör om till flex och omvänd ordning*/
-prm-search-result-list {
-	display: flex;
-	flex-direction: column-reverse;
-}
-
-prm-search-result-list-after {
-    background-color: #ffffff;
-    padding-bottom: 10px;
-    padding-left: 7px;
-}
 
 #facettmenudiv {
     display: flex;
@@ -345,10 +334,123 @@ prm-search-result-list prm-personalize-results-button {
 
 /*****************************************************
 
+Did you mean? Vilken selector ska användas?
+md-card för generell!
+
+*****************************************************/
+prm-search-result-list md-card {
+	background-color: #fff !important;
+	box-shadow: none !important;
+	padding: 0px 7px !important;
+}
+
+prm-did-u-mean {
+	font-size: 15px !important;
+	font-weight: 600;
+}
+prm-did-u-mean a {
+    color: #24A0D8;
+}
+
+/*****************************************************
+
 Resultat/Content
 
 ******************************************************/
 /* Endast tillagd för att tomrummen på sidan om resultatet ska "synas" vid utveckling av layout*/
 md-content {
 	align-items: stretch !important;
+}
+
+/* grått streck på översta träffens topp */
+.list-item-wrapper.first-in-page:first-of-type {
+    border-top-width: 1px;
+    border-top-style: solid;
+}
+
+/* bakgrund vit(grå vid hover)*/
+prm-search-result-list .pages-separated-with-gaps .list-item-wrapper {
+    background-color: #ffffff;
+}
+prm-search-result-list .pages-separated-with-gaps .list-item-wrapper:hover {
+    background-color: #f2f2f2;
+}
+prm-brief-result-container .list-item-primary-content:before {
+    background-color: transparent;
+}
+
+/* gör om hela sökreslutatet till flex och sätt omvänd ordning(för att våra egna facetter ska hamna överst), grått streck till höger */
+prm-search-result-list {
+	display: flex;
+	flex-direction: column-reverse;
+	border-right: 1px solid #e1e1e1;
+	padding-right: 10px;
+}
+
+prm-search-result-list-after {
+    background-color: #ffffff;
+    padding-bottom: 10px;
+    padding-left: 7px;
+}
+
+/* Actions */
+/* hjärta snurra inte */
+.result-item-actions .pin-button.pinned md-icon {
+    transform: rotate(0deg);
+}
+/* gråa ikkonen */
+.result-item-actions .pin-button.pinned {
+    color: #97abba;
+}
+/* dölj mail och ref ikkonen*/
+prm-brief-result-container .result-item-actions>button:nth-of-type(1), prm-brief-result-container .result-item-actions>button:nth-of-type(2) {
+    display: none;
+}
+
+/* materialbild(omslag etc) */
+prm-search-result-thumbnail-container img {
+    border: 1px solid #bdbdbd;
+}
+/* dölj de som är multiple*/
+prm-search-result-thumbnail-container .fan-img:nth-of-type(2), prm-search-result-thumbnail-container .fan-img:nth-of-type(3) {
+	display: none;
+}
+/* fixa storlek och snurr */
+prm-search-result-thumbnail-container .fan-img:first-of-type {
+    transform: rotate(0deg) translate3d(0px,0,0) scale3d(1,1,1);
+}
+prm-brief-result-container:hover prm-search-result-thumbnail-container .fan-img:first-of-type {
+    transform: rotate(0deg) translate3d(0px,0,0) scale3d(1,1,1);
+}
+
+/* Dölj ikkonen framför tillgängligtext (print/online etc) */
+prm-brief-result-container .result-item-text prm-search-result-availability-line prm-icon, prm-brief-result-container .result-item-text prm-search-result-frbr-line prm-icon {
+    display: none;
+}
+/* grön text */
+prm-brief-result-container [class*="check_"] {
+    color: #0f7d00;
+}
+
+/* dölj peer ikkonen */
+.peer-reviewed-mark-icon {
+    display: none;
+}
+
+/* dölj OA indikationen helt tills vidare, vår egen via unpaywall är just nu bättre */
+.open-access-mark {
+	display: none;
+}
+
+
+/*****************************************************
+
+Facetter
+
+******************************************************/
+
+.sidebar-title {
+    font-weight: 400;
+    color: #525252;
+    align-self: center;
 }
