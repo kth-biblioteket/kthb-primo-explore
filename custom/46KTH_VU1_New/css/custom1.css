@@ -327,11 +327,6 @@ prm-icon.pin-icon md-icon {
 	transform: rotate(0deg);
 }
 
-/* dölj personalized result switch */
-prm-search-result-list prm-personalize-results-button {
-	display: none;
-}
-
 /*****************************************************
 
 Did you mean? Vilken selector ska användas?
@@ -386,7 +381,7 @@ prm-search-result-list {
 	border-right: 1px solid #e1e1e1;
 	padding-right: 10px;
 }
-
+/* de egna facetterna */
 prm-search-result-list-after {
     background-color: #ffffff;
     padding-bottom: 10px;
@@ -449,8 +444,152 @@ Facetter
 
 ******************************************************/
 
+/* facettlistans rubriker */
 .sidebar-title {
     font-weight: 400;
     color: #525252;
     align-self: center;
+}
+
+/* Settingsrubriken på rätt plats*/
+prm-facet-after {
+	padding-left: 1.4em;
+}
+
+/* dölj personalized när den ligger i träfflistan(flyttas i kontroller till facetter) */
+prm-search-result-list prm-personalize-results-button {
+	display: none; 
+}
+
+/* fixa den flyttade personalized */ 
+prm-facet prm-personalize-results-button .md-button md-switch ._md-bar, 
+prm-facet prm-personalize-results-button .md-button md-switch .md-bar {
+	background-color: #cfcfcf;
+}
+prm-facet prm-personalize-results-button .md-button md-switch ._md-thumb, 
+prm-facet prm-personalize-results-button .md-button md-switch .md-thumb {
+	background-color: #fff;
+}
+prm-facet prm-personalize-results-button .md-button md-switch._md-checked ._md-label, 
+prm-facet prm-personalize-results-button .md-button md-switch._md-checked .md-label, 
+prm-facet prm-personalize-results-button .md-button md-switch.md-checked ._md-label, 
+prm-facet prm-personalize-results-button .md-button md-switch.md-checked .md-label {
+	color: #7d1538;
+}
+prm-facet prm-personalize-results-button .md-button md-switch._md-checked ._md-bar, 
+prm-facet prm-personalize-results-button .md-button md-switch._md-checked ._md-thumb, 
+prm-facet prm-personalize-results-button .md-button md-switch._md-checked .md-bar, 
+prm-facet prm-personalize-results-button .md-button md-switch._md-checked .md-thumb, 
+prm-facet prm-personalize-results-button .md-button md-switch.md-checked ._md-bar, 
+prm-facet prm-personalize-results-button .md-button md-switch.md-checked ._md-thumb, 
+prm-facet prm-personalize-results-button .md-button md-switch.md-checked .md-bar, 
+prm-facet prm-personalize-results-button .md-button md-switch.md-checked .md-thumb {
+	background-color: #7d1538;
+}
+prm-facet prm-personalize-results-button .md-button md-switch._md-checked ._md-bar, 
+prm-facet prm-personalize-results-button .md-button md-switch._md-checked .md-bar, 
+prm-facet prm-personalize-results-button .md-button md-switch.md-checked ._md-bar, 
+prm-facet prm-personalize-results-button .md-button md-switch.md-checked .md-bar {
+	opacity: .4;
+}
+
+/* fixa ordningen på element i facettlistan*/
+prm-facet .sidebar-inner-wrapper>div:nth-of-type(3) {
+	order: 1;
+} 
+prm-personalize-results-button {
+	order: 2;
+}
+prm-facet .sidebar-inner-wrapper>div:nth-of-type(2) {
+	order: 3;
+} 
+prm-facet .sidebar-inner-wrapper>div:nth-of-type(1) {
+	order: 4;
+} 
+prm-facet .sidebar-section {
+	order: 5;
+}
+
+/* gör till flex och byt direction så "after" hamnar överst */
+prm-facet {
+	display: flex;
+	flex-direction: column-reverse;
+}
+
+/* se till att facetter scrollar med sidan */
+prm-facet .primo-scrollbar {
+	position: relative !important;
+	top: 0px !important;
+}
+
+/* ta bort mellanrum som skapas */
+prm-facet>div:nth-of-type(2) {
+	display: none
+}
+
+/*********************************
+
+Tooltips när inte Angulars egen 
+tooltip räcker till. 
+
+För närvarande till Open Access i
+
+TODO: Anpassa till små skärmar
+*********************************/
+/* se till att allt inom en sökträff har högre index så att t ex tooltip hamnar över facetter */
+prm-brief-result-container .list-item-primary-content {
+	z-index: 11;
+}
+.tooltip {
+    position: relative;
+    display: inline-block;
+	overflow: visible;
+	white-space: initial;
+	top: 5px;
+}
+
+.tooltip .locationmap.tooltiptext {
+	text-align: left;
+	margin-left: 0px;
+	color: #000000;
+}
+
+.tooltip .locationmap.tooltiptext::after {
+	content: none;
+}
+
+.tooltip-top {
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.tooltip .tooltiptext {
+	visibility: hidden;
+    position: absolute;
+    width: 520px;
+    background-color: #8e8e8e;
+    color: #fff;
+    text-align: center;
+    padding: 5px 5px;
+    border-radius: 6px;
+    opacity: 0;
+	transition: opacity 0.3s;
+	z-index: 11;
+}
+
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -205px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #8e8e8e transparent transparent  transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+	opacity: 1;
 }
