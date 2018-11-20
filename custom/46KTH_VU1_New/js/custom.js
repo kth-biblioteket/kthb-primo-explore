@@ -283,7 +283,7 @@ console.log(kth_vid);
 		//skapa tomrummet på sidorna och linjera till höger
 		'<div flex="15" flex-md="0" flex-sm="0" flex-xs="0" class="flex-xs-0 flex-sm-0 flex-md-0 flex-15"></div>' +
 		'<div flex layout="row" layout-align="end center" ng-if="$ctrl.kth_language == \'en_US\'">' +
-			'<div style="padding-bottom: .1em;">Logged in as: {{$ctrl.username}}&nbsp</div>' +
+			'<div style="padding-bottom: .1em;" ng-if="$ctrl.username.length > 0">Logged in as: {{$ctrl.username}}&nbsp</div>' +
 			'<a class="kth_link" ng-click="changelang(\'sv_SE\')">' +
 				'<span>Svenska&nbsp</span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="12.5" viewBox="0 0 16 10"><rect width="16" height="10" fill="#005293"/><rect width="2" height="10" x="5" fill="#FECB00"/><rect width="16" height="2" y="4" fill="#FECB00"/></svg>' +
 			'</a>' +
@@ -552,17 +552,15 @@ console.log(kth_vid);
 
 		angular.element(document).ready(function() {
 			/*********
-				 * 
-				 * 
-				 * Flytta personalize till ovan facetter
-				 * 
-				 */
-				
-				var persbutton = document.querySelector('prm-personalize-results-button');
-				var facet = document.querySelector('prm-facet .sidebar-inner-wrapper');
-				console.log(persbutton);
-				console.log(facet);
-				facet.appendChild(persbutton);
+			 * 
+			 * 
+			 * Flytta personalize till ovan facetter
+			 * 
+			 */
+			
+			var persbutton = document.querySelector('prm-personalize-results-button');
+			var facet = document.querySelector('prm-facet .sidebar-inner-wrapper');
+			facet.appendChild(persbutton);
 		});
 
 		//hämta parameter från factory kth_facetdata för defaultvärde
@@ -824,7 +822,18 @@ console.log(kth_vid);
 						'<li ng-if="!$ctrl.articles_enabled" translate="facets.facet.facet_rtype.articles"></li>' +
 					'</ul>' +
 				'</div>' +
-			'</div>'
+			'</div>' +
+			//'<prm-authentication [is-logged-in]="$ctrl.userName().length > 0" [idp-logout]="$ctrl.idpLogout" flex="none" class="flex-none"></prm-authentication>' +
+			'<div class="kth_loggain" ng-if="$ctrl.userName.length == 0">' +
+					//logga in för att spara fråga etc
+					'<button class="button-as-link link-alt-color zero-margin md-button md-primoExplore-theme md-ink-ripple" type="button" (click)="$ctrl.loggain()" aria-label="">' +
+						'<prm-icon class="pin-icon" aria-label="Välj register " [icon-type]="::$ctrl.actionsIcons.pin.type" svg-icon-set="action" icon-definition="ic_favorite_outline_24px">' +
+						'</prm-icon>' +
+						//nytt värde i FE code table i Primo BO
+						'<span class="bold-text" translate="results.logintosavequery"></span>' +
+						'<div class="md-ripple-container"></div>' +
+					'</button>' +
+				'</div>'
 	});
 	
 
@@ -865,16 +874,14 @@ console.log(kth_vid);
 		 "Log in to save query"
 		
 		******************************************/
+		vm.userName = $rootScope.$$childTail.$ctrl.userSessionManagerService.getUserName();
 		vm.isfavorites = vm.parentCtrl.isFavorites;
 		if (!vm.isfavorites) {
 			//hämta loginfunktion
-			//$scope.$on('logindataAdded', function(event, data) {
-				vm.data = kth_loginservice.getData();
-			//});
+			vm.data = kth_loginservice.getData();
 		}
 		vm.loggain = loggain;
-		vm.parentCtrl.loggain = loggain;
-		function loggain () {
+		function loggain() {
 			vm.data.handleLogin();
 		}
 		

@@ -327,6 +327,20 @@ prm-icon.pin-icon md-icon {
 	transform: rotate(0deg);
 }
 
+/* logga in knapp ovan sökresultat, skapad i prmSearchResultListAfter */
+.kth_loggain {
+	position: relative;
+    top: 29px;
+    left: 160px;
+    height: 19px;
+    margin-left: 1em;
+}
+.kth_loggain .md-button {
+    top: -5px;
+    font-style: initial;
+    color: #97abba !important;
+}
+
 /*****************************************************
 
 Did you mean? Vilken selector ska användas?
@@ -529,6 +543,22 @@ prm-facet>div:nth-of-type(2) {
 
 /*********************************
 
+Fullpost
+
+*********************************/
+
+/* stäng och bläddringsknappar */
+.prm-full-view-dialog~.close-button.md-icon-button prm-icon {
+	color: #000;
+}
+/* dölj vänsternavigeringsknappar */
+
+.prm-full-view-dialog prm-full-view .services-index-under {
+	display: none;
+}
+
+/*********************************
+
 Tooltips när inte Angulars egen 
 tooltip räcker till. 
 
@@ -539,6 +569,10 @@ TODO: Anpassa till små skärmar
 /* se till att allt inom en sökträff har högre index så att t ex tooltip hamnar över facetter */
 prm-brief-result-container .list-item-primary-content {
 	z-index: 11;
+}
+/* actions högst index*/
+.result-item-actions {
+	z-index: 12;
 }
 .tooltip {
     position: relative;
@@ -575,7 +609,7 @@ prm-brief-result-container .list-item-primary-content {
     border-radius: 6px;
     opacity: 0;
 	transition: opacity 0.3s;
-	z-index: 11;
+	z-index: 99;
 }
 
 .tooltip .tooltiptext::after {
