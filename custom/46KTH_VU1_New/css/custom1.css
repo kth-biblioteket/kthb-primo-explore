@@ -552,9 +552,13 @@ Fullpost
 	color: #000;
 }
 /* dölj vänsternavigeringsknappar */
-
 .prm-full-view-dialog prm-full-view .services-index-under {
 	display: none;
+}
+
+/* högersidan fullpost*/
+.full-view-inner-container+.full-view-aside {
+	z-index: -1;
 }
 
 /*********************************

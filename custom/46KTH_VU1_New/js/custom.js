@@ -1085,6 +1085,19 @@ console.log(kth_vid);
 			getorcidinfo(vm.orcid_id);
 		}
 
+		angular.element(document).ready(function() {
+			/*********
+			 * 
+			 * 
+			 * Flytta metrics/citations till höger full post
+			 * 
+			 */
+			var citationTrails = document.querySelector('#citationTrails');
+			var fullviewafter = document.querySelector('prm-full-view-after');
+			var rightfullview = document.querySelector('.full-view-inner-container+.full-view-aside');
+			rightfullview.appendChild(citationTrails);
+			rightfullview.appendChild(fullviewafter);
+		});
         vm.$onInit = function () {
             //hämta info från altmetrics API
 			getaltmetrics(vm.doi);
@@ -1306,13 +1319,12 @@ app.component('prmFullViewServiceContainerAfter', {
 										'<prm-icon external-link="" icon-type="svg" svg-icon-set="primo-ui" icon-definition="open-in-new" aria-label="externalLink">' +
 										'</prm-icon>' +
 									'</a>' +
-									'<span style="white-space: nowrap;">' + 
-										'<div class="tooltip" ng-mouseout="$ctrl.togglepolicy(this)" ng-mouseover="$ctrl.togglepolicy(this)" style="vertical-align: middle; position: relative;display: inline-block;overflow: visible;white-space: initial;">' +
-											'<div class="tooltiptext" style="white-space: initial;visibility: hidden;width: 330px;background-color: #8e8e8e;color: #fff;text-align: left;border-radius: 6px;padding: 10px 10px;position: absolute;z-index: 1;bottom: 125%;left: -25px;opacity: 0;transition: opacity 0.4s;">' +
-												'<div>Text som möjligen Tage kan ha skrivit!</div>' +
-											'</div>' +
-											'<svg width="20px" height="20px" viewBox="0 0 24 24" id="ic_info_24px" y="1368" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path></svg>' +
-										'</div>' +
+									'<span class="tooltip">' +
+										'<svg width="20px" height="20px" viewBox="0 0 24 24" id="ic_info_24px" y="1368" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path></svg>' +
+										'<span class="tooltiptext tooltip-top">' +
+											'<div>Text som möjligen Tage kan ha skrivit!</div>' +
+											'<div style="padding-top:10px">{{$ctrl.unpaywalljson | json}}</div>' +
+										'</span>' +
 									'</span>' +
 								'</div>' +
 							'</div>' +
