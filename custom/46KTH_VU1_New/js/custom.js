@@ -283,7 +283,7 @@ console.log(kth_vid);
 		//skapa tomrummet på sidorna och linjera till höger
 		'<div flex="15" flex-md="0" flex-sm="0" flex-xs="0" class="flex-xs-0 flex-sm-0 flex-md-0 flex-15"></div>' +
 		'<div flex layout="row" layout-align="end center" ng-if="$ctrl.kth_language == \'en_US\'">' +
-			'<div style="padding-bottom: .1em;">Logged in as: {{$ctrl.username}}&nbsp</div>' +
+			'<div style="padding-bottom: .1em;" ng-if="$ctrl.username.length > 0">Logged in as: {{$ctrl.username}}&nbsp</div>' +
 			'<a class="kth_link" ng-click="changelang(\'sv_SE\')">' +
 				'<span>Svenska&nbsp</span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="12.5" viewBox="0 0 16 10"><rect width="16" height="10" fill="#005293"/><rect width="2" height="10" x="5" fill="#FECB00"/><rect width="16" height="2" y="4" fill="#FECB00"/></svg>' +
 			'</a>' +
@@ -552,17 +552,15 @@ console.log(kth_vid);
 
 		angular.element(document).ready(function() {
 			/*********
-				 * 
-				 * 
-				 * Flytta personalize till ovan facetter
-				 * 
-				 */
-				
-				var persbutton = document.querySelector('prm-personalize-results-button');
-				var facet = document.querySelector('prm-facet .sidebar-inner-wrapper');
-				console.log(persbutton);
-				console.log(facet);
-				facet.appendChild(persbutton);
+			 * 
+			 * 
+			 * Flytta personalize till ovan facetter
+			 * 
+			 */
+			
+			var persbutton = document.querySelector('prm-personalize-results-button');
+			var facet = document.querySelector('prm-facet .sidebar-inner-wrapper');
+			facet.appendChild(persbutton);
 		});
 
 		//hämta parameter från factory kth_facetdata för defaultvärde
@@ -824,7 +822,18 @@ console.log(kth_vid);
 						'<li ng-if="!$ctrl.articles_enabled" translate="facets.facet.facet_rtype.articles"></li>' +
 					'</ul>' +
 				'</div>' +
-			'</div>'
+			'</div>' +
+			//'<prm-authentication [is-logged-in]="$ctrl.userName().length > 0" [idp-logout]="$ctrl.idpLogout" flex="none" class="flex-none"></prm-authentication>' +
+			'<div class="kth_loggain" ng-if="$ctrl.userName.length == 0">' +
+					//logga in för att spara fråga etc
+					'<button class="button-as-link link-alt-color zero-margin md-button md-primoExplore-theme md-ink-ripple" type="button" (click)="$ctrl.loggain()" aria-label="">' +
+						'<prm-icon class="pin-icon" aria-label="Välj register " [icon-type]="::$ctrl.actionsIcons.pin.type" svg-icon-set="action" icon-definition="ic_favorite_outline_24px">' +
+						'</prm-icon>' +
+						//nytt värde i FE code table i Primo BO
+						'<span class="bold-text" translate="results.logintosavequery"></span>' +
+						'<div class="md-ripple-container"></div>' +
+					'</button>' +
+				'</div>'
 	});
 	
 
@@ -865,16 +874,14 @@ console.log(kth_vid);
 		 "Log in to save query"
 		
 		******************************************/
+		vm.userName = $rootScope.$$childTail.$ctrl.userSessionManagerService.getUserName();
 		vm.isfavorites = vm.parentCtrl.isFavorites;
 		if (!vm.isfavorites) {
 			//hämta loginfunktion
-			//$scope.$on('logindataAdded', function(event, data) {
-				vm.data = kth_loginservice.getData();
-			//});
+			vm.data = kth_loginservice.getData();
 		}
 		vm.loggain = loggain;
-		vm.parentCtrl.loggain = loggain;
-		function loggain () {
+		function loggain() {
 			vm.data.handleLogin();
 		}
 		
@@ -1078,6 +1085,19 @@ console.log(kth_vid);
 			getorcidinfo(vm.orcid_id);
 		}
 
+		angular.element(document).ready(function() {
+			/*********
+			 * 
+			 * 
+			 * Flytta metrics/citations till höger full post
+			 * 
+			 */
+			var citationTrails = document.querySelector('#citationTrails');
+			var fullviewafter = document.querySelector('prm-full-view-after');
+			var rightfullview = document.querySelector('.full-view-inner-container+.full-view-aside');
+			rightfullview.appendChild(citationTrails);
+			rightfullview.appendChild(fullviewafter);
+		});
         vm.$onInit = function () {
             //hämta info från altmetrics API
 			getaltmetrics(vm.doi);
@@ -1299,13 +1319,12 @@ app.component('prmFullViewServiceContainerAfter', {
 										'<prm-icon external-link="" icon-type="svg" svg-icon-set="primo-ui" icon-definition="open-in-new" aria-label="externalLink">' +
 										'</prm-icon>' +
 									'</a>' +
-									'<span style="white-space: nowrap;">' + 
-										'<div class="tooltip" ng-mouseout="$ctrl.togglepolicy(this)" ng-mouseover="$ctrl.togglepolicy(this)" style="vertical-align: middle; position: relative;display: inline-block;overflow: visible;white-space: initial;">' +
-											'<div class="tooltiptext" style="white-space: initial;visibility: hidden;width: 330px;background-color: #8e8e8e;color: #fff;text-align: left;border-radius: 6px;padding: 10px 10px;position: absolute;z-index: 1;bottom: 125%;left: -25px;opacity: 0;transition: opacity 0.4s;">' +
-												'<div>Text som möjligen Tage kan ha skrivit!</div>' +
-											'</div>' +
-											'<svg width="20px" height="20px" viewBox="0 0 24 24" id="ic_info_24px" y="1368" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path></svg>' +
-										'</div>' +
+									'<span class="tooltip">' +
+										'<svg width="20px" height="20px" viewBox="0 0 24 24" id="ic_info_24px" y="1368" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path></svg>' +
+										'<span class="tooltiptext tooltip-top">' +
+											'<div>Text som möjligen Tage kan ha skrivit!</div>' +
+											'<div style="padding-top:10px">{{$ctrl.unpaywalljson | json}}</div>' +
+										'</span>' +
 									'</span>' +
 								'</div>' +
 							'</div>' +
