@@ -140,6 +140,10 @@ på fullposten.
 
 TODO: Anpassa till små skärmar
 *********************************/
+/* se till att allt inom en sökträff har högre index så att t ex tooltip hamnar över facetter */
+prm-brief-result-container .list-item-primary-content {
+	z-index: 11;
+}
 .tooltip {
     position: relative;
     display: inline-block;
@@ -173,9 +177,9 @@ TODO: Anpassa till små skärmar
     text-align: center;
     padding: 5px 5px;
     border-radius: 6px;
-    z-index: 1;
     opacity: 0;
-    transition: opacity 0.3s;
+	transition: opacity 0.3s;
+	z-index: 11;
 }
 
 .tooltip .tooltiptext::after {
@@ -191,7 +195,7 @@ TODO: Anpassa till små skärmar
 
 .tooltip:hover .tooltiptext {
     visibility: visible;
-    opacity: 1;
+	opacity: 1;
 }
 
 /*********************************

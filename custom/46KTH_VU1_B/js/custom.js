@@ -2776,7 +2776,7 @@ console.log(kth_vid);
 						kth_logg.kthlogg("oaDOIfromunpaywall", vm.doi);	
 						kth_oadoi.getoaDOI(vm.doi).then(function(data, status) {
 							if (data.data.best_oa_location) {
-								vm.unpaywalljson = data.data;
+								vm.unpaywalljson = data.data.best_oa_location;
 								vm.best_oa_location_url = data.data.best_oa_location.url;
 								vm.best_oa_location_evidence = data.data.best_oa_location.evidence;
 								//Hantera att OA kan ha lite olika typer av publicerat material
