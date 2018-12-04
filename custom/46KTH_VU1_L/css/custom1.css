@@ -145,6 +145,9 @@ TODO: Anpassa till små skärmar
     display: inline-block;
 	overflow: visible;
 	white-space: initial;
+	top: 5px;
+	color: #888888;
+	fill: CURRENTCOLOR;
 }
 
 .tooltip .locationmap.tooltiptext {
@@ -157,38 +160,40 @@ TODO: Anpassa till små skärmar
 	content: none;
 }
 
+.tooltip-top {
+    bottom: 32px; /*32px*/
+    left: -85px; /*-190px*/
+    margin-left: -60px;
+}
+
 .tooltip .tooltiptext {
-	white-space: initial;
-    visibility: hidden;
-    width: 330px;
+	visibility: hidden;
+    position: absolute;
+    width: 320px;
     background-color: #8e8e8e;
     color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 5px;
-    position: absolute;
-    z-index: 1;
-    top: 125%;
-    left: 50%;
-    margin-left: -310px;
+    text-align: left;
+    padding: 10px 10px;
+    border-radius: 8px;
     opacity: 0;
-    transition: opacity 1s;
+	transition: opacity 0.3s;
+	z-index: 11;
 }
 
 .tooltip .tooltiptext::after {
     content: "";
     position: absolute;
-    bottom: 100%;
-    left: 50%;
-    margin-left: 140px;
-    border-width: 5px;
+    top: 100%; /**/
+    left: 50%;/**/
+    margin-left: -13px;/*90px*/
+    border-width: 8px;
     border-style: solid;
-    border-color: transparent transparent #8e8e8e transparent;
+    border-color: #8e8e8e transparent transparent  transparent;
 }
 
 .tooltip:hover .tooltiptext {
     visibility: visible;
-    opacity: 1;
+	opacity: 1;
 }
 
 /*********************************
@@ -1237,6 +1242,9 @@ prm-facet>div {
 }
 
 /*aktiva filter*/
+prm-breadcrumbs .md-chips .md-chip-content {
+	padding-left: 15px;
+}
 prm-breadcrumbs .md-chips .md-chip {
 	background-color: #f3f3f3;
 }

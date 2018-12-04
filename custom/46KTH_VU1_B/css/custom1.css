@@ -140,16 +140,14 @@ på fullposten.
 
 TODO: Anpassa till små skärmar
 *********************************/
-/* se till att allt inom en sökträff har högre index så att t ex tooltip hamnar över facetter */
-prm-brief-result-container .list-item-primary-content {
-	z-index: 11;
-}
 .tooltip {
     position: relative;
     display: inline-block;
 	overflow: visible;
 	white-space: initial;
 	top: 5px;
+	color: #888888;
+	fill: CURRENTCOLOR;
 }
 
 .tooltip .locationmap.tooltiptext {
@@ -163,20 +161,20 @@ prm-brief-result-container .list-item-primary-content {
 }
 
 .tooltip-top {
-    bottom: 125%;
-    left: 50%;
+    bottom: 32px; /*32px*/
+    left: -85px; /*-190px*/
     margin-left: -60px;
 }
 
 .tooltip .tooltiptext {
 	visibility: hidden;
     position: absolute;
-    width: 520px;
+    width: 320px;
     background-color: #8e8e8e;
     color: #fff;
-    text-align: center;
-    padding: 5px 5px;
-    border-radius: 6px;
+    text-align: left;
+    padding: 10px 10px;
+    border-radius: 8px;
     opacity: 0;
 	transition: opacity 0.3s;
 	z-index: 11;
@@ -185,10 +183,10 @@ prm-brief-result-container .list-item-primary-content {
 .tooltip .tooltiptext::after {
     content: "";
     position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -205px;
-    border-width: 5px;
+    top: 100%; /**/
+    left: 50%;/**/
+    margin-left: -13px;/*90px*/
+    border-width: 8px;
     border-style: solid;
     border-color: #8e8e8e transparent transparent  transparent;
 }
@@ -268,10 +266,10 @@ prm-spinner .loader .diamond:nth-child(2), prm-spinner .loader .diamond:nth-chil
  
  ALERTBAR, Ex libris och våra egna
  
- ******************/
+******************/
 
- /* ta bort ex libris alert?? */
- /*
+/* ta bort ex libris alert?? */
+/*
 prm-search .alert-bar {
 }
 */
@@ -1244,6 +1242,9 @@ prm-facet>div {
 }
 
 /*aktiva filter*/
+prm-breadcrumbs .md-chips .md-chip-content {
+	padding-left: 15px;
+}
 prm-breadcrumbs .md-chips .md-chip {
 	background-color: #f3f3f3;
 }
@@ -1367,7 +1368,7 @@ prm-search-result-sort-by ._md-select-value ._md-select-icon {
 
 /*
 #sidebar-trigger span {
-   color: #e08303;
+	color: #e08303;
 }
 */
 

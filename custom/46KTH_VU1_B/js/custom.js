@@ -1026,9 +1026,14 @@ console.log(kth_vid);
 				'<prm-brief-result class="result-item-details" [item]="::$ctrl.item" [resource-type-for-display]="::$ctrl.getResourceTypeForDisplay()" [deep-link]="::$ctrl.getDeepLinkPath()" [is-full-view]="::$ctrl.isFullView" layout="column"></prm-brief-result>' +
 				//february 2018 release
 				'<prm-snippet [record]="::$ctrl.item"></prm-snippet>' +
-				'<prm-search-result-journal-indication-line [item]="::$ctrl.item"></prm-search-result-journal-indication-line>' +
-				'<div class="peer-reviewed-mark" ng-if="::$ctrl.isPeerDocument"><prm-icon class="peer-reviewed-mark-icon" icon-type="{{$ctrl.actionsIcons.peerreviewed.type}}" svg-icon-set="{{$ctrl.actionsIcons.peerreviewed.iconSet}}" icon-definition="{{$ctrl.actionsIcons.peerreviewed.icon}}"></prm-icon><span translate="fulldisplay.constants.peer_reviewed_icon"><md-tooltip><span>{{\'fulldisplay.constants.peer_reviewed_tooltip\' | translate}}</span></md-tooltip></span></div>' +
-				'<div class="open-access-mark" ng-if="::$ctrl.isOpenAccessDocument"><span class="icon-after-icon" ng-if="::$ctrl.isPeerDocument"></span><prm-icon class="open-access-mark-icon" icon-type="{{$ctrl.actionsIcons.openaccess.type}}" svg-icon-set="{{$ctrl.actionsIcons.openaccess.iconSet}}" icon-definition="{{$ctrl.actionsIcons.openaccess.icon}}"></prm-icon><span translate="fulldisplay.constants.open_access_icon"><md-tooltip><span>{{\'fulldisplay.constants.open_access_tooltip\' | translate}}</span></md-tooltip></span></div>' +
+				//november 2018
+				'<prm-search-result-journal-indication-line ng-if="$ctrl.isSuprima" [item]="::$ctrl.item"></prm-search-result-journal-indication-line>' +
+				'<div ng-if="$ctrl.isDBSearch()" class="item-detail" style="z-index:100">{{$ctrl.getDescription()}}</div>' +
+				'<div ng-if="::(!$ctrl.isSuprima && ($ctrl.isPeerDocument || $ctrl.isOpenAccessDocument))" class="badges" layout="row" layout-align="start start">' +
+					'<div class="peer-reviewed-mark" ng-if="::$ctrl.isPeerDocument"><prm-icon class="peer-reviewed-mark-icon" icon-type="{{$ctrl.actionsIcons.peerreviewed.type}}" svg-icon-set="{{$ctrl.actionsIcons.peerreviewed.iconSet}}" icon-definition="{{$ctrl.actionsIcons.peerreviewed.icon}}"></prm-icon><span translate="fulldisplay.constants.peer_reviewed_icon"><md-tooltip><span>{{\'fulldisplay.constants.peer_reviewed_tooltip\' | translate}}</span></md-tooltip></span></div>' +
+					//'<div class="open-access-mark" ng-if="::$ctrl.isOpenAccessDocument"><span class="icon-after-icon" ng-if="::$ctrl.isPeerDocument"></span><prm-icon class="open-access-mark-icon" icon-type="{{$ctrl.actionsIcons.openaccess.type}}" svg-icon-set="{{$ctrl.actionsIcons.openaccess.iconSet}}" icon-definition="{{$ctrl.actionsIcons.openaccess.icon}}"></prm-icon><span translate="fulldisplay.constants.open_access_icon"><md-tooltip><span>{{\'fulldisplay.constants.open_access_tooltip\' | translate}}</span></md-tooltip></span></div>' +
+				'</div>' +
+				//slut november 2018
 				'<div class="search-result-availability-line-wrapper">' +
 					'<prm-search-result-availability-line ng-if="($ctrl.delivery &&(!$ctrl.isGenericRecord() || $ctrl.isPc()))" tabindex="-1" [result]="::$ctrl.item" [is-full-view]="::$ctrl.isFullView" [is-overlay-full-view]="$ctrl.isOverlayFullView" [collection-discovery-data]="::$ctrl.collectionDiscoveryData" ng-click="$event.stopPropagation()" (open-full-display-with-getit1)="$ctrl.handleDetails($ctrl.item, $event, false);"></prm-search-result-availability-line>' +
 				'</div>' +
@@ -2647,14 +2652,6 @@ console.log(kth_vid);
 		return data;
 	});
 	
-
-	app.filter('prettyJSON', function () {
-		function prettyPrintJson(json) {
-		  return JSON ? JSON.stringify(json, null, '  ') : 'your browser doesnt support JSON so cant pretty print';
-		}
-		return prettyPrintJson;
-	});
-
 	/**********************************************************
 	
 	prm-search-result-availability-line Träfflista
@@ -2670,19 +2667,18 @@ console.log(kth_vid);
 									'<div>' +
 										'<a style="color: #0f7d00" target="_new" href="{{$ctrl.best_oa_location_url}}">' +
 											'<span>Online open access</span>' +
-											'<span ng-if="$ctrl.gold">(Gold/Bronze)</span>' +
-											'<span ng-if="$ctrl.greenpublished">(Green published)</span>' +
-											'<span ng-if="$ctrl.greenaccepted">(Green accepted)</span>' +
-											'<span ng-if="$ctrl.greensubmittedVersion">(Green submitted)</span>' +
-											'<img style="width:14px;position: relative;top: 2px;" src="custom/' + kth_vid + '/img/open-access-icon.png"></img>' +
+											//'<span ng-if="$ctrl.gold">(Gold/Bronze)</span>' +
+											//'<span ng-if="$ctrl.greenpublished">(Green published)</span>' +
+											//'<span ng-if="$ctrl.greenaccepted">(Green accepted)</span>' +
+											//'<span ng-if="$ctrl.greensubmittedVersion">(Green submitted)</span>' +
+											//'<img style="width:14px;position: relative;top: 2px;" src="custom/' + kth_vid + '/img/open-access-icon.png"></img>' +
 											'<prm-icon external-link="" icon-type="svg" svg-icon-set="primo-ui" icon-definition="open-in-new" aria-label="externalLink">' +
 											'</prm-icon>' +
 										'</a>' +
 										'<span class="tooltip">' +
 											'<svg width="20px" height="20px" viewBox="0 0 24 24" id="ic_info_24px" y="1368" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path></svg>' +
 											'<span class="tooltiptext tooltip-top">' +
-												'<div>Text som möjligen Tage kan ha skrivit!</div>' +
-												'<div style="padding-top:10px">{{$ctrl.unpaywalljson | json}}</div>' +
+												'<div ng-bind-html="$ctrl.infotext"></div>' +
 											'</span>' +
 										'</span>' +
 									'</div>' +
@@ -2718,21 +2714,19 @@ console.log(kth_vid);
 									'<div>' +
 										'<a style="color: #0f7d00" target="_new" href="{{$ctrl.best_oa_location_url}}">' +
 											'<span>Online open access</span>' +
-											'<span ng-if="$ctrl.gold">(Gold/Bronze)</span>' +
-											'<span ng-if="$ctrl.greenpublished">(Green published)</span>' +
-											'<span ng-if="$ctrl.greenaccepted">(Green accepted)</span>' +
-											'<span ng-if="$ctrl.greensubmittedVersion">(Green submitted)</span>' +
-											'<img style="width:14px;position: relative;top: 2px;" src="custom/' + kth_vid + '/img/open-access-icon.png"></img>' +
+											//'<span ng-if="$ctrl.gold">(Gold/Bronze)</span>' +
+											//'<span ng-if="$ctrl.greenpublished">(Green published)</span>' +
+											//'<span ng-if="$ctrl.greenaccepted">(Green accepted)</span>' +
+											//'<span ng-if="$ctrl.greensubmittedVersion">(Green submitted)</span>' +
+											//'<img style="width:14px;position: relative;top: 2px;" src="custom/' + kth_vid + '/img/open-access-icon.png"></img>' +
 											'<prm-icon external-link="" icon-type="svg" svg-icon-set="primo-ui" icon-definition="open-in-new" aria-label="externalLink">' +
 											'</prm-icon>' +
 										'</a>' +
-										'<span style="white-space: nowrap;">' + 
-											'<div class="tooltip" ng-mouseout="$ctrl.togglepolicy(this)" ng-mouseover="$ctrl.togglepolicy(this)" style="vertical-align: middle; position: relative;display: inline-block;overflow: visible;white-space: initial;">' +
-												'<div class="tooltiptext" style="white-space: initial;visibility: hidden;width: 330px;background-color: #8e8e8e;color: #fff;text-align: left;border-radius: 6px;padding: 10px 10px;position: absolute;z-index: 1;bottom: 125%;left: -25px;opacity: 0;transition: opacity 0.4s;">' +
-													'<div>Text som möjligen Tage kan ha skrivit!</div>' +
-												'</div>' +
-												'<svg width="20px" height="20px" viewBox="0 0 24 24" id="ic_info_24px" y="1368" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path></svg>' +
-											'</div>' +
+										'<span class="tooltip">' +
+											'<svg width="20px" height="20px" viewBox="0 0 24 24" id="ic_info_24px" y="1368" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path></svg>' +
+											'<span class="tooltiptext tooltip-top">' +
+												'<div ng-bind-html="$ctrl.infotext"></div>' +
+											'</span>' +
 										'</span>' +
 									'</div>' +
 								'</div>' +
@@ -2741,13 +2735,16 @@ console.log(kth_vid);
 					'</div>'
 	});
 
-	app.controller('prmFullViewServiceContainerAfterController',function ($scope, $http, kth_oadoi, kth_logg) {
+	app.controller('prmFullViewServiceContainerAfterController',function ($scope, $http, kth_oadoi, kth_logg, $sce, $translate) {
 		var vm = this;
 		vm.unpaywalljson = "";
 		vm.showOA = false;
 		vm.gold = false;
 		vm.greenpublished = false;
 		vm.greenaccepted = false;
+		vm.infotext = "";
+
+		vm.kth_language = $translate.use();
 
 		vm.togglepolicy = togglepolicy;
 		function togglepolicy(element) {
@@ -2792,16 +2789,47 @@ console.log(kth_vid);
 								
 								if(data.data.best_oa_location.host_type == 'publisher') {
 									vm.gold = true;
-								}
-								if(data.data.best_oa_location.host_type == "repository" && data.data.best_oa_location.version == 'publishedVersion') {
+									if(vm.kth_language == 'sv_SE') {
+										vm.infotext = "<p>Detta är den slutgiltiga publicerade versionen av artikeln, fritt tillgänglig (open access) på förlagets webbplats.</p>";
+									} else {
+										vm.infotext = "<p>This is the final published version of the article, freely available (open access) on the publisher's website.</p>";
+									}
+									
+								} else if(data.data.best_oa_location.host_type == "repository" && data.data.best_oa_location.version == 'publishedVersion') {
 									vm.greenpublished = true;
-								}
-								if(data.data.best_oa_location.host_type == "repository" && data.data.best_oa_location.version == 'acceptedVersion') {
+									if(vm.kth_language == 'sv_SE') {
+										vm.infotext = "<p>Detta är den slutgiltiga publicerade versionen av artikeln, fritt tillgänglig i ett open access-arkiv.</p>"
+									} else {
+										vm.infotext = "<p>This is the final published version of the article, freely available in an open access archive.</p>";
+									}
+								} else if(data.data.best_oa_location.host_type == "repository" && data.data.best_oa_location.version == 'acceptedVersion') {
 									vm.greenaccepted = true;
-								}
-								if(data.data.best_oa_location.host_type == "repository" && data.data.best_oa_location.version == 'submittedVersion') {
+									if(vm.kth_language == 'sv_SE') {
+										vm.infotext = "<p>Detta är en fritt tillgänglig postprint-version av artikeln i ett open access-arkiv. D.v.s. det är det accepterade och granskade manuskriptet, men ej den slutgiltiga publicerade artikeln.</p>"
+									} else {
+										vm.infotext = "<p>This is a free postprint version of the article available in an open access archive. I.e it is the accepted and reviewed manuscript, but not the final published article.</p>";
+									}
+								} else if(data.data.best_oa_location.host_type == "repository" && data.data.best_oa_location.version == 'submittedVersion') {
 									vm.greensubmittedVersion = true;
+									if(vm.kth_language == 'sv_SE') {
+										vm.infotext = "<p>Detta är en fritt tillgänglig preprint-version av artikeln i ett open access-arkiv. D.v.s. det är det till tidskriften inskickade manuskriptet, ännu ej accepterat eller granskat och ej den slutgiltiga publicerade artikeln.</p>"
+									} else {
+										vm.infotext = "<p>This is a free preprint version of the article available in an open access archive. I.e. it is the manuscript as submitted to the journal, not yet accepted or reviewed and not the final published article.</p>";
+									}
+								} else {
+									if(vm.kth_language == 'sv_SE') {
+										vm.infotext = "<p>Versionsstatus för denna artikel är inte känd. Artikeln finns tillgänglig i ett open access-arkiv.</p>"
+									} else {
+										vm.infotext = "<p>Version status for this article is not known. The article is available in an open access archive.</p>";
+									}
 								}
+								if(vm.kth_language == 'sv_SE') {
+									vm.infotext = vm.infotext + "<p>Denna länk och information hämtas från <a href=\"unpaywall.org\">Unpaywall</a>. I vissa fall är det samma version som Online-länken ovan.</p>";
+								} else {
+									vm.infotext = vm.infotext + "<p>This link and information is retrieved from <a href=\"unpaywall.org\">Unpaywall</a>. In some cases, it is the same version as the Online link above.</p>";
+								}
+								vm.infotext = $sce.trustAsHtml(vm.infotext);
+								console.log(vm.infotext);
 								vm.showOA = true;
 							} else {
 								vm.doi = false;
@@ -2829,8 +2857,38 @@ console.log(kth_vid);
 								kth_logg.kthlogg("oaDOIfromunpaywall", vm.doi);
 								kth_oadoi.getoaDOI(vm.doi).then(function(data, status) {
 									if (data.data.best_oa_location) {
+										vm.unpaywalljson = data.data.best_oa_location;
 										vm.best_oa_location_url = data.data.best_oa_location.url;
 										vm.best_oa_location_evidence = data.data.best_oa_location.evidence;
+										//Hantera att OA kan ha lite olika typer av publicerat material
+											//guld/bronze villkor:
+												//best_oa_location.host_type = publisher
+											//"grön" villkor
+											//acceptedVersion
+												//best_oa_location.host_type == repository && version = acceptedVersion
+											//publishedVersion
+												//best_oa_location.host_type == repository && version = publishedVersion
+											//submittedVersion
+												//best_oa_location.host_type == repository && version = submittedVersion
+										
+										if(data.data.best_oa_location.host_type == 'publisher') {
+											vm.gold = true;
+											vm.infotext = "<p>Detta är den slutgiltiga publicerade versionen av artikeln, fritt tillgänglig (open access) på förlagets webbplats.</p>";
+										} else if(data.data.best_oa_location.host_type == "repository" && data.data.best_oa_location.version == 'publishedVersion') {
+											vm.greenpublished = true;
+											vm.infotext = "<p>Detta är den slutgiltiga publicerade versionen av artikeln, fritt tillgänglig i ett open access-arkiv.</p>"
+										} else if(data.data.best_oa_location.host_type == "repository" && data.data.best_oa_location.version == 'acceptedVersion') {
+											vm.greenaccepted = true;
+											vm.infotext = "<p>Detta är en fritt tillgänglig postprint-version av artikeln i ett open access-arkiv. D.v.s. det är det accepterade och granskade manuskriptet, men ej den slutgiltiga publicerade artikeln.</p>"
+										} else if(data.data.best_oa_location.host_type == "repository" && data.data.best_oa_location.version == 'submittedVersion') {
+											vm.greensubmittedVersion = true;
+											vm.infotext = "<p>Detta är en fritt tillgänglig preprint-version av artikeln i ett open access-arkiv. D.v.s. det är det till tidskriften inskickade manuskriptet, ännu ej accepterat eller granskat och ej den slutgiltiga publicerade artikeln.</p>"
+										} else {
+											vm.infotext = "<p>Versionsstatus för denna artikel är inte känd. Artikeln finns tillgänglig i ett open access-arkiv.</p>"
+										}
+										vm.infotext = vm.infotext + "<p>Denna länk och information hämtas från <a href=\"unpaywall.org\">Unpaywall</a>. I vissa fall är det samma version som Online-länken ovan.</p>";
+										vm.infotext = $sce.trustAsHtml(vm.infotext);
+										console.log(vm.infotext);
 										vm.showOA = true;
 									} else {
 										vm.doi = false;
