@@ -18,55 +18,6 @@ Kioskanpassningar inlagda med "//Kiosk"
         /*var app = angular.module('centralCustom', ['angularLoad']);*/
 
     /****************************************************************************************************/
-
-	
-	/*******************************************************************
-	
-	Directive som gör att text kan markeras/kopieras på de element som
-	har onclick (ange selectable-text på de elementen)
-	
-	********************************************************************/
-	app.directive('selectableText', function($window, $timeout) {
-        var i = 0;      
-        return {
-          restrict: 'A',
-          priority:  1,
-          compile: function (tElem, tAttrs) {
-            var fn = '$$clickOnNoSelect' + i++,
-                _ngClick = tAttrs.ngClick;
-              
-            tAttrs.ngClick = fn + '($event)';
-  
-            return function(scope) {
-              var lastAnchorOffset, lastFocusOffset, timer;
-                
-              scope[fn] = function(event) {
-                var selection    = $window.getSelection(),
-                    anchorOffset = selection.anchorOffset,
-                    focusOffset  = selection.focusOffset;
-  
-                if(focusOffset - anchorOffset !== 0) {
-                  if(!(lastAnchorOffset === anchorOffset && lastFocusOffset === focusOffset)) {
-                    lastAnchorOffset = anchorOffset;
-						lastFocusOffset  = focusOffset;
-                    if(timer) {
-                      $timeout.cancel(timer);
-                      timer = null;
-                    }
-                    return;
-                  }
-                }
-                lastAnchorOffset = null;
-                lastFocusOffset  = null;
-                timer = $timeout(function() {
-                  scope.$eval(_ngClick, {$event: event});  
-                  timer = null;
-                }, 250);
-              };
-            };
-          }
-        };
-    });
 	
 	//Ändra de timeouts som ExLibris har satt
 	//Numera parameter i BO
@@ -490,7 +441,7 @@ Kioskanpassningar inlagda med "//Kiosk"
 					*/
 					//NY TAB
 					'<div class="kth_fabaction">' +
-						'<a ng-if="$ctrl.selectedLanguage==\'sv_SE\'" class="button-with-icon kth-favorite" aria-label="Map" target="_blank" href="http://apps.lib.kth.se/forms/registeralmauser/almaadduserform_kiosk_nui.php?formlanguage=sv">' +
+						'<a ng-if="$ctrl.selectedLanguage==\'sv_SE\'" class="button-with-icon kth-favorite" aria-label="Map" target="_blank" href="https://apps.lib.kth.se/kiosk/kthbforms_libraryaccount_kiosk.php?formlanguage=swedish">' +
 							'<md-icon class="md-primoExplore-theme" aria-hidden="true" style="">' + 
 								'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="shape-rendering:geometricPrecision;text-rendering:geometricPrecision;image-rendering:optimizeQuality;width: 110%;height: 110%;" x="0px" y="0px" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 100 125">' +
 										//fylld
@@ -504,7 +455,7 @@ Kioskanpassningar inlagda med "//Kiosk"
 							'</md-tooltip>' + 
 							'<span>Ansökan om bibliotekskonto</span>' +
 						'</a>' +
-						'<a ng-if="$ctrl.selectedLanguage==\'en_US\'" class="button-with-icon kth-favorite" aria-label="Map" target="_blank" href="http://apps.lib.kth.se/forms/registeralmauser/almaadduserform_kiosk_nui.php?formlanguage=en">' +
+						'<a ng-if="$ctrl.selectedLanguage==\'en_US\'" class="button-with-icon kth-favorite" aria-label="Map" target="_blank" href="https://apps.lib.kth.se/kiosk/kthbforms_libraryaccount_kiosk.php?formlanguage=en">' +
 							'<md-icon class="md-primoExplore-theme" aria-hidden="true" style="">' + 
 								'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="shape-rendering:geometricPrecision;text-rendering:geometricPrecision;image-rendering:optimizeQuality;width: 110%;height: 110%;" x="0px" y="0px" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 100 125">' +
 										//fylld
@@ -989,6 +940,15 @@ Kioskanpassningar inlagda med "//Kiosk"
 				'<prm-static section="homepage" flex class="md-padding"></prm-static>' +
 				'<div flex="0" flex-md="0" flex-lg="15" flex-xl="15" ng-class="{\'flex-lgPlus-15\': $ctrl.mediaQueries.lgPlus}"></div>' +
 			'</md-content>' +
+
+			//MayRelease 2019
+			/*
+			'<md-content class="main" ng-if="!$ctrl.isSearchDone() && !$ctrl.isAtozSearch" layout="row" layout-align="center start" flex>' +
+    			'<div flex="0" flex-md="0" flex-lg="10" flex-xl="20" ng-class="{\'flex-lgPlus-15\': $ctrl.mediaQueries.lgPlus && !$ctrl.facetToLeft, \'flex-lgPlus-20\': $ctrl.mediaQueries.lgPlus && $ctrl.facetToLeft, \'flex-xl-25\': $ctrl.facetToLeft}"></div>' +
+    			'<prm-static section="homepage" flex class="md-padding"></prm-static>' +
+    			'<div flex="0" flex-md="10" flex-lg="25" ng-class="{\'flex-lgPlus-30\': $ctrl.mediaQueries.lgPlus && !$ctrl.facetToLeft, \'flex-lgPlus-25\': $ctrl.mediaQueries.lgPlus && $ctrl.facetToLeft, \'flex-xl-30\': $ctrl.mediaQueries.xl && !$ctrl.facetToLeft, \'flex-xl-25\': $ctrl.mediaQueries && $ctrl.facetToLeft}"></div>' +
+			'</md-content>' +
+			*/
 			//Personalize AUGUSTIRELEASE
 			'<md-content layout="row" layout-align="center start" flex ng-if="$ctrl.displayDialog()">' +
 				'<div flex="0" flex-sm="0" flex-lg="15" flex-xl="20" ng-class="{\'facet-to-left-spacer\': $ctrl.facetToLeft&&!$ctrl.mediaQueries.xl && !$ctrl.mediaQueries.md && !$ctrl.mediaQueries.sm && !$ctrl.mediaQueries.xs, \'flex-xl-25\': $ctrl.facetToLeft}"></div>' +
@@ -1006,7 +966,9 @@ Kioskanpassningar inlagda med "//Kiosk"
 					//facett visas bara om sökresultat finns(ta bort för att visa även vid nollresultat)
 					//AUGUSTIRELEASE
 					//'<prm-facet tabindex="-1" ng-if="($ctrl.hasSearchResults() && !$ctrl.isShowPartsOnCitationTrails() || $ctrl.searchInProgress) && $ctrl.showTimer" (close-mobile-facet-event)="$ctrl.closeMobileFacet($event)"></prm-facet>' +
-					'<prm-facet tabindex="-1" ng-if="(!$ctrl.isShowPartsOnCitationTrails() || $ctrl.searchInProgress) && $ctrl.showTimer" (close-mobile-facet-event)="$ctrl.closeMobileFacet($event)"></prm-facet>' +
+					//'<prm-facet tabindex="-1" ng-if="(!$ctrl.isShowPartsOnCitationTrails() || $ctrl.searchInProgress) && $ctrl.showTimer" (close-mobile-facet-event)="$ctrl.closeMobileFacet($event)"></prm-facet>' +
+					//MAY release 2019
+					'<prm-facet tabindex="-1" ng-if="(!$ctrl.isShowPartsOnCitationTrails() || $ctrl.searchInProgress) && !$ctrl.isChaptersAndReviewsState()  && $ctrl.showTimer" (close-mobile-facet-event)="$ctrl.closeMobileFacet($event)"></prm-facet>' +
 				'</div>' +
 				'<div flex="0" flex-md="0" flex-lg="15" flex-xl="15" ng-class="{\'flex-lgPlus-15\': $ctrl.mediaQueries.lgPlus}"></div>' +
 			'</md-content>' +
@@ -1137,7 +1099,9 @@ Kioskanpassningar inlagda med "//Kiosk"
 		//lagt till selectable-text(se directive)
 		//ng-click?? (visa ej dialog)
 		//lagt till $ctrl.isFullView så att det inte ska gå att klicka i full view
-		'<div selectable-text ng-click="$ctrl.isFullView || $ctrl.handleDetails($ctrl.item,$event, true)" class="list-item-primary-content result-item-primary-content" ng-class="::{\'has-checkbox\': $ctrl.isfavorites, \'new-result-item\' : ($ctrl.index && $ctrl.newMetalibItem())}" data-recordid="{{::$ctrl.recordId}}" layout="row">' +
+		// januari 2019 release id="SEARCH_RESULT_RECORDID_{{::$ctrl.recordId}}"
+		// januari 2019 release selectable(se directive ovan) genererar fel
+		'<div ng-click="$ctrl.isFullView || $ctrl.handleDetails($ctrl.item,$event, true)" class="list-item-primary-content result-item-primary-content" ng-class="::{\'has-checkbox\': $ctrl.isfavorites, \'new-result-item\' : ($ctrl.index && $ctrl.newMetalibItem())}" data-recordid="{{::$ctrl.recordId}}" id="SEARCH_RESULT_RECORDID_{{::$ctrl.recordId}}" layout="row">' +
 			'<span class="list-item-count">' +
 				'<span>{{::$ctrl.index}}</span>' +
 				'<md-tooltip ng-if="::($ctrl.index && $ctrl.newMetalibItem())"><span translate="brief.New_Result"></span></md-tooltip>' +
@@ -1183,6 +1147,8 @@ Kioskanpassningar inlagda med "//Kiosk"
 					'<prm-search-result-availability-line ng-if="($ctrl.delivery &&(!$ctrl.isGenericRecord() || $ctrl.isPc()))" tabindex="-1" [result]="::$ctrl.item" [is-full-view]="::$ctrl.isFullView" [is-overlay-full-view]="$ctrl.isOverlayFullView" [collection-discovery-data]="::$ctrl.collectionDiscoveryData" ng-click="$event.stopPropagation()" (open-full-display-with-getit1)="$ctrl.handleDetails($ctrl.item, $event, false);"></prm-search-result-availability-line>' +
 				'</div>' +
 				'<prm-search-result-frbr-line [result]="::$ctrl.item" [is-full-view]="::$ctrl.isFullView" [index]="::$ctrl.index" ng-if="::($ctrl.isFrbrGeneric() && !$ctrl.isfavorites && $ctrl.isMultipleVersions() && !$ctrl.isPc() && !$ctrl.isFavoriteForDisplayFrbr)"></prm-search-result-frbr-line>' +
+				//book chapters may 2019
+				'<prm-chapters-results-line ng-click="$event.stopPropagation()" tabindex="-1" [item]="::$ctrl.item" ng-if="$ctrl.hasRelatedItems () && ($ctrl.isFullViewOverlayOpen || $ctrl.isFullView)"></prm-chapters-results-line>' +
 				'<prm-favorites-record-labels [item]="::$ctrl.item" ng-if="::$ctrl.isfavorites"></prm-favorites-record-labels>' +
 			'</div>' +
 		'</div>' +
@@ -2092,24 +2058,24 @@ Kioskanpassningar inlagda med "//Kiosk"
 		//Anpassa länkar till valt språk
 		vm.kth_language = $translate.use();	
 		if(vm.kth_language == 'sv_SE') {
-			vm.parentCtrl.kth_databaseurl = 'https://www.kth.se/kthb/sokverktyg/databaser-och-soktjanster-1.546373';
+			vm.parentCtrl.kth_databaseurl = 'https://www.kth.se/biblioteket/soka-vardera/sok-information/databaser-och-soktjanster-1.851404';
 		} else {
-			vm.parentCtrl.kth_databaseurl = 'https://www.kth.se/en/kthb/sokverktyg/databaser-och-soktjanster-1.546373';
+			vm.parentCtrl.kth_databaseurl = 'https://www.kth.se/en/biblioteket/soka-vardera/sok-information/databaser-och-soktjanster-1.851404';
 		}
-		
+
 		function goToHELP() {
 			if(vm.kth_language == 'sv_SE') {
-				window.open('https://www.kth.se/kthb/sokverktyg/sokguider/primo-help-1.614252', 'Help', 'height=800,width=600');
+				window.open('https://www.kth.se/biblioteket/soka-vardera/sok-information/primo-hjalp-1.863377', 'Help', 'height=800,width=600');
 			} else {
-				window.open('https://www.kth.se/en/kthb/sokverktyg/sokguider/primo-help-1.614252', 'Help', 'height=800,width=600');
+				window.open('https://www.kth.se/en/biblioteket/soka-vardera/sok-information/primo-hjalp-1.863377', 'Help', 'height=800,width=600');
 			}
 		}
 
 		function goToKTHDatabases() {
 			if(vm.kth_language == 'sv_SE') {
-				location.href = 'https://www.kth.se/kthb/sokverktyg/databaser-och-soktjanster-1.544252';
+				location.href = 'https://www.kth.se/biblioteket/soka-vardera/sok-information/databaser-och-soktjanster-1.851404';
 			} else {
-				location.href = 'https://www.kth.se/en/kthb/sokverktyg/databaser-och-soktjanster-1.544252';
+				location.href = 'https://www.kth.se/en/biblioteket/soka-vardera/sok-information/databaser-och-soktjanster-1.851404';
 			}
 		}
 		

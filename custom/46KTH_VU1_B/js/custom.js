@@ -13,55 +13,6 @@ console.log(kth_vid);
 
     /****************************************************************************************************/
 	
-	
-	/*******************************************************************
-	
-	Directive som gör att text kan markeras/kopieras på de element som
-	har onclick (ange selectable-text på de elementen)
-	
-	********************************************************************/
-	app.directive('selectableText', function($window, $timeout) {
-        var i = 0;      
-        return {
-          restrict: 'A',
-          priority:  1,
-          compile: function (tElem, tAttrs) {
-            var fn = '$$clickOnNoSelect' + i++,
-                _ngClick = tAttrs.ngClick;
-              
-            tAttrs.ngClick = fn + '($event)';
-  
-            return function(scope) {
-              var lastAnchorOffset, lastFocusOffset, timer;
-                
-              scope[fn] = function(event) {
-                var selection    = $window.getSelection(),
-                    anchorOffset = selection.anchorOffset,
-                    focusOffset  = selection.focusOffset;
-  
-                if(focusOffset - anchorOffset !== 0) {
-                  if(!(lastAnchorOffset === anchorOffset && lastFocusOffset === focusOffset)) {
-                    lastAnchorOffset = anchorOffset;
-						lastFocusOffset  = focusOffset;
-                    if(timer) {
-                      $timeout.cancel(timer);
-                      timer = null;
-                    }
-                    return;
-                  }
-                }
-                lastAnchorOffset = null;
-                lastFocusOffset  = null;
-                timer = $timeout(function() {
-                  scope.$eval(_ngClick, {$event: event});  
-                  timer = null;
-                }, 250);
-              };
-            };
-          }
-        };
-    });
-	
 	//Ändra de timeouts som ExLibris har satt
 	//Numera parameter i BO
 	//Starting from the Primo November 2017 Release, New UI users can define the Session Timeout per view via the Views Wizard General Views Attributes page
@@ -845,6 +796,15 @@ console.log(kth_vid);
 				'<prm-static section="homepage" flex class="md-padding"></prm-static>' +
 				'<div flex="0" flex-md="0" flex-lg="15" flex-xl="15" ng-class="{\'flex-lgPlus-15\': $ctrl.mediaQueries.lgPlus}"></div>' +
 			'</md-content>' +
+
+			//MayRelease 2019
+			/*
+			'<md-content class="main" ng-if="!$ctrl.isSearchDone() && !$ctrl.isAtozSearch" layout="row" layout-align="center start" flex>' +
+    			'<div flex="0" flex-md="0" flex-lg="10" flex-xl="20" ng-class="{\'flex-lgPlus-15\': $ctrl.mediaQueries.lgPlus && !$ctrl.facetToLeft, \'flex-lgPlus-20\': $ctrl.mediaQueries.lgPlus && $ctrl.facetToLeft, \'flex-xl-25\': $ctrl.facetToLeft}"></div>' +
+    			'<prm-static section="homepage" flex class="md-padding"></prm-static>' +
+    			'<div flex="0" flex-md="10" flex-lg="25" ng-class="{\'flex-lgPlus-30\': $ctrl.mediaQueries.lgPlus && !$ctrl.facetToLeft, \'flex-lgPlus-25\': $ctrl.mediaQueries.lgPlus && $ctrl.facetToLeft, \'flex-xl-30\': $ctrl.mediaQueries.xl && !$ctrl.facetToLeft, \'flex-xl-25\': $ctrl.mediaQueries && $ctrl.facetToLeft}"></div>' +
+			'</md-content>' +
+			*/
 			//Personalize AUGUSTIRELEASE
 			'<md-content layout="row" layout-align="center start" flex ng-if="$ctrl.displayDialog()">' +
 				'<div flex="0" flex-sm="0" flex-lg="15" flex-xl="20" ng-class="{\'facet-to-left-spacer\': $ctrl.facetToLeft&&!$ctrl.mediaQueries.xl && !$ctrl.mediaQueries.md && !$ctrl.mediaQueries.sm && !$ctrl.mediaQueries.xs, \'flex-xl-25\': $ctrl.facetToLeft}"></div>' +
@@ -862,7 +822,9 @@ console.log(kth_vid);
 					//facett visas bara om sökresultat finns(ta bort för att visa även vid nollresultat)
 					//AUGUSTIRELEASE
 					//'<prm-facet tabindex="-1" ng-if="($ctrl.hasSearchResults() && !$ctrl.isShowPartsOnCitationTrails() || $ctrl.searchInProgress) && $ctrl.showTimer" (close-mobile-facet-event)="$ctrl.closeMobileFacet($event)"></prm-facet>' +
-					'<prm-facet tabindex="-1" ng-if="(!$ctrl.isShowPartsOnCitationTrails() || $ctrl.searchInProgress) && $ctrl.showTimer" (close-mobile-facet-event)="$ctrl.closeMobileFacet($event)"></prm-facet>' +
+					//'<prm-facet tabindex="-1" ng-if="(!$ctrl.isShowPartsOnCitationTrails() || $ctrl.searchInProgress) && $ctrl.showTimer" (close-mobile-facet-event)="$ctrl.closeMobileFacet($event)"></prm-facet>' +
+					//MAY release 2019
+					'<prm-facet tabindex="-1" ng-if="(!$ctrl.isShowPartsOnCitationTrails() || $ctrl.searchInProgress) && !$ctrl.isChaptersAndReviewsState()  && $ctrl.showTimer" (close-mobile-facet-event)="$ctrl.closeMobileFacet($event)"></prm-facet>' +
 				'</div>' +
 				'<div flex="0" flex-md="0" flex-lg="15" flex-xl="15" ng-class="{\'flex-lgPlus-15\': $ctrl.mediaQueries.lgPlus}"></div>' +
 			'</md-content>' +
@@ -992,7 +954,9 @@ console.log(kth_vid);
 		//lagt till selectable-text(se directive)
 		//ng-click?? (visa ej dialog)
 		//lagt till $ctrl.isFullView så att det inte ska gå att klicka i full view
-		'<div selectable-text ng-click="$ctrl.isFullView || $ctrl.handleDetails($ctrl.item,$event, true)" class="list-item-primary-content result-item-primary-content" ng-class="::{\'has-checkbox\': $ctrl.isfavorites, \'new-result-item\' : ($ctrl.index && $ctrl.newMetalibItem())}" data-recordid="{{::$ctrl.recordId}}" layout="row">' +
+		// januari 2019 release id="SEARCH_RESULT_RECORDID_{{::$ctrl.recordId}}"
+		// januari 2019 release selectable(se directive ovan) genererar fel
+		'<div ng-click="$ctrl.isFullView || $ctrl.handleDetails($ctrl.item,$event, true)" class="list-item-primary-content result-item-primary-content" ng-class="::{\'has-checkbox\': $ctrl.isfavorites, \'new-result-item\' : ($ctrl.index && $ctrl.newMetalibItem())}" data-recordid="{{::$ctrl.recordId}}" id="SEARCH_RESULT_RECORDID_{{::$ctrl.recordId}}" layout="row">' +
 			'<span class="list-item-count">' +
 				'<span>{{::$ctrl.index}}</span>' +
 				'<md-tooltip ng-if="::($ctrl.index && $ctrl.newMetalibItem())"><span translate="brief.New_Result"></span></md-tooltip>' +
@@ -1038,6 +1002,8 @@ console.log(kth_vid);
 					'<prm-search-result-availability-line ng-if="($ctrl.delivery &&(!$ctrl.isGenericRecord() || $ctrl.isPc()))" tabindex="-1" [result]="::$ctrl.item" [is-full-view]="::$ctrl.isFullView" [is-overlay-full-view]="$ctrl.isOverlayFullView" [collection-discovery-data]="::$ctrl.collectionDiscoveryData" ng-click="$event.stopPropagation()" (open-full-display-with-getit1)="$ctrl.handleDetails($ctrl.item, $event, false);"></prm-search-result-availability-line>' +
 				'</div>' +
 				'<prm-search-result-frbr-line [result]="::$ctrl.item" [is-full-view]="::$ctrl.isFullView" [index]="::$ctrl.index" ng-if="::($ctrl.isFrbrGeneric() && !$ctrl.isfavorites && $ctrl.isMultipleVersions() && !$ctrl.isPc() && !$ctrl.isFavoriteForDisplayFrbr)"></prm-search-result-frbr-line>' +
+				//book chapters may 2019
+				'<prm-chapters-results-line ng-click="$event.stopPropagation()" tabindex="-1" [item]="::$ctrl.item" ng-if="$ctrl.hasRelatedItems () && ($ctrl.isFullViewOverlayOpen || $ctrl.isFullView)"></prm-chapters-results-line>' +
 				'<prm-favorites-record-labels [item]="::$ctrl.item" ng-if="::$ctrl.isfavorites"></prm-favorites-record-labels>' +
 			'</div>' +
 		'</div>' +
@@ -1750,7 +1716,7 @@ console.log(kth_vid);
 			controller: 'prmLogoAfterController',
 			template: 
 				'<div>' +
-					'<a href="{{$ctrl.parentCtrl.kthb_link}}"><span class="kth-sitenameheader" translate="nui.header.sitename"></span><span ng-if="$ctrl.kth_vid==\'46KTH_VU1_B\'">BETA!!!</span></a>' +
+					'<a href="{{$ctrl.parentCtrl.kthb_link}}"><span class="kth-sitenameheader" translate="nui.header.sitename"></span><span style="color:salmon" ng-if="$ctrl.kth_vid==\'46KTH_VU1_B\'">BETA!!!</span></a>' +
 				'</div>'
 	});
 	
@@ -1934,24 +1900,24 @@ console.log(kth_vid);
 		//Anpassa länkar till valt språk
 		vm.kth_language = $translate.use();	
 		if(vm.kth_language == 'sv_SE') {
-			vm.parentCtrl.kth_databaseurl = 'https://www.kth.se/kthb/sokverktyg/databaser-och-soktjanster-1.546373';
+			vm.parentCtrl.kth_databaseurl = 'https://www.kth.se/biblioteket/soka-vardera/sok-information/databaser-och-soktjanster-1.851404';
 		} else {
-			vm.parentCtrl.kth_databaseurl = 'https://www.kth.se/en/kthb/sokverktyg/databaser-och-soktjanster-1.546373';
+			vm.parentCtrl.kth_databaseurl = 'https://www.kth.se/en/biblioteket/soka-vardera/sok-information/databaser-och-soktjanster-1.851404';
 		}
 
 		function goToHELP() {
 			if(vm.kth_language == 'sv_SE') {
-				window.open('https://www.kth.se/kthb/sokverktyg/sokguider/primo-help-1.614252', 'Help', 'height=800,width=600');
+				window.open('https://www.kth.se/biblioteket/soka-vardera/sok-information/primo-hjalp-1.863377', 'Help', 'height=800,width=600');
 			} else {
-				window.open('https://www.kth.se/en/kthb/sokverktyg/sokguider/primo-help-1.614252', 'Help', 'height=800,width=600');
+				window.open('https://www.kth.se/en/biblioteket/soka-vardera/sok-information/primo-hjalp-1.863377', 'Help', 'height=800,width=600');
 			}
 		}
 
 		function goToKTHDatabases() {
 			if(vm.kth_language == 'sv_SE') {
-				location.href = 'https://www.kth.se/kthb/sokverktyg/databaser-och-soktjanster-1.544252';
+				location.href = 'https://www.kth.se/biblioteket/soka-vardera/sok-information/databaser-och-soktjanster-1.851404';
 			} else {
-				location.href = 'https://www.kth.se/en/kthb/sokverktyg/databaser-och-soktjanster-1.544252';
+				location.href = 'https://www.kth.se/en/biblioteket/soka-vardera/sok-information/databaser-och-soktjanster-1.851404';
 			}
 		}
 	
@@ -2655,37 +2621,39 @@ console.log(kth_vid);
 	/**********************************************************
 	
 	prm-search-result-availability-line Träfflista
+
+	Denna är dold i fullposten.
 	
 	**********************************************************/
 	app.component('prmSearchResultAvailabilityLineAfter', {
-			bindings: {parentCtrl: '<'},
-			controller: 'prmFullViewServiceContainerAfterController',
-			template: '<div ng-if="$ctrl.showOA">' +
-						'<div class="">' +
-							'<div class="section-body" layout="row" layout-align="">' +
-								'<div class="spaced-rows" layout="column">' +
-									'<div>' +
-										'<a style="color: #0f7d00" target="_new" href="{{$ctrl.best_oa_location_url}}">' +
-											'<span>Online open access</span>' +
-											//'<span ng-if="$ctrl.gold">(Gold/Bronze)</span>' +
-											//'<span ng-if="$ctrl.greenpublished">(Green published)</span>' +
-											//'<span ng-if="$ctrl.greenaccepted">(Green accepted)</span>' +
-											//'<span ng-if="$ctrl.greensubmittedVersion">(Green submitted)</span>' +
-											//'<img style="width:14px;position: relative;top: 2px;" src="custom/' + kth_vid + '/img/open-access-icon.png"></img>' +
-											'<prm-icon external-link="" icon-type="svg" svg-icon-set="primo-ui" icon-definition="open-in-new" aria-label="externalLink">' +
-											'</prm-icon>' +
-										'</a>' +
-										'<span class="tooltip">' +
-											'<svg width="20px" height="20px" viewBox="0 0 24 24" id="ic_info_24px" y="1368" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path></svg>' +
-											'<span class="tooltiptext tooltip-top">' +
-												'<div ng-bind-html="$ctrl.infotext"></div>' +
-											'</span>' +
+		bindings: {parentCtrl: '<'},
+		controller: 'prmFullViewServiceContainerAfterController',
+		template: '<div ng-if="$ctrl.showOA">' +
+					'<div class="">' +
+						'<div class="section-body" layout="row" layout-align="">' +
+							'<div class="spaced-rows" layout="column">' +
+								'<div>' +
+									'<a style="color: #0f7d00" target="_new" href="{{$ctrl.best_oa_location_url}}">' +
+										'<span>Online open access</span>' +
+										//'<span ng-if="$ctrl.gold">(Gold/Bronze)</span>' +
+										//'<span ng-if="$ctrl.greenpublished">(Green published)</span>' +
+										//'<span ng-if="$ctrl.greenaccepted">(Green accepted)</span>' +
+										//'<span ng-if="$ctrl.greensubmittedVersion">(Green submitted)</span>' +
+										//'<img style="width:14px;position: relative;top: 2px;" src="custom/' + kth_vid + '/img/open-access-icon.png"></img>' +
+										'<prm-icon external-link="" icon-type="svg" svg-icon-set="primo-ui" icon-definition="open-in-new" aria-label="externalLink">' +
+										'</prm-icon>' +
+									'</a>' +
+									'<span class="tooltip">' +
+										'<svg width="20px" height="20px" viewBox="0 0 24 24" id="ic_info_24px" y="1368" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path></svg>' +
+										'<span class="tooltiptext tooltip-top">' +
+											'<div ng-bind-html="$ctrl.infotext"></div>' +
 										'</span>' +
-									'</div>' +
+									'</span>' +
 								'</div>' +
 							'</div>' +
 						'</div>' +
-					  '</div>'
+					'</div>' +
+				'</div>'
 	});
 	
 	/*****************************************
@@ -2746,16 +2714,6 @@ console.log(kth_vid);
 
 		vm.kth_language = $translate.use();
 
-		vm.togglepolicy = togglepolicy;
-		function togglepolicy(element) {
-			if (element.querySelector(".tooltiptext").style.visibility == "hidden") {
-				element.querySelector(".tooltiptext").style.visibility = "visible";
-				element.querySelector(".tooltiptext").style.opacity = "1";
-			} else {
-				element.querySelector(".tooltiptext").style.visibility = "hidden";
-				element.querySelector(".tooltiptext").style.opacity = "0";
-			}
-		}
 		//Bevaka (watch) eftersom värden inte alltid hunnit sättas.
 		//träfflista
 		if (typeof(vm.parentCtrl.result) != "undefined") {
@@ -2824,12 +2782,18 @@ console.log(kth_vid);
 									}
 								}
 								if(vm.kth_language == 'sv_SE') {
-									vm.infotext = vm.infotext + "<p>Denna länk och information hämtas från <a href=\"unpaywall.org\">Unpaywall</a>. I vissa fall är det samma version som Online-länken ovan.</p>";
+									vm.infotext = vm.infotext + "<p>Denna länk och information hämtas från <a href=\"http://unpaywall.org\">Unpaywall</a>. I vissa fall är det samma version som Online-länken ovan.</p>";
 								} else {
-									vm.infotext = vm.infotext + "<p>This link and information is retrieved from <a href=\"unpaywall.org\">Unpaywall</a>. In some cases, it is the same version as the Online link above.</p>";
+									vm.infotext = vm.infotext + "<p>This link and information is retrieved from <a href=\"http://unpaywall.org\">Unpaywall</a>. In some cases, it is the same version as the Online link above.</p>";
 								}
+								//Varför blir det INTE utf-8kompatibelt ibland?
+								vm.infotext = vm.infotext.replace(/å/g, "&aring;")
+								vm.infotext = vm.infotext.replace(/ä/g, "&auml;")
+								vm.infotext = vm.infotext.replace(/ö/g, "&ouml;")
+								vm.infotext = vm.infotext.replace(/Å/g, "&Aring;")
+								vm.infotext = vm.infotext.replace(/Ä/g, "&Auml;;")
+								vm.infotext = vm.infotext.replace(/Ö/g, "&Ouml;")
 								vm.infotext = $sce.trustAsHtml(vm.infotext);
-								console.log(vm.infotext);
 								vm.showOA = true;
 							} else {
 								vm.doi = false;
@@ -2861,34 +2825,65 @@ console.log(kth_vid);
 										vm.best_oa_location_url = data.data.best_oa_location.url;
 										vm.best_oa_location_evidence = data.data.best_oa_location.evidence;
 										//Hantera att OA kan ha lite olika typer av publicerat material
-											//guld/bronze villkor:
-												//best_oa_location.host_type = publisher
-											//"grön" villkor
-											//acceptedVersion
-												//best_oa_location.host_type == repository && version = acceptedVersion
-											//publishedVersion
-												//best_oa_location.host_type == repository && version = publishedVersion
-											//submittedVersion
-												//best_oa_location.host_type == repository && version = submittedVersion
+										//guld/bronze villkor:
+											//best_oa_location.host_type = publisher
+										//"grön" villkor
+										//acceptedVersion
+											//best_oa_location.host_type == repository && version = acceptedVersion
+										//publishedVersion
+											//best_oa_location.host_type == repository && version = publishedVersion
+										//submittedVersion
+											//best_oa_location.host_type == repository && version = submittedVersion
 										
 										if(data.data.best_oa_location.host_type == 'publisher') {
 											vm.gold = true;
-											vm.infotext = "<p>Detta är den slutgiltiga publicerade versionen av artikeln, fritt tillgänglig (open access) på förlagets webbplats.</p>";
+											if(vm.kth_language == 'sv_SE') {
+												vm.infotext = "<p>Detta är den slutgiltiga publicerade versionen av artikeln, fritt tillgänglig (open access) på förlagets webbplats.</p>";
+											} else {
+												vm.infotext = "<p>This is the final published version of the article, freely available (open access) on the publisher's website.</p>";
+											}
+											
 										} else if(data.data.best_oa_location.host_type == "repository" && data.data.best_oa_location.version == 'publishedVersion') {
 											vm.greenpublished = true;
-											vm.infotext = "<p>Detta är den slutgiltiga publicerade versionen av artikeln, fritt tillgänglig i ett open access-arkiv.</p>"
+											if(vm.kth_language == 'sv_SE') {
+												vm.infotext = "<p>Detta är den slutgiltiga publicerade versionen av artikeln, fritt tillgänglig i ett open access-arkiv.</p>"
+											} else {
+												vm.infotext = "<p>This is the final published version of the article, freely available in an open access archive.</p>";
+											}
 										} else if(data.data.best_oa_location.host_type == "repository" && data.data.best_oa_location.version == 'acceptedVersion') {
 											vm.greenaccepted = true;
-											vm.infotext = "<p>Detta är en fritt tillgänglig postprint-version av artikeln i ett open access-arkiv. D.v.s. det är det accepterade och granskade manuskriptet, men ej den slutgiltiga publicerade artikeln.</p>"
+											if(vm.kth_language == 'sv_SE') {
+												vm.infotext = "<p>Detta är en fritt tillgänglig postprint-version av artikeln i ett open access-arkiv. D.v.s. det är det accepterade och granskade manuskriptet, men ej den slutgiltiga publicerade artikeln.</p>"
+											} else {
+												vm.infotext = "<p>This is a free postprint version of the article available in an open access archive. I.e it is the accepted and reviewed manuscript, but not the final published article.</p>";
+											}
 										} else if(data.data.best_oa_location.host_type == "repository" && data.data.best_oa_location.version == 'submittedVersion') {
 											vm.greensubmittedVersion = true;
-											vm.infotext = "<p>Detta är en fritt tillgänglig preprint-version av artikeln i ett open access-arkiv. D.v.s. det är det till tidskriften inskickade manuskriptet, ännu ej accepterat eller granskat och ej den slutgiltiga publicerade artikeln.</p>"
+											if(vm.kth_language == 'sv_SE') {
+												vm.infotext = "<p>Detta är en fritt tillgänglig preprint-version av artikeln i ett open access-arkiv. D.v.s. det är det till tidskriften inskickade manuskriptet, ännu ej accepterat eller granskat och ej den slutgiltiga publicerade artikeln.</p>"
+											} else {
+												vm.infotext = "<p>This is a free preprint version of the article available in an open access archive. I.e. it is the manuscript as submitted to the journal, not yet accepted or reviewed and not the final published article.</p>";
+											}
 										} else {
-											vm.infotext = "<p>Versionsstatus för denna artikel är inte känd. Artikeln finns tillgänglig i ett open access-arkiv.</p>"
+											if(vm.kth_language == 'sv_SE') {
+												vm.infotext = "<p>Versionsstatus för denna artikel är inte känd. Artikeln finns tillgänglig i ett open access-arkiv.</p>"
+											} else {
+												vm.infotext = "<p>Version status for this article is not known. The article is available in an open access archive.</p>";
+											}
 										}
-										vm.infotext = vm.infotext + "<p>Denna länk och information hämtas från <a href=\"unpaywall.org\">Unpaywall</a>. I vissa fall är det samma version som Online-länken ovan.</p>";
+										if(vm.kth_language == 'sv_SE') {
+											vm.infotext = vm.infotext + "<p>Denna länk och information hämtas från <a href=\"http://unpaywall.org\">Unpaywall</a>. I vissa fall är det samma version som Online-länken ovan.</p>";
+										} else {
+											vm.infotext = vm.infotext + "<p>This link and information is retrieved from <a href=\"http://unpaywall.org\">Unpaywall</a>. In some cases, it is the same version as the Online link above.</p>";
+										}
+										//Varför blir det INTE utf-8kompatibelt ibland?
+										vm.infotext = vm.infotext.replace(/å/g, "&aring;")
+										vm.infotext = vm.infotext.replace(/ä/g, "&auml;")
+										vm.infotext = vm.infotext.replace(/ö/g, "&ouml;")
+										vm.infotext = vm.infotext.replace(/Å/g, "&Aring;")
+										vm.infotext = vm.infotext.replace(/Ä/g, "&Auml;;")
+										vm.infotext = vm.infotext.replace(/Ö/g, "&Ouml;")
 										vm.infotext = $sce.trustAsHtml(vm.infotext);
-										console.log(vm.infotext);
 										vm.showOA = true;
 									} else {
 										vm.doi = false;
@@ -2991,7 +2986,7 @@ console.log(kth_vid);
 	BETA prm-alma-mashup-after
 	*****************************************/
 	//ANVÄNDS INTE FÖR TILLFÄLLET. Visa almas uresolver istället. (visa i BETA?)
-	app.component('1prmAlmaMashupAfter', {
+	app.component('prmAlmaMashupAfter', {
 			bindings: {parentCtrl: '<'},
 			controller: 'prmAlmaMashupAfterController',
 			template:
@@ -3219,7 +3214,7 @@ console.log(kth_vid);
 			vm.almadata = "";
 			vm.policyinformationheader = "";
 			var method = 'GET';
-			var url = 'https://apps.lib.kth.se/alma/primo/almagetprinteditem.php?mmsids=' + mmsids + '&lang=' + $translate.use();
+			var url = 'https://apps.lib.kth.se/alma/primo/almagetprinteditem_beta_2.php?mmsids=' + mmsids + '&lang=' + $translate.use();
 			$http({method: method, url: url}).
 				then(function(response) {
 					var status = response.status;

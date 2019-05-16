@@ -10,9 +10,9 @@ Rättning för iPhone IOS 11 från Ex libris 2017-11-01
 
 *****************************************************/
 .md-dialog-container {
-  height: 100% !important;
-  position: fixed !important;
-  top: 0px !important;
+	height: 100% !important;
+	position: fixed !important;
+	top: 0px !important;
 }
 
 
@@ -134,9 +134,8 @@ prm-search-bookmark-filter #fixed-buttons-holder.fixed-to-top {
 Tooltips när inte Angulars egen 
 tooltip räcker till. 
 
-För närvarande till låneinfo
-för tryck material som visas
-på fullposten.
+För närvarande till att visa 
+open access info
 
 TODO: Anpassa till små skärmar
 *********************************/
@@ -162,7 +161,7 @@ TODO: Anpassa till små skärmar
 
 .tooltip-top {
     bottom: 32px; /*32px*/
-    left: -85px; /*-190px*/
+    left: -75px; /*-190px*/
     margin-left: -60px;
 }
 
@@ -185,7 +184,7 @@ TODO: Anpassa till små skärmar
     position: absolute;
     top: 100%; /**/
     left: 50%;/**/
-    margin-left: -13px;/*90px*/
+    margin-left: -23px;/*90px*/
     border-width: 8px;
     border-style: solid;
     border-color: #8e8e8e transparent transparent  transparent;
@@ -279,7 +278,7 @@ prm-search .alert-bar {
 	height: auto;
 	border: none;
 	padding: .5em .5em;
-	justify-content: flex-start /*vänsterjustera*/
+	justify-content: flex-start; /*vänsterjustera*/
 }
 
 .kth_alertbarwrapper div {
@@ -293,6 +292,15 @@ prm-search .alert-bar {
 .bar.alert-bar.kthinfotext {
    border-color: #ed9e9e;
 }
+
+prm-chapters-and-reviews prm-alert-bar .bar.alert-bar {
+	padding: .5em 15%;
+}
+
+prm-chapters-and-reviews prm-alert-bar .bar.alert-bar>span {
+	padding-left: 8px;
+}
+
 
 /***********************
 
@@ -790,12 +798,12 @@ prm-search-bar .md-button.switch-to-advanced:hover, prm-search-bar .md-button.sw
 /* Bredd, höjd, färg, fontstorlek etc på advanced/simple search-plusset/minuset*/
 /*prm-search-bar .search-switch-buttons .md-button.switch-to-advanced, prm-search-bar .search-switch-buttons .md-button.switch-to-simple {
 	min-height: 0px;
-	min-width: 60px;
-	line-height: 60px;
-	background-color: rgb(255, 255, 255);
-	color: #000;
-	font-size: 46px;
-	padding: 0;
+    min-width: 60px;
+    line-height: 60px;
+    background-color: rgb(255, 255, 255);
+    color: #000;
+    font-size: 46px;
+    padding: 0;
 	align-self: flex-end;
 	font-weight: lighter;
 }*/
@@ -803,8 +811,8 @@ prm-search-bar .md-button.switch-to-advanced:hover, prm-search-bar .md-button.sw
 /* advanced/simple search*/
 /*180822 inget plus på stora skärmar längre*/
 /*prm-search-bar .search-switch-buttons {
-
-	padding-top: 0 !important;
+	
+    padding-top: 0 !important;
 	display: flex !important;
 	flex-direction: column;
 	flex: 1 1 5% !important;
@@ -853,7 +861,7 @@ prm-search-bar .md-button.switch-to-advanced, prm-search-bar .md-button.switch-t
 /*180822 inget plus på stora skärmar längre*/
 @media (max-width: 699px) and (min-width: 200px) {
 	/* Bredd, höjd, färg, fontstorlek etc på advanced/simple search-plusset/minuset*/
-	prm-search-bar .md-button.switch-to-advanced, prm-search-bar .search-switch-buttons .md-button.switch-to-simple {
+	prm-search-bar .md-button.switch-to-advanced, prm-search-bar .md-button.switch-to-simple {
 		min-height: 0px;
 		min-width: 60px;
 		line-height: 60px;
@@ -902,13 +910,13 @@ prm-search-bar .md-button.switch-to-advanced, prm-search-bar .md-button.switch-t
 	prm-search-bar .search-switch-buttons .md-button.switch-to-simple {
 		display: none !important;
 	}
-
+	
 	/* stängkrysset*/
 	prm-search-bar .advanced-search-wrapper .md-button.switch-to-simple {
 		top: 0px;
 		display: inline-block !important;
 	}
-
+	
 	/* egna rader */
 	prm-advanced-search form>div>div:nth-of-type(2) {
 		flex-direction: column;
@@ -926,13 +934,13 @@ prm-search-bar .md-button.switch-to-advanced, prm-search-bar .md-button.switch-t
 	prm-search-bar .search-switch-buttons .md-button.switch-to-simple {
 		display: none !important;
 	}
-
+	
 	/* stängkrysset*/
 	prm-search-bar .advanced-search-wrapper .md-button.switch-to-simple {
 		top: 0px;
 		display: inline-block !important;
 	}
-
+	
 	/* egna rader */
 	prm-advanced-search form>div>div:nth-of-type(2) {
 		flex-direction: column;
@@ -952,19 +960,19 @@ prm-search-bar .md-button.switch-to-advanced, prm-search-bar .md-button.switch-t
 	prm-search-bar .search-switch-buttons .md-button.switch-to-simple {
 		display: none !important;
 	}	
-
+	
 	/*
 	prm-search-bar .search-switch-buttons .md-button.switch-to-advanced, prm-search-bar .search-switch-buttons .md-button.switch-to-simple {
 		min-width: 24px;
 	}
 	*/
-
+	
 	/* stängkrysset*/
 	prm-search-bar .advanced-search-wrapper .md-button.switch-to-simple {
 		top: 0px;
 		display: inline-block !important;;
 	}
-
+	
 	/* egna rader */
 	prm-advanced-search form>div>div:nth-of-type(2) {
 		flex-direction: column;
@@ -1077,8 +1085,10 @@ button.button-confirm.button-large.md-button.md-primoExplore-theme.md-ink-ripple
 	}
 }
 
-/* "Actions", dölj mail och citations */
-prm-brief-result-container .result-item-actions>button:nth-of-type(1),prm-brief-result-container .result-item-actions>button:nth-of-type(2) {
+/* "Actions", dölj mail och citations och citationtrail */
+prm-brief-result-container .result-item-actions>button:nth-of-type(1)
+,prm-brief-result-container .result-item-actions>button:nth-of-type(2)
+,prm-brief-result-container .result-item-actions>prm-citation-trails-indication-container {
 	display:none;
 }
 
@@ -1540,6 +1550,11 @@ prm-service-header .section-title, .loc-altemtrics .section-title, prm-full-view
 	display:none; 
 }
 
+/* Bort med luft */
+.search-result-availability-line-wrapper {
+    min-height: 0em;
+}
+
 /* Online-länkar gröna*/
 prm-view-online span[translate="nui.getit_full.tab1_full"], prm-view-online span[translate="nui.getit_full.Online"] {
 	color: #0f7d00;
@@ -1741,6 +1756,33 @@ prm-full-view-after {
 	td:nth-of-type(4):before { content: "Shelf"; }
 	td:nth-of-type(5):before { content: "Status"; }
 	td:nth-of-type(6):before { content: "Loan period"; }
+}
+
+/******************
+
+	OTHER CHAPTERS
+
+******************/
+
+/* se till att knapp hamnar rätt och ändra bakgrundsfärg */
+prm-chapters-and-reviews .md-toolbar-tools button {
+	margin-left: 0px !important;
+	background-color: #e9e9e9 !important;
+}
+/* Orange knappikkonen*/
+prm-chapters-and-reviews .md-toolbar-tools button svg{
+	color: #e08303;
+}
+
+prm-chapters-and-reviews .md-toolbar-tools md-divider {
+	display: none;
+}
+
+
+
+/* Bort med luft */
+prm-chapters-and-reviews .md-toolbar-tools {
+	padding: 0;
 }
 
 /******************
