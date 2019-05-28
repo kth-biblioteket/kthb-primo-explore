@@ -10,18 +10,18 @@ Rättning för iPhone IOS 11 från Ex libris 2017-11-01
 
 *****************************************************/
 .md-dialog-container {
-  height: 100% !important;
-  position: fixed !important;
-  top: 0px !important;
-}
-
+    height: 100% !important;
+    position: fixed !important;
+    top: 0px !important;
+  }
+  
 /*****************************************************
 
 vit bakgrund för hela sidan 
 
 *****************************************************/
 primo-explore>div:nth-of-type(1) {
-    background-color: #ffffff;
+	background-color: #ffffff;
 }
 
 /**************************************
@@ -106,8 +106,8 @@ prm-search>div>md-content>div:nth-of-type(4) {
 	/* bort med tomrummet på varje sida av sökrutan */
 	prm-search-bar>div:nth-of-type(1)>div:nth-of-type(1)>div:nth-of-type(1),
 	prm-search-bar>div:nth-of-type(1)>div:nth-of-type(1)>div:nth-of-type(4) {
-	    flex: 1 1 0% !important;
-	    max-width: 0% !important;
+		flex: 1 1 0% !important;
+		max-width: 0% !important;
 	}
 
 	/* se till div för sökrutan tar rätt utrymme */
@@ -142,8 +142,8 @@ prm-search>div>md-content>div:nth-of-type(4) {
 	/* bort med tomrummet på varje sida av sökrutan */
 	prm-search-bar>div:nth-of-type(1)>div:nth-of-type(1)>div:nth-of-type(1),
 	prm-search-bar>div:nth-of-type(1)>div:nth-of-type(1)>div:nth-of-type(4) {
-	    flex: 1 1 0% !important;
-	    max-width: 0% !important;
+		flex: 1 1 0% !important;
+		max-width: 0% !important;
 	}
 
 	/* se till div för sökrutan tar rätt utrymme */
@@ -183,8 +183,8 @@ prm-search>div>md-content>div:nth-of-type(4) {
 	/* bort med tomrummet på varje sida av sökrutan */
 	prm-search-bar>div:nth-of-type(1)>div:nth-of-type(1)>div:nth-of-type(1),
 	prm-search-bar>div:nth-of-type(1)>div:nth-of-type(1)>div:nth-of-type(4) {
-	    flex: 1 1 0% !important;
-	    max-width: 0% !important;
+		flex: 1 1 0% !important;
+		max-width: 0% !important;
 	}
 
 	/* se till div för sökrutan tar rätt utrymme*/
@@ -236,7 +236,7 @@ prm-topbar .top-nav-bar {
 /* se till att skapa tomrummet på varje sida och att de tar lika mycket plats*/
 prm-top-bar-before>div:nth-of-type(1),prm-top-bar-before>div:nth-of-type(3) {
 	flex: 1 1 15%;
-    max-width: 15%;
+	max-width: 15%;
 }
 
 /* anpassningar till mindre skärmar */
@@ -304,23 +304,23 @@ prm-search-bookmark-filter {
 
 /* sätt loggans höjd/storlek */
 prm-logo .product-logo {
-    padding: 0px;
-    height: 40px;
+	padding: 0px;
+	height: 40px;
 }
 
 /* placera rubriken "KTH Biblioteket" rätt och sätt fontstorlek */
 prm-topbar prm-logo-after {
 	top: 8px;
-    position: relative;
-    padding-left: 10px;
+	position: relative;
+	padding-left: 10px;
 	font-size: 2em;
 }
 
 /* fixa länkar */
 prm-logo a, prm-logo prm-logo-after a {
 	color: #525252 !important;
-    background-color: transparent !important;
-    box-shadow: none !important;
+	background-color: transparent !important;
+	box-shadow: none !important;
 }
 
 /* anpassningar till mindre skärmar */
@@ -363,7 +363,7 @@ prm-search-bar  {
 
 /* Bort med luft på sidorna */
 prm-search-bar, prm-tags-search-bar {
-    padding: 1.5em 0em 1.5em 0em !important;
+	padding: 1.5em 0em 1.5em 0em !important;
 }
 
 /* anpassningar till mindre skärmar */
@@ -391,20 +391,25 @@ Advanced search-knappen
 prm-search-bar .search-switch-buttons {
 	padding-top: 0px;
 }
-
-prm-search-bar .search-switch-buttons .md-button.switch-to-advanced {
+/* styling */
+prm-search-bar .search-switch-buttons .md-button.switch-to-advanced,prm-search-bar .search-switch-buttons .md-button.switch-to-simple {
 	background-color: rgb(255, 255, 255);
-    color: #1954a6;
-    line-height: 20px;
-    white-space: pre-wrap;
+	color: #1954a6;
+	line-height: 20px;
+	white-space: pre-wrap;
 	width: 100%;
-    position: relative;
-    height: 100%;
+	position: relative;
+	height: 100%;
 	max-height: 60px;
 }
 /* centrera texten */
-prm-search-bar .search-switch-buttons .md-button.switch-to-advanced>span {
+prm-search-bar .search-switch-buttons .md-button.switch-to-advanced>span,prm-search-bar .search-switch-buttons .md-button.switch-to-simple>span {
 	justify-content: center !important;	
+}
+
+/* dölj så den inte täcker den blå kth-färgen*/
+.advanced-search-backdrop {
+	display: none;
 }
 
 /*****************************************************
@@ -468,7 +473,7 @@ prm-search-bookmark-filter-after a {
 @media (max-width: 599px) and (min-width: 200px) {
 	/* bort med knapptexter */
 	prm-search-bookmark-filter-after span {
-	    display: none !important;
+		display: none !important;
 	}
 }
 
@@ -519,29 +524,29 @@ Egna facetter ovanför sökresultat
 ******************************************************/
 
 #facettmenudiv {
-    display: flex;
-    background-color: transparent;
-    padding: .5em .75em;
-    padding: 0;
+	display: flex;
+	background-color: transparent;
+	padding: .5em .75em;
+	padding: 0;
 }
 
 #facettmenu {
-    margin: 0;
-    padding: 2px 0px;
+	margin: 0;
+	padding: 2px 0px;
 }
 
 #facettmenu li {
-    display: inline;
+	display: inline;
 }
 
 #facettmenu a {
-    font-weight: normal;
-    color: #24A0D8;
+	font-weight: normal;
+	color: #24A0D8;
 }
 
 #facettmenu span {
-    font-size: 0.9em;
-    font-style: italic;
+	font-size: 0.9em;
+	font-style: italic;
 }
 
 /* sidnummers placering */
@@ -552,7 +557,7 @@ prm-search-result-list .pages-separated-with-gaps .list-item-wrapper.first-in-pa
 
 /* antal sökträffars placering */
 prm-search-result-list .results-title {
-    top: 0px;
+	top: 0px;
 }
 
 /* spara sökning */
@@ -571,8 +576,8 @@ prm-icon.pin-icon md-icon {
 }
 .kth_loggain .md-button {
 	padding: 0;
-    font-style: initial;
-    color: #97abba !important;
+	font-style: initial;
+	color: #97abba !important;
 }
 
 /*****************************************************
@@ -592,7 +597,7 @@ prm-did-u-mean {
 	font-weight: 600;
 }
 prm-did-u-mean a {
-    color: #24A0D8;
+	color: #24A0D8;
 }
 
 /*****************************************************
@@ -616,19 +621,19 @@ prm-search md-content.padded-container {
 
 /* grått streck på översta träffens topp */
 .list-item-wrapper.first-in-page:first-of-type {
-    border-top-width: 1px;
-    border-top-style: solid;
+	border-top-width: 1px;
+	border-top-style: solid;
 }
 
 /* bakgrund vit(grå vid hover)*/
 prm-search-result-list .pages-separated-with-gaps .list-item-wrapper {
-    background-color: #ffffff;
+	background-color: #ffffff;
 }
 prm-search-result-list .pages-separated-with-gaps .list-item-wrapper:hover {
-    background-color: #f2f2f2;
+	background-color: #f2f2f2;
 }
 prm-brief-result-container .list-item-primary-content:before {
-    background-color: transparent;
+	background-color: transparent;
 }
 
 /* gör om hela sökreslutatet till flex och sätt omvänd ordning(för att våra egna facetter ska hamna överst), grått streck till höger */
@@ -641,8 +646,8 @@ prm-search-result-list {
 }
 /* de egna facetterna */
 prm-search-result-list-after {
-    background-color: #ffffff;
-    padding-bottom: 10px;
+	background-color: #ffffff;
+	padding-bottom: 10px;
 }
 
 /* Actions */
@@ -656,16 +661,16 @@ prm-brief-result-container .result-item-actions>prm-citation-trails-indication-c
 
 /* hjärta snurra inte */
 .result-item-actions .pin-button.pinned md-icon {
-    transform: rotate(0deg);
+	transform: rotate(0deg);
 }
 /* ikkonens ska vara gråa */
 .result-item-actions .pin-button.pinned {
-    color: #97abba;
+	color: #97abba;
 }
 
 /* materialbild(omslag etc) */
 prm-search-result-thumbnail-container img {
-    border: 1px solid #bdbdbd;
+	border: 1px solid #bdbdbd;
 }
 /* dölj de som är multiple*/
 prm-search-result-thumbnail-container .fan-img:nth-of-type(2), prm-search-result-thumbnail-container .fan-img:nth-of-type(3) {
@@ -673,24 +678,24 @@ prm-search-result-thumbnail-container .fan-img:nth-of-type(2), prm-search-result
 }
 /* fixa storlek och snurr */
 prm-search-result-thumbnail-container .fan-img:first-of-type {
-    transform: rotate(0deg) translate3d(0px,0,0) scale3d(1,1,1);
+	transform: rotate(0deg) translate3d(0px,0,0) scale3d(1,1,1);
 }
 prm-brief-result-container:hover prm-search-result-thumbnail-container .fan-img:first-of-type {
-    transform: rotate(0deg) translate3d(0px,0,0) scale3d(1,1,1);
+	transform: rotate(0deg) translate3d(0px,0,0) scale3d(1,1,1);
 }
 
 /* Dölj ikkonen framför tillgänglig text (print/online etc) */
 prm-brief-result-container .result-item-text prm-search-result-availability-line prm-icon, prm-brief-result-container .result-item-text prm-search-result-frbr-line prm-icon {
-    display: none;
+	display: none;
 }
 /* grön text */
 prm-brief-result-container [class*="check_"] {
-    color: #0f7d00;
+	color: #0f7d00;
 }
 
 /* dölj peer ikkonen */
 .peer-reviewed-mark-icon {
-    display: none;
+	display: none;
 }
 
 /* dölj OA indikationen helt tills vidare, vår egen via unpaywall är just nu bättre */
@@ -706,9 +711,9 @@ Facetter
 
 /* facettlistans rubriker */
 .sidebar-title {
-    font-weight: 400;
-    color: #525252;
-    align-self: center;
+	font-weight: 400;
+	color: #525252;
+	align-self: center;
 }
 
 
@@ -732,7 +737,7 @@ prm-back-to-search-results-button
 
 /* bakgrundsfärg */
 prm-back-to-search-results-button button {
-    background-color: #e9e9e9 !important;
+	background-color: #e9e9e9 !important;
 }
 
 prm-back-to-search-results-button .md-toolbar-tools>div:first-of-type {
@@ -748,7 +753,7 @@ prm-back-to-search-results-button .md-toolbar-tools>div:first-of-type {
 	}
 	prm-back-to-search-results-button .md-toolbar-tools>div:first-of-type {
 		flex: 1 1 0% !important;
-    	max-width: 0 !important;	
+		max-width: 0 !important;	
 	}
 }
 
@@ -788,14 +793,14 @@ prm-full-view .services-index-under {
 
 /* ordning högerlistan, recommendations underst */
 prm-recomendations {
-    order: 3;
+	order: 3;
 }
 
 /* Anpassa "divider"/streck efter varje avdelning */
 prm-service-header>div.layout-align-center-center {
-    flex-direction: column;
-    align-items: stretch;
-    align-content: stretch;
+	flex-direction: column;
+	align-items: stretch;
+	align-content: stretch;
 }
 
 /* anpassning efter skärmstorlekar */
@@ -817,7 +822,7 @@ prm-service-header>div.layout-align-center-center {
 /* Ordning och placering av avdelningar */
 .full-view-container .full-view-inner-container {
 	display: flex;
-    flex-direction: column;
+	flex-direction: column;
 	/* IE Fix*/
 	/*flex: 1 0 auto;*/
 }
@@ -856,7 +861,7 @@ prm-service-header>div.layout-align-center-center {
 
 /* Bort med luft */
 .search-result-availability-line-wrapper {
-    min-height: 1em;
+	min-height: 1em;
 }
 
 /* på samma hylla */
@@ -885,15 +890,15 @@ prm-full-view-page md-content .full-view-container .full-view-section {
 
 prm-full-view-page md-content>div:nth-of-type(1) {
 	flex: 1 1 15% !important;
-    max-width: 15% !important;
+	max-width: 15% !important;
 }
 
 prm-full-view-page md-content .full-view-container:after {
-    content: "";
-    position: absolute;
-    height: 100%;
-    top: 0px;
-    width: 1px;
+	content: "";
+	position: absolute;
+	height: 100%;
+	top: 0px;
+	width: 1px;
 	left: 0;
 	background-color: #f7f7f7;
 }
@@ -940,7 +945,7 @@ Dialogview
 /* högersidan */
 .full-view-inner-container+.full-view-aside {
 	display: flex;
-    flex-direction: column;
+	flex-direction: column;
 }
 
 /***************
@@ -960,14 +965,14 @@ Citations
 /* Ta bort luft till vänster */
 #citationTrails .full-view-section-content {
 	padding-left: 0em;
-    padding-right: 0em;
+	padding-right: 0em;
 	padding-top: 0em;
 }
 
 /* se till att bredden är konstant så att "cited" och "citing" hamnar på egna rader */
 prm-citation-trails-fullview-link>div:nth-of-type(1) {
 	max-width: 230px;
-    min-width: 230px;
+	min-width: 230px;
 }
 /* bort med luft */
 prm-citation-trails-indication {
@@ -977,7 +982,7 @@ prm-citation-trails-indication {
 /* Fixa till länkarna */
 prm-citation-trails-indication .md-button.button-with-icon {
 	line-height: 20px;
-    min-height: 20px;
+	min-height: 20px;
 	padding: 0;
 	min-width: 0px;
 	color: #5c92bd;
@@ -1016,10 +1021,10 @@ Metrics
 
 /* Metrics-rubriken lika som övriga */
 prm-full-view-after .section-title {
-    margin: 0;
-    line-height: 1.2em;
-    position: relative;
-    padding-right: 1em;
+	margin: 0;
+	line-height: 1.2em;
+	position: relative;
+	padding-right: 1em;
 }
 
 /* Anpassningar till olika skärmstorlekar */
@@ -1058,9 +1063,9 @@ prm-recomendation-item .media-figure img {
 	min-height: 60px;
 	background-image: url('/primo-explore/custom/46KTH_VU1_L/img/icon_article.png');
 	background-position-x: center;
-    background-position-y: center;
+	background-position-y: center;
 	background-size: 47px;
-    background-repeat: no-repeat;
+	background-repeat: no-repeat;
 }
 
 /* anpassning efter skärmstorlekar */
@@ -1110,9 +1115,9 @@ prm-alma-mashup-after table {
 	width: 100%;
 }
 prm-alma-mashup-after th {
-font-size: 1.2em;
-color: #757575;
-white-space: nowrap;
+	font-size: 1.2em;
+	color: #757575;
+	white-space: nowrap;
 }
 prm-alma-mashup-after td, prm-alma-mashup-after th {
 	padding-right: 10px;
@@ -1136,6 +1141,51 @@ prm-alma-mashup-after md-icon {
 	min-width: 20px;
 }
 
+
+/*********************************
+
+Favorites
+
+**********************************/
+
+prm-favorites>prm-favorites-tool-bar>md-toolbar>div>div:first-of-type,prm-favorites>div:first-of-type>div:first-of-type {
+	flex: 1 1 15% !important;
+	max-width: 15% !important;
+}
+
+/*********************************
+
+My Account
+
+**********************************/
+
+prm-account>md-toolbar>div>div:first-of-type, prm-account>md-content>div:first-of-type {
+	flex: 1 1 15% !important;
+	max-width: 15% !important;
+}
+
+prm-account md-toolbar div:first-of-type {
+	padding-left: 0px;
+}
+
+prm-account md-toolbar button:first-of-type {
+	margin-left:0px !important;
+}
+prm-account md-content.padded-container {
+	padding: 0px;
+}
+
+/*********************************
+
+ANIMATIONER
+
+*********************************/
+
+/* ingen ikon som "flyger" till favoriter */
+.pinDummy {
+	display: none;
+}
+
 /*********************************
 
 Tooltips när inte Angulars egen 
@@ -1147,8 +1197,8 @@ open access info
 TODO: Anpassa till små skärmar
 *********************************/
 .tooltip {
-    position: relative;
-    display: inline-block;
+	position: relative;
+	display: inline-block;
 	overflow: visible;
 	white-space: initial;
 	top: 5px;
@@ -1167,37 +1217,37 @@ TODO: Anpassa till små skärmar
 }
 
 .tooltip-top {
-    bottom: 32px; /*32px*/
-    left: -75px; /*-190px*/
-    margin-left: -60px;
+	bottom: 32px; /*32px*/
+	left: -75px; /*-190px*/
+	margin-left: -60px;
 }
 
 .tooltip .tooltiptext {
 	visibility: hidden;
-    position: absolute;
-    width: 320px;
-    background-color: #8e8e8e;
-    color: #fff;
-    text-align: left;
-    padding: 10px 10px;
-    border-radius: 8px;
-    opacity: 0;
+	position: absolute;
+	width: 320px;
+	background-color: #8e8e8e;
+	color: #fff;
+	text-align: left;
+	padding: 10px 10px;
+	border-radius: 8px;
+	opacity: 0;
 	transition: opacity 0.3s;
 	z-index: 11;
 }
 
 .tooltip .tooltiptext::after {
-    content: "";
-    position: absolute;
-    top: 100%; /**/
-    left: 50%;/**/
-    margin-left: -23px;/*90px*/
-    border-width: 8px;
-    border-style: solid;
-    border-color: #8e8e8e transparent transparent  transparent;
+	content: "";
+	position: absolute;
+	top: 100%; /**/
+	left: 50%;/**/
+	margin-left: -23px;/*90px*/
+	border-width: 8px;
+	border-style: solid;
+	border-color: #8e8e8e transparent transparent  transparent;
 }
 
 .tooltip:hover .tooltiptext {
-    visibility: visible;
+	visibility: visible;
 	opacity: 1;
 }

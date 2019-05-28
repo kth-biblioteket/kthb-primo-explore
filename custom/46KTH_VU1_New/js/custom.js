@@ -353,7 +353,8 @@ console.log(kth_vid);
 	app.factory('kth_facetdata', function () {
 
 		var data = {
-			allfacetscollapsed: true//True default
+			allfacetscollapsed: true, //True default
+			currenttevelpeerreview: null
 		};
 
 		return {
@@ -362,6 +363,12 @@ console.log(kth_vid);
 			},
 			setallfacetscollapsed: function (allfacetscollapsed) {
 				data.allfacetscollapsed = allfacetscollapsed;
+			},
+			getcurrenttevelpeerreview: function () {
+				return data.currenttevelpeerreview;
+			},
+			setcurrenttevelpeerreview: function (currenttevelpeerreview) {
+				data.currenttevelpeerreview = currenttevelpeerreview;
 			}
 		};
 	});
@@ -483,6 +490,14 @@ console.log(kth_vid);
 	
 	app.controller('prmFacetAfterController', function ($scope, $timeout, kth_facetdata) {
 		var vm = this;
+		/*
+		$scope.$watch(function() { return vm.parentCtrl.facets; }, function(facets) {
+			console.log(facets);
+			facets.splice(2,1);
+			console.log(facets);
+		});
+		*/
+		
 		angular.element(document).ready(function() {
 		});
 
@@ -490,6 +505,7 @@ console.log(kth_vid);
 		vm.parentCtrl.allfacetscollapsed = kth_facetdata.getallfacetscollapsed()
 		
 		//Definiera funktion som togglar facetter(ut- eller ihopfällda) så den kan anropas från knapp/rubrik i prm-facet
+		//Knappen finns inte skapad i "NEW"
 		vm.parentCtrl.togglefacets = togglefacets
 		function togglefacets() {
 			if (kth_facetdata.getallfacetscollapsed()) {
@@ -536,8 +552,32 @@ console.log(kth_vid);
 	});
 	
 	app.controller('prmFacetExactAfterController', function ($scope, kth_facetdata) {
-        var vm = this;
+		var vm = this;
+		//Spara undan värdet för tlevel-fasetten i factoryvariabel
+		if(vm.parentCtrl.facetGroup.name == "tlevel") {
+			kth_facetdata.setcurrenttevelpeerreview(vm.parentCtrl.facetGroup);
+		}
+
+		if(vm.parentCtrl.facetGroup.name == "rtype") {
+			vm.parentCtrl.facetGroup.values.forEach(function(element,index,object) {
+				if(element.value == "articles") {
+					//Ta bort article ur "Material Type"-fasetten
+					object.splice(index, 1);
+					kth_facetdata.getcurrenttevelpeerreview().values.forEach(function(element) {
+						if(element.value == "peer_reviewed") {
+							//Lägg till "peer reviewed" till "Material Type"-fasetten(rtype)
+							vm.parentCtrl.facetGroup.values.push(element);
+						};
+					})
+		
+				};
+			});
+			//Sortera fasetten så den med högst count hamnar överst
+			vm.parentCtrl.facetGroup.values.sort(function(a, b){return b.count - a.count});
+		}
+
 		//hämta parameter från factory kth_facetdata
+		//Används ej i "NEW"
 		if(kth_facetdata.getallfacetscollapsed()) {
 			vm.parentCtrl.facetGroup.facetGroupCollapsed = true;
 		} 
@@ -728,10 +768,11 @@ console.log(kth_vid);
 			bindings: {parentCtrl: '<'},
 			controller: 'prmSearchResultListAfterController',
 			template: 
-			'<div ng-if="!$ctrl.isfavorites && $ctrl.showfacets">' +
+			/*<div ng-if="!$ctrl.isfavorites && $ctrl.showfacets">' +
 				'<div id="facettmenudiv">' + 
 					'<ul id="facettmenu">' + 
-						'<li ng-if="$ctrl.physical_item_enabled"><a href="{{$ctrl.absUrl + $ctrl.physical_item}}" translate="facets.facet.tlevel.physical_item"></a>&nbsp;<span ng-if="$ctrl.physical_item_enabled">({{$ctrl.physical_item_nr}})</span></li>' + 
+						'<li ng-if="$ctrl.physical_item_enabled">
+							<a href="{{$ctrl.absUrl + $ctrl.physical_item}}" translate="facets.facet.tlevel.physical_item"></a>&nbsp;<span ng-if="$ctrl.physical_item_enabled">({{$ctrl.physical_item_nr}})</span></li>' + 
 						'<li ng-if="!$ctrl.physical_item_enabled" translate="facets.facet.tlevel.physical_item"></li>&nbsp;|&nbsp;' + 
 						'<li ng-if="$ctrl.online_resources_enabled"><a href="{{$ctrl.absUrl + $ctrl.online_resources}}" translate="facets.facet.tlevel.online_resources"></a>&nbsp;<span ng-if="$ctrl.online_resources_enabled">({{$ctrl.online_resources_nr}})</span></li>' +
 						'<li ng-if="!$ctrl.online_resources_enabled" translate="facets.facet.tlevel.online_resources"></li>&nbsp;|&nbsp;' +
@@ -745,20 +786,53 @@ console.log(kth_vid);
 						'<li ng-if="!$ctrl.articles_enabled" translate="facets.facet.facet_rtype.articles"></li>' +
 					'</ul>' +
 				'</div>' +
-			'</div>' +
+			'</div>'
+			*/
+			`<div ng-if="!$ctrl.isfavorites && $ctrl.showfacets">
+				<div id="facettmenudiv">
+					<ul id="facettmenu">
+						<li ng-if="$ctrl.physical_item_enabled">
+							<a href="{{$ctrl.absUrl + $ctrl.physical_item}}" translate="facets.facet.tlevel.physical_item"></a>&nbsp;<span ng-if="$ctrl.physical_item_enabled">({{$ctrl.physical_item_nr}})</span>
+							</li>
+						<li ng-if="!$ctrl.physical_item_enabled" translate="facets.facet.tlevel.physical_item"></li>&nbsp;|&nbsp;
+						<li ng-if="$ctrl.online_resources_enabled">
+							<a href="{{$ctrl.absUrl + $ctrl.online_resources}}" translate="facets.facet.tlevel.online_resources"></a>&nbsp;<span ng-if="$ctrl.online_resources_enabled">({{$ctrl.online_resources_nr}})</span>
+						</li>
+						<li ng-if="!$ctrl.online_resources_enabled" translate="facets.facet.tlevel.online_resources"></li>&nbsp;|&nbsp;
+						<li ng-if="$ctrl.books_enabled">
+							<a ng-if="$ctrl.books_enabled" href="{{$ctrl.absUrl + $ctrl.books}}" translate="facets.facet.facet_rtype.books"></a>&nbsp;<span ng-if="$ctrl.books_enabled">({{$ctrl.books_nr}})</span>
+						</li>
+						<li ng-if="!$ctrl.books_enabled" translate="facets.facet.facet_rtype.books"></li>&nbsp;|&nbsp;
+						<li ng-if="$ctrl.journals_enabled">
+							<a href="{{$ctrl.absUrl + $ctrl.journals}}" translate="facets.facet.facet_rtype.journals"></a>&nbsp;<span ng-if="$ctrl.journals_enabled">({{$ctrl.journals_nr}})</span>
+							</li>
+						<li ng-if="!$ctrl.journals_enabled" translate="facets.facet.facet_rtype.journals"></li>&nbsp;|&nbsp;
+						<li ng-if="$ctrl.bibldbfasett_enabled">
+							<a href="{{$ctrl.absUrl + $ctrl.bibldbfasett}}" translate="facets.facet.facet_rtype.bibldbfasett"></a>&nbsp;<span ng-if="$ctrl.bibldbfasett_enabled">({{$ctrl.bibldbfasett_nr}})</span>
+						</li>
+						<li ng-if="!$ctrl.bibldbfasett_enabled" translate="facets.facet.facet_rtype.bibldbfasett"></li>&nbsp;|&nbsp;
+						<li ng-if="$ctrl.articles_enabled">
+							<a href="{{$ctrl.absUrl + $ctrl.articles}}" translate="facets.facet.facet_rtype.articles"></a>&nbsp;<span ng-if="$ctrl.articles_enabled">({{$ctrl.articles_nr}})</span>
+						</li>
+						<li ng-if="!$ctrl.articles_enabled" translate="facets.facet.facet_rtype.articles"></li>
+					</ul>
+				</div>
+			</div>`
+			/*
 			//'<prm-authentication [is-logged-in]="$ctrl.userName().length > 0" [idp-logout]="$ctrl.idpLogout" flex="none" class="flex-none"></prm-authentication>' +
 			'<div class="kth_loggain" ng-if="$ctrl.userName.length == 0">' +
-					//logga in för att spara fråga etc
-					'<button class="button-as-link link-alt-color zero-margin md-button md-primoExplore-theme md-ink-ripple" type="button" (click)="$ctrl.loggain()" aria-label="">' +
-						'<prm-icon class="pin-icon" aria-label="Välj register " [icon-type]="::$ctrl.actionsIcons.pin.type" svg-icon-set="action" icon-definition="ic_favorite_outline_24px">' +
-						'</prm-icon>' +
-						//nytt värde i FE code table i Primo BO
-						'<span class="bold-text" translate="results.logintosavequery"></span>' +
-						'<div class="md-ripple-container"></div>' +
-					'</button>' +
-				'</div>'
+				//logga in för att spara fråga etc
+				'<button class="button-as-link link-alt-color zero-margin md-button md-primoExplore-theme md-ink-ripple" type="button" (click)="$ctrl.loggain()" aria-label="">' +
+					//hjärtaikkonen
+					'<prm-icon class="pin-icon" aria-label="" [icon-type]="::$ctrl.actionsIcons.pin.type" svg-icon-set="action" icon-definition="ic_favorite_outline_24px">' +
+					'</prm-icon>' +
+					//nytt värde i FE code table i Primo BO
+					'<span class="bold-text" translate="results.logintosavequery"></span>' +
+					'<div class="md-ripple-container"></div>' +
+				'</button>' +
+			'</div>'
+			*/
 	});
-	
 
 	app.controller('prmSearchResultListAfterController', function ($scope,$location,$rootScope,kth_currenturl,kth_loginservice,$timeout,$mdMedia) {
 		
@@ -849,10 +923,12 @@ console.log(kth_vid);
 										vm.online_resources_enabled = true;
 										vm.online_resources_nr = value.count.toLocaleString();
 									}
+									/*
 									if (value.value == 'peer_reviewed') {
 										vm.articles_enabled = true;
 										vm.articles_nr = value.count.toLocaleString();
 									}
+									*/
 								}
 							)
 						}
@@ -870,6 +946,10 @@ console.log(kth_vid);
 									if (value.value == 'bibldbfasett') {
 										vm.bibldbfasett_enabled = true;
 										vm.bibldbfasett_nr = value.count.toLocaleString();
+									}
+									if (value.value == 'articles') {
+										vm.articles_enabled = true;
+										vm.articles_nr = value.count.toLocaleString();
 									}
 								}
 							)
@@ -890,9 +970,11 @@ console.log(kth_vid);
 				if (vm.absUrl.indexOf("facet=tlevel,include,online_resources")=== -1) {
 					vm.online_resources = "&facet=tlevel,include,online_resources";
 				}
+				/*
 				if (vm.absUrl.indexOf("facet=tlevel,include,peer_reviewed")=== -1) {
 					vm.articles = "&facet=tlevel,include,peer_reviewed";
 				}
+				*/
 				if (vm.absUrl.indexOf("facet=rtype,include,books")=== -1) {
 					vm.books = "&facet=rtype,include,books";
 				}
@@ -901,6 +983,9 @@ console.log(kth_vid);
 				}
 				if (vm.absUrl.indexOf("facet=rtype,include,bibldbfasett")=== -1) {
 					vm.bibldbfasett = "&facet=rtype,include,bibldbfasett";
+				}
+				if (vm.absUrl.indexOf("facet=rtype,include,articles")=== -1) {
+					vm.articles = "&facet=rtype,include,articles";
 				}
 				vm.showfacets = true;
 			}); //slut watch
