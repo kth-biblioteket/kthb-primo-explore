@@ -2047,7 +2047,7 @@ console.log(kth_vid);
 		Använd getDecodedToken().onCampus istället??
 		Anpassning för att kolla om man sitter på campus via ipadress 
 		Primo Home > Ongoing Configuration Wizards > Institution Wizard > Edit IPs for "46KTH Royal Institute of Technology"
-		Client IP hämtas via php-script på KTHB apps-server
+		Klientens IP-nummer hämtas via php-script på KTHB apps-server
 		lägg in text i nui.kth_notoncampus, Primo BO
 		
 		******************************************************************/

@@ -95,7 +95,7 @@ console.log(kth_vid);
 		//Citation Styles(men var är dessa egentligen konfigurerade?? 
 		//Hittar inte i primo BO, men hämtas här: /primo_library/libweb/webservices/rest/v1/configuration/46KTH_VU1_L)
 		//Lägg även in dem i Primo BO för att få rätt namn/översättning (exvis default.citation.labels.vancouver)
-		
+		console.log(window.appConfig);
 		//Ta bort de vi inte vill ha
 		for(var i = window.appConfig['mapping-tables']['Citation styles'].length - 1; i >= 0; i--) {
 			//if(window.appConfig['mapping-tables']['Citation styles'][i].target === "apa") {
@@ -176,7 +176,6 @@ console.log(kth_vid);
 
 	app.controller('prmSearchBookmarkFilterAfterController', function ($translate, $rootScope, $location) {
 		var vm = this;
-		console.log(vm.parentCtrl.isFavorites);
 
 		vm.userName = $rootScope.$$childTail.$ctrl.userSessionManagerService.getUserName();
 		
@@ -267,7 +266,7 @@ console.log(kth_vid);
 	 * 
 	 * New 1811XX
 	 * 
-	 * Byt ut lite ikkonen
+	 * Byt ut lite ikkonens
 	 * 
 	 ****************************************************/
 	app.component('prmIconAfter', {
@@ -353,7 +352,7 @@ console.log(kth_vid);
 	app.factory('kth_facetdata', function () {
 
 		var data = {
-			allfacetscollapsed: true, //True default
+			allfacetscollapsed: true, //True default?
 			currenttevelpeerreview: null
 		};
 
@@ -469,6 +468,46 @@ console.log(kth_vid);
 		kth_session.addData(session);
 		$rootScope.$broadcast('sessiondataAdded', session);
 	});
+
+	
+
+	/*****************************************************
+	 * 
+	 * New 1906XX
+	 * 
+	 * prmSearchResultSortByAfter
+	 * 
+	 * 
+	 * Sticky facets/scrolla med sidan
+	 * 
+	 *****************************************************/
+
+	app.component('prmSearchResultSortByAfter', {
+		bindings: {parentCtrl: '<'},
+		controller: 'prmSearchResultSortByAfterController',
+		template: `<md-checkbox ng-model="$ctrl.stickyfacets" ng-change="$ctrl.togglestickyfacets();" aria-label="{{\'stickyfacets\' | translate}}">
+						<span translate="Sticky">Sticky</span>
+					</md-checkbox>`
+	});
+
+	app.controller('prmSearchResultSortByAfterController', function () {
+		var vm = this;
+		vm.stickyfacets = false;
+		vm.togglestickyfacets = togglestickyfacets;
+		function togglestickyfacets() {
+			if (vm.stickyfacets) {
+				//Lägg till class så facetters scrollar med sidan
+				var myEl = document.querySelector( 'prm-facet .primo-scrollbar' );
+				myEl.classList.add("kth-facet-notsticky");
+			} else {
+				//Ta bort class så facetters inte scrollar med sidan
+				var myEl = document.querySelector( 'prm-facet .primo-scrollbar' );
+				myEl.classList.remove("kth-facet-notsticky");
+			}
+		}
+
+
+	});
 	
 	/*****************************************************
 	 * 
@@ -476,7 +515,6 @@ console.log(kth_vid);
 	 * 
 	 * prm-facet-after
 	 * 
-	 * Flyttat personalize hit.
 	 * 
 	 * Egenskaper vid ny sökning, fler resultat(exempelvis 
 	 * alla utfällda eller inte vid refresh eller ny sökning)
@@ -490,13 +528,14 @@ console.log(kth_vid);
 	
 	app.controller('prmFacetAfterController', function ($scope, $timeout, kth_facetdata) {
 		var vm = this;
-		/*
+		
 		$scope.$watch(function() { return vm.parentCtrl.facets; }, function(facets) {
 			console.log(facets);
-			facets.splice(2,1);
+			//facets.splice(2,1);
 			console.log(facets);
+			togglefacet(facets,"rtype");
 		});
-		*/
+		
 		
 		angular.element(document).ready(function() {
 		});
@@ -521,6 +560,23 @@ console.log(kth_vid);
 						item.facetGroupCollapsed = true;
 					} else {
 						item.facetGroupCollapsed = false;
+					}
+				}
+			);
+		}
+
+		function togglefacet(facets,facet) {
+			console.log(facets);
+			facets.forEach(
+				function(item, index) {
+					if (item.name == facet) {
+						console.log(item.facetGroupCollapsed);
+						if(item.facetGroupCollapsed) {
+							console.log(item);
+							item.facetGroupCollapsed = false;
+						} else {
+							item.facetGroupCollapsed = true;
+						}
 					}
 				}
 			);
@@ -635,7 +691,7 @@ console.log(kth_vid);
 		Använd getDecodedToken().onCampus istället??
 		Anpassning för att kolla om man sitter på campus via ipadress 
 		Primo Home > Ongoing Configuration Wizards > Institution Wizard > Edit IPs for "46KTH Royal Institute of Technology"
-		Client IP hämtas via php-script på KTHB apps-server
+		Klientens IP-nummer hämtas via php-script på KTHB apps-server
 		lägg in text i nui.kth_notoncampus, Primo BO
 		
 		******************************************************************/
