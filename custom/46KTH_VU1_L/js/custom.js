@@ -2968,11 +2968,24 @@ console.log(kth_vid);
 		$scope.$watch(function() { return vm.parentCtrl.phoneNumberSection; }, function(phoneNumberSection) {
 			phoneNumberSection.forEach(
 				function(item, index) {
-					if (item[0].name == "sms_number") {
-						phoneNumberSection.splice(index,1);
+					//om det inte finns något telnummer sparat så finns ett första item som inte har innehåll
+					if (typeof(item[0]) != 'undefined') {
+						if (item[0].name == "sms_number") {
+							phoneNumberSection.splice(index,1);
+						}
+						if (item[0].name == "sms_authorized") {
+							phoneNumberSection.splice(index,1);
+						}
 					}
-					if (item[0].name == "sms_authorized") {
-						phoneNumberSection.splice(index,1);
+				}
+			);
+		});
+		//Ta bort address "valid from" (bevaka arrayen och ta bort aktuella index)
+		$scope.$watch(function() { return vm.parentCtrl.addressSection; }, function(addressSection) {
+			addressSection.forEach(
+				function(item, index) {
+					if (item[0].name == "address_valid_from") {
+						addressSection.splice(index,1);
 					}
 				}
 			);
