@@ -1233,6 +1233,10 @@ prm-full-view-service-container .isMultipleVersions {
 FACETTER
 
 ******************************/
+/* Dölj top level */
+div [data-facet-group="tlevel"] {
+	display: none;
+}
 
 /* vit bakgrund */
 #facets {

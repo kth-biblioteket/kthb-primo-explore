@@ -1058,7 +1058,18 @@ console.log(kth_vid);
 	app.component('prmFavoritesToolBarAfter', {
 			bindings: {parentCtrl: '<'},
 			controller: 'prmFavoritesToolBarAfterController',
-			template: ''
+			/*template: `<div></div>
+			<button class="back-button md-button md-primoExplore-theme md-ink-ripple" type="button" aria-label="Go Back To Search" ng-click="$ctrl.backtosearch()" id="backtosearchfromfavorites" role="link">
+				<prm-icon aria-label="Go Back To Search" icon-type="svg" svg-icon-set="primo-ui" icon-definition="back-to-search">
+					<md-icon ng-if="!$ctrl.isCustom" md-svg-icon="primo-ui:back-to-search" alt="" class="md-primoExplore-theme" aria-hidden="true">
+						<svg id="back-to-search" width="100%" height="100%" viewBox="0 0 16 10" y="720" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false">
+							<path d="M18.13,11.66a2.42,2.42,0,0,1-4,1.83l-0.1.1v0.29l-1.86,1.86-0.56-.56,1.86-1.86h0.29l0.1-.1a2.41,2.41,0,1,1,4.25-1.57m-0.74,0a1.67,1.67,0,1,0-1.67,1.67A1.66,1.66,0,0,0,17.39,11.66Z" transform="translate(-4.73 -7.94)"></path>
+							<path d="M10.37,16L6.89,12.5,10.37,9,9.3,7.94,4.73,12.5,9.3,17.06Z" transform="translate(-4.73 -7.94)"></path>
+						</svg>
+					</md-icon>
+				</prm-icon>
+				<div class="md-ripple-container" style=""></div>
+			</button>`*/
 	});
 	
 	app.controller('prmFavoritesToolBarAfterController', function ($scope,$location,$timeout) {
@@ -1073,6 +1084,7 @@ console.log(kth_vid);
 		},0);
 		
 		function backtosearch() {
+			console.log(vm.absUrl);
 			location.href = vm.absUrl;
 		}
 	});

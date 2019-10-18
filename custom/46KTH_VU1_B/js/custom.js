@@ -1495,7 +1495,8 @@ console.log(kth_vid);
 				//alltid aktiva checkboxar AUGUSTIRELEASE
 				'<div ng-if="$ctrl.totalResults > 1" class="sidebar-section available-facets multiselect-facet-group" ng-repeat="facetGroup in $ctrl.facets" ng-class="$ctrl.activeMultipleFacets ? \'multiselect-active\' : \'multiselect-active\'">' +
 					//visa inte top level facets
-					'<prm-facet-group ng-if="facetGroup.name!=\'tlevel\'" [facet-group]="::facetGroup" [displayed-type]="::facetGroup.displayedType"></prm-facet-group>' +
+					//'<prm-facet-group ng-if="facetGroup.name!=\'tlevel\'" [facet-group]="::facetGroup" [displayed-type]="::facetGroup.displayedType"></prm-facet-group>' +
+					'<prm-facet-group [facet-group]="::facetGroup" [displayed-type]="::facetGroup.displayedType"></prm-facet-group>' +
 				'</div>' +
 				'<div ng-if="$ctrl.totalResults == 1 && $ctrl.isFiltered()">' +
 					'<span translate="nui.facets.nofacets"></span>' +
@@ -1760,7 +1761,8 @@ console.log(kth_vid);
 	app.factory('kth_facetdata', function () {
 
 		var data = {
-			allfacetscollapsed: true//True default
+			allfacetscollapsed: true, //True default
+			currenttevelpeerreview: null
 		};
 
 		return {
@@ -1769,6 +1771,12 @@ console.log(kth_vid);
 			},
 			setallfacetscollapsed: function (allfacetscollapsed) {
 				data.allfacetscollapsed = allfacetscollapsed;
+			},
+			getcurrenttevelpeerreview: function () {
+				return data.currenttevelpeerreview;
+			},
+			setcurrenttevelpeerreview: function (currenttevelpeerreview) {
+				data.currenttevelpeerreview = currenttevelpeerreview;
 			}
 		};
 	});
@@ -1988,8 +1996,35 @@ console.log(kth_vid);
 	});
 	
 	app.controller('prmFacetExactAfterController', function ($scope, kth_facetdata) {
-        var vm = this;
+		var vm = this;
+		
+		//Spara undan värdet för tlevel-fasetten i factoryvariabel
+		if(vm.parentCtrl.facetGroup.name == "tlevel") {
+			kth_facetdata.setcurrenttevelpeerreview(vm.parentCtrl.facetGroup);
+		}
+		
+		if(vm.parentCtrl.facetGroup.name == "rtype") {
+			console.log(vm.parentCtrl.facetGroup.values);
+			vm.parentCtrl.facetGroup.values.forEach(function(element,index,object) {
+				if(element.value == "articles") {
+					//Ta bort article ur "Material Type"-fasetten
+					object.splice(index, 1);
+					kth_facetdata.getcurrenttevelpeerreview().values.forEach(function(element) {
+						if(element.value == "peer_reviewed") {
+							console.log();
+							//Lägg till "peer reviewed" till "Material Type"-fasetten(rtype)
+							vm.parentCtrl.facetGroup.values.push(element);
+						};
+					})
+		
+				};
+			});
+			//Sortera fasetten så den med högst count hamnar överst
+			vm.parentCtrl.facetGroup.values.sort(function(a, b){return b.count - a.count});
+		}
+		
 		//hämta parameter från factory kth_facetdata
+
 		if(kth_facetdata.getallfacetscollapsed()) {
 			vm.parentCtrl.facetGroup.facetGroupCollapsed = true;
 		} 
@@ -2256,8 +2291,8 @@ console.log(kth_vid);
 		vm.absUrl = $location.absUrl();
 		vm.showfacets = false;
 		$scope.$on('urldataAdded', function(event, data) {
-			$timeout(function(){
-				vm.facetservice_results = vm.parentCtrl.facetService.results;
+			$scope.$watch(function() { return vm.parentCtrl.facetService.results; }, function(facetServiceresults) {
+				//vm.facetservice_results = vm.parentCtrl.facetService.results;
 				vm.physical_item_enabled = false;
 				vm.online_resources_enabled = false;
 				vm.books_enabled = false;
@@ -2273,7 +2308,7 @@ console.log(kth_vid);
 				vm.isfavorites = vm.parentCtrl.isFavorites;
 				//gå igenom alla facetter
 				//hittas en facett här så är den alltså aktiv och möjlig att begränsa resultatet med
-				vm.parentCtrl.facetService.results.forEach( 
+				facetServiceresults.forEach( 
 					function (item, index) {
 						if (item.name=='tlevel') {
 							item.values.forEach( 
@@ -2286,10 +2321,12 @@ console.log(kth_vid);
 										vm.online_resources_enabled = true;
 										vm.online_resources_nr = value.count.toLocaleString();
 									}
+									/*
 									if (value.value == 'peer_reviewed') {
 										vm.articles_enabled = true;
 										vm.articles_nr = value.count.toLocaleString();
 									}
+									*/
 								}
 							)
 						}
@@ -2307,6 +2344,10 @@ console.log(kth_vid);
 									if (value.value == 'bibldbfasett') {
 										vm.bibldbfasett_enabled = true;
 										vm.bibldbfasett_nr = value.count.toLocaleString();
+									}
+									if (value.value == 'articles') {
+										vm.articles_enabled = true;
+										vm.articles_nr = value.count.toLocaleString();
 									}
 								}
 							)
@@ -2327,9 +2368,11 @@ console.log(kth_vid);
 				if (vm.absUrl.indexOf("facet=tlevel,include,online_resources")=== -1) {
 					vm.online_resources = "&facet=tlevel,include,online_resources";
 				}
+				/*
 				if (vm.absUrl.indexOf("facet=tlevel,include,peer_reviewed")=== -1) {
 					vm.articles = "&facet=tlevel,include,peer_reviewed";
 				}
+				*/
 				if (vm.absUrl.indexOf("facet=rtype,include,books")=== -1) {
 					vm.books = "&facet=rtype,include,books";
 				}
@@ -2339,8 +2382,11 @@ console.log(kth_vid);
 				if (vm.absUrl.indexOf("facet=rtype,include,bibldbfasett")=== -1) {
 					vm.bibldbfasett = "&facet=rtype,include,bibldbfasett";
 				}
+				if (vm.absUrl.indexOf("facet=rtype,include,articles")=== -1) {
+					vm.articles = "&facet=rtype,include,articles";
+				}
 				vm.showfacets = true;
-			},2000); //slut timeout
+			}); //slut watch
 		});
 	
 	});	

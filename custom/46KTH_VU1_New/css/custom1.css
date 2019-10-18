@@ -381,6 +381,12 @@ prm-search-bar, prm-tags-search-bar {
 	}
 }
 
+/* vänd förstoringsglaset, byt färg */
+prm-search-bar prm-icon[icon-definition="magnifying-glass"] md-icon svg{
+    transform: scale(1,1) !important;
+	color: #e08303;
+}
+
 
 /*****************************************************
 
@@ -410,6 +416,11 @@ prm-search-bar .search-switch-buttons .md-button.switch-to-advanced>span,prm-sea
 /* dölj så den inte täcker den blå kth-färgen*/
 .advanced-search-backdrop {
 	display: none;
+}
+
+/* rensa-knapp*/
+.md-button.button-notice {
+    color: tomato;
 }
 
 /*****************************************************
@@ -654,14 +665,52 @@ prm-brief-result-container .result-item-actions>prm-citation-trails-indication-c
 	display:none;
 }
 
+/* Krysset för att stänga "actions"*/
+.result-item-actions .more-options-button prm-icon.close-icon md-icon {
+    height: 24px;
+    width: 24px;
+    min-height: 24px;
+    min-width: 24px;
+    top: 9px;
+}
+
+/* "Actions", flytta ner rutan och anpassa innehållet*/
+.action-list-content {
+	top: 12px;
+}
+.item-expanded .result-item-actions {
+	top: 12px;
+}
+.list-item-wrapper.item-expanded .list-item-primary-content {
+    transform: translate3d(0px,0px,0); 
+}
+
+/* Ikonen för att öppna "actions" på varje sökträff */
+.result-item-actions .more-options-button prm-icon.open-icon md-icon {
+	top: 0px;
+}
+
+/*Visa alltid(även på små skärmar)*/
+#briefResultMoreOptionsButton {
+    display: block;
+}
+
+/* "actions"-knappar*/
+prm-copy-clipboard-btn .md-button.button-confirm {
+	color: #4aa8ea; 
+}
+
 /* hjärta snurra inte */
 .result-item-actions .pin-button.pinned md-icon {
 	transform: rotate(0deg);
 }
-/* ikkonens ska vara gråa */
+/* färger på markera favoritikon(hjärta), grå resp blå*/
 .result-item-actions .pin-button.pinned {
 	color: #97abba;
-}
+ }
+ .result-item-actions .unpin-button.unpinned {
+	color: #4aa8ea;
+ }
 
 /* materialbild(omslag etc) */
 prm-search-result-thumbnail-container img {
@@ -711,6 +760,20 @@ Facetter
 	align-self: center;
 }
 
+/* facett-rubriker */
+.section-title-header {
+	font-weight: 400;
+	color: #525252;
+}
+
+/* mellanrum mellan rubriker */
+.section-title {
+    margin: 0px;
+}
+/*mellanrum facettrubrik och facetten ovan*/
+prm-facet-group>div {
+	margin-top: 0.5em;
+}
 
 /* Dölj top level */
 div [data-facet-group="tlevel"] {
@@ -1149,12 +1212,57 @@ prm-alma-mashup-after md-icon {
 Favorites
 
 **********************************/
-/* Rätt tomrum/marginaler */
+
+/*
+prm-favorites>prm-favorites-tool-bar.layout-column {
+	flex-direction: row-reverse;
+}
+prm-favorites>prm-favorites-tool-bar>md-toolbar {
+	flex: 1 1 80% !important;
+	max-width: 80% !important;
+}
+
+prm-favorites-tool-bar-after {
+	display: flex;
+	flex: 1 1 20% !important;
+    max-width: 20% !important;
+}
+
+prm-favorites-tool-bar-after>div:first-of-type {
+	flex: 1 1 75% !important;
+    max-width: 75% !important;
+}
+prm-favorites-tool-bar-after>button.md-button {
+	margin: 0;
+    padding: 0;
+    flex: 1 1 25% !important;
+    max-width: 25% !important;
+	min-width: 0px;
+	background-color: #e9e9e9 !important;
+}
+*/
+/* ikkonen glas storlek */
+/*
+prm-favorites-tool-bar-after md-icon {
+	height: 34px;
+    width: 34px;
+}
+*/
+
+/*
+prm-favorites-tool-bar-after prm-icon md-icon svg {
+	color: #e08303 !important;
+}
+*/
+
+/* Rätt tomrum/marginaler för content */
 prm-favorites>prm-favorites-tool-bar>md-toolbar>div>div:first-of-type,
 prm-favorites>div:first-of-type>div:first-of-type {
 	flex: 1 1 15% !important;
 	max-width: 15% !important;
 }
+
+
 
 /*********************************
 
@@ -1189,6 +1297,31 @@ prm-personal-info md-card-content>div:nth-of-type(3) {
 	display: none;
 }
 
+/**********************************
+
+FÄRGER
+
+*********************************/
+
+/* strecket under inputrutor*/
+md-input-container:after {
+	background-color: #4aa8ea;
+}
+
+/* streck under tabrubrik med focus*/
+ md-tabs md-ink-bar {
+	background-color: #4aa8ea
+ }
+
+ /* checkboxar */
+md-checkbox ._md-icon {
+    opacity: 1;
+    border-color: #4aa8ea;
+    border-width: 2px;
+}
+md-checkbox.md-checked ._md-icon {
+    background-color: #4aa8ea;
+}
 
 /*********************************
 
