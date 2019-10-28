@@ -95,7 +95,6 @@ console.log(kth_vid);
 		//Citation Styles(men var är dessa egentligen konfigurerade?? 
 		//Hittar inte i primo BO, men hämtas här: /primo_library/libweb/webservices/rest/v1/configuration/46KTH_VU1_L)
 		//Lägg även in dem i Primo BO för att få rätt namn/översättning (exvis default.citation.labels.vancouver)
-		console.log(window.appConfig);
 		//Ta bort de vi inte vill ha
 		for(var i = window.appConfig['mapping-tables']['Citation styles'].length - 1; i >= 0; i--) {
 			//if(window.appConfig['mapping-tables']['Citation styles'][i].target === "apa") {
@@ -113,7 +112,7 @@ console.log(kth_vid);
 	 * 
 	 * New 1811XX
 	 * 
-	 * Egen meny
+	 * Egen meny(knappar)
 	 * 
 	 ****************************************************/
 
@@ -192,26 +191,24 @@ console.log(kth_vid);
 		//Anpassa länkar till valt språk
 		vm.kth_language = $translate.use();	
 		if(vm.kth_language == 'sv_SE') {
-			vm.kth_databaseurl = 'https://www.kth.se/kthb/sokverktyg/databaser-och-soktjanster-1.546373';
+			vm.parentCtrl.kth_databaseurl = 'https://www.kth.se/biblioteket/soka-vardera/sok-information/databaser-och-soktjanster-1.851404';
 		} else {
-			vm.kth_databaseurl = 'https://www.kth.se/en/kthb/sokverktyg/databaser-och-soktjanster-1.546373';
+			vm.parentCtrl.kth_databaseurl = 'https://www.kth.se/en/biblioteket/soka-vardera/sok-information/databaser-och-soktjanster-1.851404';
 		}
 
-		vm.goToHELP = goToHELP;
 		function goToHELP() {
 			if(vm.kth_language == 'sv_SE') {
-				window.open('https://www.kth.se/kthb/sokverktyg/sokguider/primo-help-1.614252', 'Help', 'height=800,width=600');
+				window.open('https://www.kth.se/biblioteket/soka-vardera/sok-information/primo-hjalp-1.863377', 'Help', 'height=800,width=600');
 			} else {
-				window.open('https://www.kth.se/en/kthb/sokverktyg/sokguider/primo-help-1.614252', 'Help', 'height=800,width=600');
+				window.open('https://www.kth.se/en/biblioteket/soka-vardera/sok-information/primo-hjalp-1.863377', 'Help', 'height=800,width=600');
 			}
 		}
 
-		vm.goToKTHDatabases = goToKTHDatabases;
 		function goToKTHDatabases() {
 			if(vm.kth_language == 'sv_SE') {
-				location.href = 'https://www.kth.se/kthb/sokverktyg/databaser-och-soktjanster-1.546373';
+				location.href = 'https://www.kth.se/biblioteket/soka-vardera/sok-information/databaser-och-soktjanster-1.851404';
 			} else {
-				location.href = 'https://www.kth.se/en/kthb/sokverktyg/databaser-och-soktjanster-1.546373';
+				location.href = 'https://www.kth.se/en/biblioteket/soka-vardera/sok-information/databaser-och-soktjanster-1.851404';
 			}
 		}
 	});
@@ -235,13 +232,17 @@ console.log(kth_vid);
 		'<div flex layout="row" layout-align="end center" ng-if="$ctrl.kth_language == \'en_US\'">' +
 			'<div style="padding-bottom: .1em;" ng-if="$ctrl.username.length > 0">Logged in as: {{$ctrl.username}}&nbsp</div>' +
 			'<a class="kth_link" ng-click="changelang(\'sv_SE\')">' +
-				'<span>Svenska&nbsp</span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="12.5" viewBox="0 0 16 10"><rect width="16" height="10" fill="#005293"/><rect width="2" height="10" x="5" fill="#FECB00"/><rect width="16" height="2" y="4" fill="#FECB00"/></svg>' +
+				'<span>Svenska&nbsp</span>' +
+				//'<svg xmlns="http://www.w3.org/2000/svg" width="20" height="12.5" viewBox="0 0 16 10"><rect width="16" height="10" fill="#005293"/><rect width="2" height="10" x="5" fill="#FECB00"/><rect width="16" height="2" y="4" fill="#FECB00"/></svg>' +
+				'<img style="position: relative;top: 2px;width: 16px" src="custom/' + kth_vid + '/img/globe-lang.svg"></img>' + 
 			'</a>' +
 		'</div>' +
 		'<div flex layout="row" layout-align="end center" ng-if="$ctrl.kth_language == \'sv_SE\'">' +
-			'<div style="padding-bottom: .1em;">Inloggad som: {{$ctrl.username}}&nbsp</div>' +
+			'<div style="padding-bottom: .1em;" ng-if="$ctrl.username.length > 0">Inloggad som: {{$ctrl.username}}&nbsp</div>' +
 			'<a class="kth_link" ng-click="changelang(\'en_US\')">' +
-				'English&nbsp<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 30" width="20" height="12"><clipPath id="t"><path d="M25,15 h25 v15 z v15 h-25 z h-25 v-15 z v-15 h25 z"/></clipPath><path d="M0,0 v30 h50 v-30 z" fill="#00247d"/><path d="M0,0 L50,30 M50,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L50,30 M50,0 L0,30" clip-path="url(#t)" stroke="#cf142b" stroke-width="4"/><path d="M25,0 v30 M0,15 h50" stroke="#fff" stroke-width="10"/><path d="M25,0 v30 M0,15 h50" stroke="#cf142b" stroke-width="6"/></svg>' +
+				'<span>English&nbsp</span>' +
+				//'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 30" width="20" height="12"><clipPath id="t"><path d="M25,15 h25 v15 z v15 h-25 z h-25 v-15 z v-15 h25 z"/></clipPath><path d="M0,0 v30 h50 v-30 z" fill="#00247d"/><path d="M0,0 L50,30 M50,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L50,30 M50,0 L0,30" clip-path="url(#t)" stroke="#cf142b" stroke-width="4"/><path d="M25,0 v30 M0,15 h50" stroke="#fff" stroke-width="10"/><path d="M25,0 v30 M0,15 h50" stroke="#cf142b" stroke-width="6"/></svg>' +
+				'<img style="position: relative;top: 2px;width: 16px" src="custom/' + kth_vid + '/img/globe-lang.svg"></img>' + 
 			'</a>' +
 		'</div>' +
 		'<div flex="15" flex-md="0" flex-sm="0" flex-xs="0" class="flex-xs-0 flex-sm-0 flex-md-0 flex-15"></div>'
@@ -260,6 +261,53 @@ console.log(kth_vid);
 				vm.kth_language = la;
 			});
 		};
+	});
+
+	/*****************************************************
+	 * 
+	 * New 1811XX
+	 * 
+	 * Log in to save query
+	 * 
+	 * Knapp att visa ovanför sökresultat 
+	 * när användaren inte är inloggad
+	 * 
+	 * 
+	 ****************************************************/
+
+	app.component('prmPersonalizeResultsButtonAfter', {
+		bindings: {parentCtrl: '<'},
+		controller: 'prmPersonalizeResultsButtonAfterController',
+		template: 
+		'<div class="kth_loggain" ng-if="!$ctrl.userName.length > 0">' +
+			//logga in för att spara fråga etc
+			'<button class="button-as-link link-alt-color zero-margin md-button md-primoExplore-theme md-ink-ripple" type="button" (click)="$ctrl.loggain()" aria-label="">' +
+				'<prm-icon class="pin-icon" aria-label="Välj register " [icon-type]="::$ctrl.actionsIcons.pin.type" svg-icon-set="action" icon-definition="ic_favorite_outline_24px">' +
+				'</prm-icon>' +
+				//nytt värde i FE code table i Primo BO
+				'<span class="bold-text" translate="results.logintosavequery"></span>' +
+				'<div class="md-ripple-container"></div>' +
+			'</button>' +
+		'</div>'
+	});
+
+	app.controller('prmPersonalizeResultsButtonAfterController', function (kth_loginservice,$rootScope) {
+		var vm = this;
+
+		try {
+			vm.userName = $rootScope.$$childTail.$ctrl.userSessionManagerService.getUserName();
+		} catch(error) {
+			console.log("error: " + error);
+		}
+		vm.isfavorites = vm.parentCtrl.isFavorites;
+		if (!vm.isfavorites) {
+			//hämta loginfunktion
+			vm.data = kth_loginservice.getData();
+		}
+		vm.loggain = loggain;
+		function loggain() {
+			vm.data.handleLogin();
+		}
 	});
 
 	/*****************************************************
@@ -294,6 +342,16 @@ console.log(kth_vid);
 			var element = vm.parentCtrl.$element[0];
 			element.innerHTML = '<md-icon md-svg-icon="social:ic_share_24px" alt="" class="md-primoExplore-theme" aria-hidden="true">' + icons['ic_share_24px'] + '</md-icon>';
 		  }
+
+		//Byt ut my account-ikkonen till person
+		if (icon === 'account-card-details') {
+			var icons = {
+			  'ic_person_24px': '<svg width="100%" height="100%" viewBox="0 0 24 24" id="ic_person_24px" x="96" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>'
+			};
+			var element = vm.parentCtrl.$element[0];
+			element.innerHTML = '<md-icon md-svg-icon="social:ic_person_24px" alt="" class="md-primoExplore-theme" aria-hidden="true">' + icons['ic_person_24px'] + '</md-icon>';
+			
+		  }
 	}]);
 
 	/*****************************************
@@ -306,7 +364,7 @@ console.log(kth_vid);
 			controller: 'prmLogoAfterController',
 			template: 
 				'<div>' +
-					'<a href="{{$ctrl.parentCtrl.kthb_link}}"><span class="kth-sitenameheader" translate="nui.header.sitename"></span><span style="color:salmon" ng-if="$ctrl.urlvid==\'46KTH_VU1_B\'">BETA!!!</span><span style="color:red"> !!!New!!!</span></a>' +
+					'<a href="{{$ctrl.parentCtrl.kthb_link}}"><span class="kth-sitenameheader" translate="nui.header.sitename"></span><span style="color:salmon" ng-if="$ctrl.kth_vid==\'46KTH_VU1_B\'">BETA!!!</span><span style="color:red"> !!!New!!!</span></a>' +
 				'</div>'
 	});
 	
@@ -314,13 +372,10 @@ console.log(kth_vid);
 		var vm = this;
 		vm.kth_vid = kth_vid;
 
-		//get vid from urlparameters
-		vm.urlvid = getUrlVars()["vid"];
-
 		//Se till att länken anpassas till valt språk
-		vm.parentCtrl.kthb_link = "https://www.kth.se/en/kthb";
+		vm.parentCtrl.kthb_link = "https://www.kth.se/en/biblioteket";
 		if($translate.use() == 'sv_SE') {
-			vm.parentCtrl.kthb_link = "https://www.kth.se/kthb";
+			vm.parentCtrl.kthb_link = "https://www.kth.se/biblioteket";
 		}
 	});
 	
@@ -412,7 +467,7 @@ console.log(kth_vid);
 
 	/*****************************************************************
 	
-	Service för loggning
+	Service för loggning till databas
 	
 	*****************************************************************/
 	app.factory('kth_logg', function ($http) {
@@ -443,28 +498,18 @@ console.log(kth_vid);
 	app.component('prmAuthenticationAfter', {
 			bindings: {parentCtrl: '<'},
 			controller: 'AuthenticationAfterController',
-			//template: '<div>AuthenticationAfterController</div>' + 
-			//'<md-button ng-click="$ctrl.endsession()">End Session</md-button>'
+			template:``
 	});
 	
-	app.controller('AuthenticationAfterController', function ($scope, $http, $rootScope, kth_loginservice, kth_session, Idle) {
+	app.controller('AuthenticationAfterController', function ($rootScope, kth_loginservice, kth_session) {
         var vm = this;
-		vm.parentCtrl.requestlogin = false;
-		var data = vm.parentCtrl;
-
 		var session = vm.parentCtrl.primolyticsService.userSessionManagerService;	
-		//är det en loginruta för alma-p så gör om den till ickegul etc
-		if (typeof $scope.$parent.$parent.$parent.$ctrl != 'undefined'){
-			if ($scope.$parent.$parent.$parent.$ctrl.loginalmap) {
-				vm.parentCtrl.requestlogin = true;
-			}
-		}
 
 		//spara loginfunktion i service som sen kan hämtas från controllers
-		kth_loginservice.addData(data);
-		$rootScope.$broadcast('logindataAdded', data);
+		kth_loginservice.addData(vm.parentCtrl);
+		$rootScope.$broadcast('logindataAdded', vm.parentCtrl);
 		
-		//spara sesssion i service som sen kan hämtas från controllers
+		//spara session i service som sen kan hämtas från controllers
 		kth_session.addData(session);
 		$rootScope.$broadcast('sessiondataAdded', session);
 	});
@@ -480,6 +525,7 @@ console.log(kth_vid);
 	 * 
 	 * Sticky facets/scrolla med sidan
 	 * 
+	 *  
 	 *****************************************************/
 
 	app.component('prmSearchResultSortByAfter', {
@@ -496,28 +542,21 @@ console.log(kth_vid);
 		vm.togglestickyfacets = togglestickyfacets;
 		function togglestickyfacets() {
 			if (vm.stickyfacets) {
-				//Lägg till class så facetters scrollar med sidan
+				//Lägg till class så facetter scrollar med sidan
 				var myEl = document.querySelector( 'prm-facet .primo-scrollbar' );
 				myEl.classList.add("kth-facet-notsticky");
 			} else {
-				//Ta bort class så facetters inte scrollar med sidan
+				//Ta bort class så facetter inte scrollar med sidan
 				var myEl = document.querySelector( 'prm-facet .primo-scrollbar' );
 				myEl.classList.remove("kth-facet-notsticky");
 			}
 		}
-
-
 	});
 	
 	/*****************************************************
 	 * 
-	 * New 1811XX
-	 * 
 	 * prm-facet-after
 	 * 
-	 * 
-	 * Egenskaper vid ny sökning, fler resultat(exempelvis 
-	 * alla utfällda eller inte vid refresh eller ny sökning)
 	 * 
 	 *****************************************************/
 
@@ -528,59 +567,6 @@ console.log(kth_vid);
 	
 	app.controller('prmFacetAfterController', function ($scope, $timeout, kth_facetdata) {
 		var vm = this;
-		
-		$scope.$watch(function() { return vm.parentCtrl.facets; }, function(facets) {
-			console.log(facets);
-			//facets.splice(2,1);
-			console.log(facets);
-			togglefacet(facets,"rtype");
-		});
-		
-		
-		angular.element(document).ready(function() {
-		});
-
-		//hämta parameter från factory kth_facetdata för defaultvärde
-		vm.parentCtrl.allfacetscollapsed = kth_facetdata.getallfacetscollapsed()
-		
-		//Definiera funktion som togglar facetter(ut- eller ihopfällda) så den kan anropas från knapp/rubrik i prm-facet
-		//Knappen finns inte skapad i "NEW"
-		vm.parentCtrl.togglefacets = togglefacets
-		function togglefacets() {
-			if (kth_facetdata.getallfacetscollapsed()) {
-				vm.parentCtrl.allfacetscollapsed = false;
-				kth_facetdata.setallfacetscollapsed(false);
-			} else {
-				vm.parentCtrl.allfacetscollapsed = true;
-				kth_facetdata.setallfacetscollapsed(true);
-			}
-			vm.parentCtrl.facets.forEach(
-				function(item, index) {
-					if (vm.parentCtrl.allfacetscollapsed) {
-						item.facetGroupCollapsed = true;
-					} else {
-						item.facetGroupCollapsed = false;
-					}
-				}
-			);
-		}
-
-		function togglefacet(facets,facet) {
-			console.log(facets);
-			facets.forEach(
-				function(item, index) {
-					if (item.name == facet) {
-						console.log(item.facetGroupCollapsed);
-						if(item.facetGroupCollapsed) {
-							console.log(item);
-							item.facetGroupCollapsed = false;
-						} else {
-							item.facetGroupCollapsed = true;
-						}
-					}
-				}
-			);
-		}
 	});
 	
 	/*****************************************
@@ -609,12 +595,17 @@ console.log(kth_vid);
 	
 	app.controller('prmFacetExactAfterController', function ($scope, kth_facetdata) {
 		var vm = this;
+
+		// Kollapsad eller inte (default = true?, exlibrisdefault = false)
+		vm.parentCtrl.facetGroup.facetGroupCollapsed = true;
+
 		//Spara undan värdet för tlevel-fasetten i factoryvariabel
 		if(vm.parentCtrl.facetGroup.name == "tlevel") {
 			kth_facetdata.setcurrenttevelpeerreview(vm.parentCtrl.facetGroup);
 		}
 
 		if(vm.parentCtrl.facetGroup.name == "rtype") {
+			vm.parentCtrl.facetGroup.facetGroupCollapsed = false;
 			vm.parentCtrl.facetGroup.values.forEach(function(element,index,object) {
 				if(element.value == "articles") {
 					//Ta bort article ur "Material Type"-fasetten
@@ -630,15 +621,6 @@ console.log(kth_vid);
 			});
 			//Sortera fasetten så den med högst count hamnar överst
 			vm.parentCtrl.facetGroup.values.sort(function(a, b){return b.count - a.count});
-		}
-
-		//hämta parameter från factory kth_facetdata
-		//Används ej i "NEW"
-		if(kth_facetdata.getallfacetscollapsed()) {
-			vm.parentCtrl.facetGroup.facetGroupCollapsed = true;
-		} 
-		else {
-			vm.parentCtrl.facetGroup.facetGroupCollapsed = false;
 		}
 	});
 	
@@ -682,8 +664,6 @@ console.log(kth_vid);
 		**********************************/
 		vm.parentCtrl.kthisoncampus = false;
 		$scope.$watch(function() { return vm.parentCtrl.primolyticsService.jwtUtilService.getDecodedToken().onCampus; }, function(onCampus) {
-			//console.log(' watch oncampus: ' + onCampus);
-			//vm.parentCtrl.kthisoncampus = onCampus;
 		});
 		
 		vm.parentCtrl.userName_kth = vm.parentCtrl.primolyticsService.userSessionManagerService.jwtUtilService.getDecodedToken().userName;
@@ -791,24 +771,43 @@ console.log(kth_vid);
 	/*****************************************
 	
 	prm-login-alma-mashup-after
+
+		Kolla om det är tryckt material 
+		så anpassningar kan göras för 
+		login-banner på fullposten
 	
 	*****************************************/
 	
 	app.component('prmLoginAlmaMashupAfter', {
 			bindings: {parentCtrl: '<'},
 			controller: 'prmLoginAlmaMashupAfterController',
-			template: ''
+			template: 
+			`<div ng-if="$ctrl.userName.length <= 0 && $ctrl.requestlogin">
+				<md-button ng-click="$ctrl.loggain();" aria-label="{{\'eshelf.signin.title\' | translate}}" class="button-with-icon zero-margin">
+					<prm-icon icon-type="svg" svg-icon-set="primo-ui" icon-definition="sign-in"></prm-icon>
+					<span ng-if="!$ctrl.requestlogin" translate="eshelf.signin.title"></span>
+					<span ng-if="$ctrl.requestlogin" translate="getit.signin_link.sign_in"></span>
+				</md-button>
+			</div>`
 	});
 	
-	app.controller('prmLoginAlmaMashupAfterController',function ($scope) {
+	app.controller('prmLoginAlmaMashupAfterController',function ($rootScope, $scope, kth_loginservice) {
 		var vm = this;
-		/************************************
+		vm.userName = $rootScope.$$childTail.$ctrl.primolyticsService.userSessionManagerService.getUserName();
+		vm.requestlogin = false;
 		
-		Kolla om det är tryckt material så anpassningar kan göras för login
-		
-		************************************/
+		vm.data = kth_loginservice.getData();
+		vm.loggain = loggain;
+		function loggain() {
+			vm.data.handleLogin();
+		}
+
 		if ($scope.$parent.$parent.$parent.$parent.$ctrl.service.linkElement.category == "Alma-P") {
 			vm.parentCtrl.loginalmap = true;
+			vm.requestlogin = true;
+		} else {
+			var myEl = document.querySelector( 'prm-login-alma-mashup .alert-bar' );
+			myEl.classList.add("kth-hide");
 		}
 	});
 	
@@ -824,26 +823,6 @@ console.log(kth_vid);
 			bindings: {parentCtrl: '<'},
 			controller: 'prmSearchResultListAfterController',
 			template: 
-			/*<div ng-if="!$ctrl.isfavorites && $ctrl.showfacets">' +
-				'<div id="facettmenudiv">' + 
-					'<ul id="facettmenu">' + 
-						'<li ng-if="$ctrl.physical_item_enabled">
-							<a href="{{$ctrl.absUrl + $ctrl.physical_item}}" translate="facets.facet.tlevel.physical_item"></a>&nbsp;<span ng-if="$ctrl.physical_item_enabled">({{$ctrl.physical_item_nr}})</span></li>' + 
-						'<li ng-if="!$ctrl.physical_item_enabled" translate="facets.facet.tlevel.physical_item"></li>&nbsp;|&nbsp;' + 
-						'<li ng-if="$ctrl.online_resources_enabled"><a href="{{$ctrl.absUrl + $ctrl.online_resources}}" translate="facets.facet.tlevel.online_resources"></a>&nbsp;<span ng-if="$ctrl.online_resources_enabled">({{$ctrl.online_resources_nr}})</span></li>' +
-						'<li ng-if="!$ctrl.online_resources_enabled" translate="facets.facet.tlevel.online_resources"></li>&nbsp;|&nbsp;' +
-						'<li ng-if="$ctrl.books_enabled"><a ng-if="$ctrl.books_enabled" href="{{$ctrl.absUrl + $ctrl.books}}" translate="facets.facet.facet_rtype.books"></a>&nbsp;<span ng-if="$ctrl.books_enabled">({{$ctrl.books_nr}})</span></li>' + 
-						'<li ng-if="!$ctrl.books_enabled" translate="facets.facet.facet_rtype.books"></li>&nbsp;|&nbsp;' + 
-						'<li ng-if="$ctrl.journals_enabled"><a href="{{$ctrl.absUrl + $ctrl.journals}}" translate="facets.facet.facet_rtype.journals"></a>&nbsp;<span ng-if="$ctrl.journals_enabled">({{$ctrl.journals_nr}})</span></li>' +
-						'<li ng-if="!$ctrl.journals_enabled" translate="facets.facet.facet_rtype.journals"></li>&nbsp;|&nbsp;' +
-						'<li ng-if="$ctrl.bibldbfasett_enabled"><a href="{{$ctrl.absUrl + $ctrl.bibldbfasett}}" translate="facets.facet.facet_rtype.bibldbfasett"></a>&nbsp;<span ng-if="$ctrl.bibldbfasett_enabled">({{$ctrl.bibldbfasett_nr}})</span></li>' +
-						'<li ng-if="!$ctrl.bibldbfasett_enabled" translate="facets.facet.facet_rtype.bibldbfasett"></li>&nbsp;|&nbsp;' +
-						'<li ng-if="$ctrl.articles_enabled"><a href="{{$ctrl.absUrl + $ctrl.articles}}" translate="facets.facet.facet_rtype.articles"></a>&nbsp;<span ng-if="$ctrl.articles_enabled">({{$ctrl.articles_nr}})</span></li>' +
-						'<li ng-if="!$ctrl.articles_enabled" translate="facets.facet.facet_rtype.articles"></li>' +
-					'</ul>' +
-				'</div>' +
-			'</div>'
-			*/
 			`<div ng-if="!$ctrl.isfavorites && $ctrl.showfacets">
 				<div id="facettmenudiv">
 					<ul id="facettmenu">
@@ -873,30 +852,19 @@ console.log(kth_vid);
 						<li ng-if="!$ctrl.articles_enabled" translate="facets.facet.facet_rtype.articles"></li>
 					</ul>
 				</div>
-			</div>`
-			/*
-			//'<prm-authentication [is-logged-in]="$ctrl.userName().length > 0" [idp-logout]="$ctrl.idpLogout" flex="none" class="flex-none"></prm-authentication>' +
-			'<div class="kth_loggain" ng-if="$ctrl.userName.length == 0">' +
-				//logga in för att spara fråga etc
-				'<button class="button-as-link link-alt-color zero-margin md-button md-primoExplore-theme md-ink-ripple" type="button" (click)="$ctrl.loggain()" aria-label="">' +
-					//hjärtaikkonen
-					'<prm-icon class="pin-icon" aria-label="" [icon-type]="::$ctrl.actionsIcons.pin.type" svg-icon-set="action" icon-definition="ic_favorite_outline_24px">' +
-					'</prm-icon>' +
-					//nytt värde i FE code table i Primo BO
-					'<span class="bold-text" translate="results.logintosavequery"></span>' +
-					'<div class="md-ripple-container"></div>' +
-				'</button>' +
-			'</div>'
-			*/
+			</div>
+			<div tabindex="-1" ng-if="$ctrl.parentCtrl.searchResults.length == 0 && $ctrl.screenIsSmall" class="margin-medium">
+				<md-checkbox ng-model="$ctrl.pcAvailability" ng-change="$ctrl.expandsearchoutsidelibrary();" aria-label="{{\'expandresults\' | translate}}">
+					<span translate="expandresults"></span>
+				</md-checkbox>
+			</div>`					
 	});
 
 	app.controller('prmSearchResultListAfterController', function ($scope,$location,$rootScope,kth_currenturl,kth_loginservice,$timeout,$mdMedia) {
 		
 		var vm = this;
-		
-		
 
-		 /**********************************
+		/**********************************
 		
 		för att visa "utöka" vid 0 träffar
 		som förslag på små skärmar
@@ -905,43 +873,22 @@ console.log(kth_vid);
 		//exempel "reactive oxygen species as agents of fatigue"
 		vm.searchObject = $location.search();
 		if(typeof(vm.searchObject.pcAvailability) == 'undefined') {
-			vm.parentCtrl.pcAvailability = false;
+			vm.pcAvailability = false;
 		} else {
-			vm.searchObject.pcAvailability == 'true' ? vm.parentCtrl.pcAvailability=true: vm.parentCtrl.pcAvailability=false;
+			vm.searchObject.pcAvailability == 'true' ? vm.pcAvailability=true: vm.pcAvailability=false;
 		}
-		vm.parentCtrl.expandsearchoutsidelibrary = expandsearchoutsidelibrary;
+		vm.expandsearchoutsidelibrary = expandsearchoutsidelibrary;
 		
 		//Kolla om skärmen är liten.
 		$scope.$watch(function() { return $mdMedia('max-width: 960px'); }, function(small) {
-			vm.parentCtrl.screenIsSmall = small;
+			vm.screenIsSmall = small;
 		});
 		
 		function expandsearchoutsidelibrary() {
-			let mode = vm.parentCtrl.pcAvailability ? 'true': 'false';
+			let mode = vm.pcAvailability ? 'true': 'false';
 			//"$location.search" ändrar parametrar i URL:en
 			$location.search('pcAvailability', mode);
 		}
-		
-		/******************************************
-		
-		 "Log in to save query"
-		
-		******************************************/
-		try {
-			vm.userName = $rootScope.$$childTail.$ctrl.userSessionManagerService.getUserName();
-		} catch(error) {
-			console.log("error: " + error);
-		}
-		vm.isfavorites = vm.parentCtrl.isFavorites;
-		if (!vm.isfavorites) {
-			//hämta loginfunktion
-			vm.data = kth_loginservice.getData();
-		}
-		vm.loggain = loggain;
-		function loggain() {
-			vm.data.handleLogin();
-		}
-		
 		/*********************************************
 		
 		Egen topfacettmeny
@@ -1058,18 +1005,7 @@ console.log(kth_vid);
 	app.component('prmFavoritesToolBarAfter', {
 			bindings: {parentCtrl: '<'},
 			controller: 'prmFavoritesToolBarAfterController',
-			/*template: `<div></div>
-			<button class="back-button md-button md-primoExplore-theme md-ink-ripple" type="button" aria-label="Go Back To Search" ng-click="$ctrl.backtosearch()" id="backtosearchfromfavorites" role="link">
-				<prm-icon aria-label="Go Back To Search" icon-type="svg" svg-icon-set="primo-ui" icon-definition="back-to-search">
-					<md-icon ng-if="!$ctrl.isCustom" md-svg-icon="primo-ui:back-to-search" alt="" class="md-primoExplore-theme" aria-hidden="true">
-						<svg id="back-to-search" width="100%" height="100%" viewBox="0 0 16 10" y="720" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false">
-							<path d="M18.13,11.66a2.42,2.42,0,0,1-4,1.83l-0.1.1v0.29l-1.86,1.86-0.56-.56,1.86-1.86h0.29l0.1-.1a2.41,2.41,0,1,1,4.25-1.57m-0.74,0a1.67,1.67,0,1,0-1.67,1.67A1.66,1.66,0,0,0,17.39,11.66Z" transform="translate(-4.73 -7.94)"></path>
-							<path d="M10.37,16L6.89,12.5,10.37,9,9.3,7.94,4.73,12.5,9.3,17.06Z" transform="translate(-4.73 -7.94)"></path>
-						</svg>
-					</md-icon>
-				</prm-icon>
-				<div class="md-ripple-container" style=""></div>
-			</button>`*/
+			template: ``
 	});
 	
 	app.controller('prmFavoritesToolBarAfterController', function ($scope,$location,$timeout) {
@@ -1084,7 +1020,6 @@ console.log(kth_vid);
 		},0);
 		
 		function backtosearch() {
-			console.log(vm.absUrl);
 			location.href = vm.absUrl;
 		}
 	});
@@ -1179,11 +1114,13 @@ console.log(kth_vid);
 			var fullviewafter = document.querySelector('prm-full-view-after');
 
 			var prmrecomendations = document.querySelector('prm-recomendations');
-				//Sätt style för att flytta citation/metrics över premrecomendations i full-view(inte dialogview)
+			//Sätt style för att flytta citation/metrics över premrecomendations i full-view(inte dialogview)
+			if(typeof(prmrecomendations) != "undefined" && prmrecomendations != null) {
 				prmrecomendations.parentNode.style.display = "flex";
 				prmrecomendations.parentNode.style.flexDirection  = "column";
 				prmrecomendations.parentNode.appendChild(citationTrails);
 				prmrecomendations.parentNode.appendChild(fullviewafter);
+			}
 			//}
 		});
         vm.$onInit = function () {
@@ -1231,15 +1168,11 @@ console.log(kth_vid);
 						vm.orcid_name = 'Unknown '
 					}
 					if (data.person["researcher-urls"]["researcher-url"]["0"].url.value.indexOf("kth.se/profile")!== -1) {
-						//var kthprofile_url = data.person.researcher-urls["researcher-url"]["0"].url; 
-						//if (kthprofile_url.indexOf("kth.se/profile")!== -1) {
-							vm.kthprofile_url = data.person["researcher-urls"]["researcher-url"]["0"].url.value;
-						//}
+						vm.kthprofile_url = data.person["researcher-urls"]["researcher-url"]["0"].url.value;
 					}
 					vm.orcid_url = data["orcid-identifier"].uri;
 				}, function(response) {
-
-				});
+			});
 		}
 		
     });
@@ -1257,25 +1190,6 @@ console.log(kth_vid);
 	
 	app.controller('FullViewAfterKthController', function (angularLoad, $http) {
 		var vm = this;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     });
 
 	/********************************************************
@@ -1289,8 +1203,7 @@ console.log(kth_vid);
 			data: '<'
 		},
 		controller: 'BriefResultAfterController',
-		template: ''
-		//ORCID: {{$ctrl.orcid_id}}
+		template: ``
 	});
 	
 	app.controller('BriefResultAfterController', function($scope, $rootScope, $http,kth_currenturl,$location,$timeout,$mdDialog,$sce,$templateCache) {
@@ -1353,11 +1266,6 @@ console.log(kth_vid);
 								'<div>' +
 									'<a style="color: #0f7d00" target="_new" href="{{$ctrl.best_oa_location_url}}">' +
 										'<span>Online open access</span>' +
-										//'<span ng-if="$ctrl.gold">(Gold/Bronze)</span>' +
-										//'<span ng-if="$ctrl.greenpublished">(Green published)</span>' +
-										//'<span ng-if="$ctrl.greenaccepted">(Green accepted)</span>' +
-										//'<span ng-if="$ctrl.greensubmittedVersion">(Green submitted)</span>' +
-										//'<img style="width:14px;position: relative;top: 2px;" src="custom/' + kth_vid + '/img/open-access-icon.png"></img>' +
 										'<prm-icon external-link="" icon-type="svg" svg-icon-set="primo-ui" icon-definition="open-in-new" aria-label="externalLink">' +
 										'</prm-icon>' +
 									'</a>' +
@@ -1400,11 +1308,6 @@ console.log(kth_vid);
 									'<div>' +
 										'<a style="color: #0f7d00" target="_new" href="{{$ctrl.best_oa_location_url}}">' +
 											'<span>Online open access</span>' +
-											//'<span ng-if="$ctrl.gold">(Gold/Bronze)</span>' +
-											//'<span ng-if="$ctrl.greenpublished">(Green published)</span>' +
-											//'<span ng-if="$ctrl.greenaccepted">(Green accepted)</span>' +
-											//'<span ng-if="$ctrl.greensubmittedVersion">(Green submitted)</span>' +
-											//'<img style="width:14px;position: relative;top: 2px;" src="custom/' + kth_vid + '/img/open-access-icon.png"></img>' +
 											'<prm-icon external-link="" icon-type="svg" svg-icon-set="primo-ui" icon-definition="open-in-new" aria-label="externalLink">' +
 											'</prm-icon>' +
 										'</a>' +
@@ -1446,7 +1349,7 @@ console.log(kth_vid);
 						//}
 					}
 					if(vm.doi) {
-						kth_logg.kthlogg("oaDOIfromunpaywall", vm.doi);	
+						//kth_logg.kthlogg("oaDOIfromunpaywall", vm.doi);	
 						kth_oadoi.getoaDOI(vm.doi).then(function(data, status) {
 							if (data.data.best_oa_location) {
 								vm.unpaywalljson = data.data.best_oa_location;
@@ -1525,91 +1428,93 @@ console.log(kth_vid);
 		if (typeof(vm.parentCtrl.item) != "undefined") {
 			//Bara för "almaframen"
 			$scope.$watch(function() { return vm.parentCtrl.service; }, function(service) {
-				if(service.title.indexOf('alma')>-1 && vm.parentCtrl.service.scrollId.indexOf('getit_link2')<0) {
-					$scope.$watch(function() { return vm.parentCtrl.item.delivery; }, function(delivery) {
-						if (typeof(delivery) != "undefined") {
-							if (typeof(vm.parentCtrl.item.pnx.addata.doi) == "undefined") {
-							} else {
-								//Visa även för de som har fulltext
-								//if (vm.parentCtrl.item.delivery.displayedAvailability == "no_fulltext" || vm.parentCtrl.item.delivery.displayedAvailability == "viewit_NFT" || vm.parentCtrl.item.delivery.displayedAvailability == "viewit_getit_NFT" ) {
-									vm.doi = vm.parentCtrl.item.pnx.addata.doi[0] || '';
-								//}
-							}
-							if(vm.doi) {
-								kth_logg.kthlogg("oaDOIfromunpaywall", vm.doi);
-								kth_oadoi.getoaDOI(vm.doi).then(function(data, status) {
-									if (data.data.best_oa_location) {
-										vm.unpaywalljson = data.data.best_oa_location;
-										vm.best_oa_location_url = data.data.best_oa_location.url;
-										vm.best_oa_location_evidence = data.data.best_oa_location.evidence;
-										//Hantera att OA kan ha lite olika typer av publicerat material
-										//guld/bronze villkor:
-											//best_oa_location.host_type = publisher
-										//"grön" villkor
-										//acceptedVersion
-											//best_oa_location.host_type == repository && version = acceptedVersion
-										//publishedVersion
-											//best_oa_location.host_type == repository && version = publishedVersion
-										//submittedVersion
-											//best_oa_location.host_type == repository && version = submittedVersion
-										
-										if(data.data.best_oa_location.host_type == 'publisher') {
-											vm.gold = true;
-											if(vm.kth_language == 'sv_SE') {
-												vm.infotext = "<p>Detta är den slutgiltiga publicerade versionen av artikeln, fritt tillgänglig (open access) på förlagets webbplats.</p>";
-											} else {
-												vm.infotext = "<p>This is the final published version of the article, freely available (open access) on the publisher's website.</p>";
-											}
+				if (typeof(service) != "undefined") {
+					if(service.title.indexOf('alma')>-1 && vm.parentCtrl.service.scrollId.indexOf('getit_link2')<0) {
+						$scope.$watch(function() { return vm.parentCtrl.item.delivery; }, function(delivery) {
+							if (typeof(delivery) != "undefined") {
+								if (typeof(vm.parentCtrl.item.pnx.addata.doi) == "undefined") {
+								} else {
+									//Visa även för de som har fulltext
+									//if (vm.parentCtrl.item.delivery.displayedAvailability == "no_fulltext" || vm.parentCtrl.item.delivery.displayedAvailability == "viewit_NFT" || vm.parentCtrl.item.delivery.displayedAvailability == "viewit_getit_NFT" ) {
+										vm.doi = vm.parentCtrl.item.pnx.addata.doi[0] || '';
+									//}
+								}
+								if(vm.doi) {
+									//kth_logg.kthlogg("oaDOIfromunpaywall", vm.doi);
+									kth_oadoi.getoaDOI(vm.doi).then(function(data, status) {
+										if (data.data.best_oa_location) {
+											vm.unpaywalljson = data.data.best_oa_location;
+											vm.best_oa_location_url = data.data.best_oa_location.url;
+											vm.best_oa_location_evidence = data.data.best_oa_location.evidence;
+											//Hantera att OA kan ha lite olika typer av publicerat material
+											//guld/bronze villkor:
+												//best_oa_location.host_type = publisher
+											//"grön" villkor
+											//acceptedVersion
+												//best_oa_location.host_type == repository && version = acceptedVersion
+											//publishedVersion
+												//best_oa_location.host_type == repository && version = publishedVersion
+											//submittedVersion
+												//best_oa_location.host_type == repository && version = submittedVersion
 											
-										} else if(data.data.best_oa_location.host_type == "repository" && data.data.best_oa_location.version == 'publishedVersion') {
-											vm.greenpublished = true;
-											if(vm.kth_language == 'sv_SE') {
-												vm.infotext = "<p>Detta är den slutgiltiga publicerade versionen av artikeln, fritt tillgänglig i ett open access-arkiv.</p>"
+											if(data.data.best_oa_location.host_type == 'publisher') {
+												vm.gold = true;
+												if(vm.kth_language == 'sv_SE') {
+													vm.infotext = "<p>Detta är den slutgiltiga publicerade versionen av artikeln, fritt tillgänglig (open access) på förlagets webbplats.</p>";
+												} else {
+													vm.infotext = "<p>This is the final published version of the article, freely available (open access) on the publisher's website.</p>";
+												}
+												
+											} else if(data.data.best_oa_location.host_type == "repository" && data.data.best_oa_location.version == 'publishedVersion') {
+												vm.greenpublished = true;
+												if(vm.kth_language == 'sv_SE') {
+													vm.infotext = "<p>Detta är den slutgiltiga publicerade versionen av artikeln, fritt tillgänglig i ett open access-arkiv.</p>"
+												} else {
+													vm.infotext = "<p>This is the final published version of the article, freely available in an open access archive.</p>";
+												}
+											} else if(data.data.best_oa_location.host_type == "repository" && data.data.best_oa_location.version == 'acceptedVersion') {
+												vm.greenaccepted = true;
+												if(vm.kth_language == 'sv_SE') {
+													vm.infotext = "<p>Detta är en fritt tillgänglig postprint-version av artikeln i ett open access-arkiv. D.v.s. det är det accepterade och granskade manuskriptet, men ej den slutgiltiga publicerade artikeln.</p>"
+												} else {
+													vm.infotext = "<p>This is a free postprint version of the article available in an open access archive. I.e it is the accepted and reviewed manuscript, but not the final published article.</p>";
+												}
+											} else if(data.data.best_oa_location.host_type == "repository" && data.data.best_oa_location.version == 'submittedVersion') {
+												vm.greensubmittedVersion = true;
+												if(vm.kth_language == 'sv_SE') {
+													vm.infotext = "<p>Detta är en fritt tillgänglig preprint-version av artikeln i ett open access-arkiv. D.v.s. det är det till tidskriften inskickade manuskriptet, ännu ej accepterat eller granskat och ej den slutgiltiga publicerade artikeln.</p>"
+												} else {
+													vm.infotext = "<p>This is a free preprint version of the article available in an open access archive. I.e. it is the manuscript as submitted to the journal, not yet accepted or reviewed and not the final published article.</p>";
+												}
 											} else {
-												vm.infotext = "<p>This is the final published version of the article, freely available in an open access archive.</p>";
+												if(vm.kth_language == 'sv_SE') {
+													vm.infotext = "<p>Versionsstatus för denna artikel är inte känd. Artikeln finns tillgänglig i ett open access-arkiv.</p>"
+												} else {
+													vm.infotext = "<p>Version status for this article is not known. The article is available in an open access archive.</p>";
+												}
 											}
-										} else if(data.data.best_oa_location.host_type == "repository" && data.data.best_oa_location.version == 'acceptedVersion') {
-											vm.greenaccepted = true;
 											if(vm.kth_language == 'sv_SE') {
-												vm.infotext = "<p>Detta är en fritt tillgänglig postprint-version av artikeln i ett open access-arkiv. D.v.s. det är det accepterade och granskade manuskriptet, men ej den slutgiltiga publicerade artikeln.</p>"
+												vm.infotext = vm.infotext + "<p>Denna länk och information hämtas från <a href=\"http://unpaywall.org\">Unpaywall</a>. I vissa fall är det samma version som Online-länken ovan.</p>";
 											} else {
-												vm.infotext = "<p>This is a free postprint version of the article available in an open access archive. I.e it is the accepted and reviewed manuscript, but not the final published article.</p>";
+												vm.infotext = vm.infotext + "<p>This link and information is retrieved from <a href=\"http://unpaywall.org\">Unpaywall</a>. In some cases, it is the same version as the Online link above.</p>";
 											}
-										} else if(data.data.best_oa_location.host_type == "repository" && data.data.best_oa_location.version == 'submittedVersion') {
-											vm.greensubmittedVersion = true;
-											if(vm.kth_language == 'sv_SE') {
-												vm.infotext = "<p>Detta är en fritt tillgänglig preprint-version av artikeln i ett open access-arkiv. D.v.s. det är det till tidskriften inskickade manuskriptet, ännu ej accepterat eller granskat och ej den slutgiltiga publicerade artikeln.</p>"
-											} else {
-												vm.infotext = "<p>This is a free preprint version of the article available in an open access archive. I.e. it is the manuscript as submitted to the journal, not yet accepted or reviewed and not the final published article.</p>";
-											}
+											//Varför blir det INTE utf-8kompatibelt ibland?
+											vm.infotext = vm.infotext.replace(/å/g, "&aring;")
+											vm.infotext = vm.infotext.replace(/ä/g, "&auml;")
+											vm.infotext = vm.infotext.replace(/ö/g, "&ouml;")
+											vm.infotext = vm.infotext.replace(/Å/g, "&Aring;")
+											vm.infotext = vm.infotext.replace(/Ä/g, "&Auml;;")
+											vm.infotext = vm.infotext.replace(/Ö/g, "&Ouml;")
+											vm.infotext = $sce.trustAsHtml(vm.infotext);
+											vm.showOA = true;
 										} else {
-											if(vm.kth_language == 'sv_SE') {
-												vm.infotext = "<p>Versionsstatus för denna artikel är inte känd. Artikeln finns tillgänglig i ett open access-arkiv.</p>"
-											} else {
-												vm.infotext = "<p>Version status for this article is not known. The article is available in an open access archive.</p>";
-											}
+											vm.doi = false;
 										}
-										if(vm.kth_language == 'sv_SE') {
-											vm.infotext = vm.infotext + "<p>Denna länk och information hämtas från <a href=\"http://unpaywall.org\">Unpaywall</a>. I vissa fall är det samma version som Online-länken ovan.</p>";
-										} else {
-											vm.infotext = vm.infotext + "<p>This link and information is retrieved from <a href=\"http://unpaywall.org\">Unpaywall</a>. In some cases, it is the same version as the Online link above.</p>";
-										}
-										//Varför blir det INTE utf-8kompatibelt ibland?
-										vm.infotext = vm.infotext.replace(/å/g, "&aring;")
-										vm.infotext = vm.infotext.replace(/ä/g, "&auml;")
-										vm.infotext = vm.infotext.replace(/ö/g, "&ouml;")
-										vm.infotext = vm.infotext.replace(/Å/g, "&Aring;")
-										vm.infotext = vm.infotext.replace(/Ä/g, "&Auml;;")
-										vm.infotext = vm.infotext.replace(/Ö/g, "&Ouml;")
-										vm.infotext = $sce.trustAsHtml(vm.infotext);
-										vm.showOA = true;
-									} else {
-										vm.doi = false;
-									}
-								});	
+									});	
+								}
 							}
-						}
-					});
+						});
+					}
 				}
 			});
 		}
@@ -1644,7 +1549,6 @@ console.log(kth_vid);
 	
 	app.controller('prmCitationTrailsFullviewLinkAfterController',  ['$scope', '$http', function($scope, $http) {
 		//Init
-		console.log('prmCitationTrailsFullviewLinkAfterController')
 		var vm = this;
 		
 		/********************************************** 
@@ -1711,7 +1615,6 @@ console.log(kth_vid);
 		var vm = this;
 		//Ta bort SMS från personal info (bevaka arrayen och ta bort aktuella index)
 		$scope.$watch(function() { return vm.parentCtrl.phoneNumberSection; }, function(phoneNumberSection) {
-			console.log(phoneNumberSection);
 			phoneNumberSection.forEach(
 				function(item, index) {
 					//om det inte finns något telnummer sparat så finns ett första item som inte har innehåll
@@ -1728,7 +1631,6 @@ console.log(kth_vid);
 		});
 		//Ta bort address valid from (bevaka arrayen och ta bort aktuella index)
 		$scope.$watch(function() { return vm.parentCtrl.addressSection; }, function(addressSection) {
-			console.log(addressSection);
 			addressSection.forEach(
 				function(item, index) {
 					//om det inte finns något telnummer sparat så finns ett första item som inte har innehåll

@@ -38,14 +38,17 @@ prm-static, prm-static md-card.default-card {
 }
 
 /* anpassa luft/marginaler etc*/
+prm-search prm-static md-content {
+	padding: 0px !important;
+}
 prm-static md-card {
-	margin: 0 10px 10px 0;
+	margin: 0;
 }
 prm-static md-card-title {
 	padding: 24px 0 16px 0 !important;
 }
 prm-static md-card-content {
-	padding: 0 0px 0 0px !important;
+	padding: 0 10px 10px 0 !important;
 }
 
 /*****************************************************
@@ -86,10 +89,10 @@ prm-search-bar>div:nth-of-type(1)>div:nth-of-type(1)>div:nth-of-type(3) {
 
 /* se till att tomrummet på varje sida av sökresultat+facetter tar lika mycket plats */
 /* även för första sidan innan sökning gjorts */
-prm-search>md-content>div:nth-of-type(1),
-prm-search>md-content>div:nth-of-type(4),
-prm-search>div>md-content>div:nth-of-type(1),
-prm-search>div>md-content>div:nth-of-type(4) {
+prm-search>md-content>div:first-of-type,
+prm-search>md-content>div:last-of-type,
+prm-search>div>md-content>div:first-of-type,
+prm-search>div>md-content>div:last-of-type {
 	flex: 1 1 15% !important;
 	max-width: 15% !important;
 	/*background-color: darksalmon !important;*/
@@ -125,8 +128,10 @@ prm-search>div>md-content>div:nth-of-type(4) {
 	}
 
 	/* bort med tomrummet på varje sida av sökresultat+facetter */
-	prm-search>div>md-content>div:nth-of-type(1), 
-	prm-search>div>md-content>div:nth-of-type(4) {
+	prm-search>md-content>div:first-of-type,
+	prm-search>md-content>div:last-of-type,
+	prm-search>div>md-content>div:first-of-type,
+	prm-search>div>md-content>div:last-of-type {
 		flex: 1 1 0% !important;
 		max-width: 0% !important;
 	}
@@ -167,8 +172,10 @@ prm-search>div>md-content>div:nth-of-type(4) {
 	}
 
 	/* bort med tomrummet på varje sida av sökresultat+facetter */
-	prm-search>div>md-content>div:nth-of-type(1),
-	prm-search>div>md-content>div:nth-of-type(4) {
+	prm-search>md-content>div:first-of-type,
+	prm-search>md-content>div:last-of-type,
+	prm-search>div>md-content>div:first-of-type,
+	prm-search>div>md-content>div:last-of-type {
 		flex: 1 1 0% !important;
 		max-width: 0% !important;
 	}
@@ -202,8 +209,10 @@ prm-search>div>md-content>div:nth-of-type(4) {
 	}
 
 	/* bort med tomrummet på varje sida av sökresultat+facetter */
-	prm-search>div>md-content>div:nth-of-type(1),
-	prm-search>div>md-content>div:nth-of-type(4) {
+	prm-search>md-content>div:first-of-type,
+	prm-search>md-content>div:last-of-type,
+	prm-search>div>md-content>div:first-of-type,
+	prm-search>div>md-content>div:last-of-type {
 		flex: 1 1 0% !important;
 		max-width: 0% !important;
 	}
@@ -306,6 +315,11 @@ prm-search-bookmark-filter {
 prm-logo .product-logo {
 	padding: 0px;
 	height: 40px;
+}
+
+prm-logo .md-button {
+	min-width: 40px;
+	padding: 0px;
 }
 
 /* placera rubriken "KTH Biblioteket" rätt och sätt fontstorlek */
@@ -456,7 +470,7 @@ prm-search-bookmark-filter-after .md-button {
 	color: #1954a6 !important;
 	display: flex;
 	flex-direction: column;
-	padding: 10px 0px;
+	padding: 10px 10px;
 }
 
 /* storlek/höjd på knappikoner */
@@ -576,16 +590,6 @@ prm-icon.pin-icon md-icon {
 	transform: rotate(0deg);
 }
 
-/* logga in knapp ovan sökresultat, skapad i prmSearchResultListAfter */
-.kth_loggain {
-	padding-top: 10px;
-}
-.kth_loggain .md-button {
-	padding: 0;
-	font-style: initial;
-	color: #97abba !important;
-}
-
 /*****************************************************
 
 Did you mean? Vilken selector ska användas?
@@ -604,6 +608,48 @@ prm-did-u-mean {
 }
 prm-did-u-mean a {
 	color: #24A0D8;
+}
+
+/*****************************************************
+
+Yta ovan sökresultat (personalize button etc)
+
+******************************************************/
+
+/* placera in egen "login to save query" (via after-directive i JS) */
+prm-personalize-results-button {
+	display: flex;
+    flex-direction: row-reverse;
+}
+prm-personalize-results-button-after {
+	top: -5px;
+	position: relative;
+}
+.kth_loggain {
+	padding-top: 10px;
+}
+.kth_loggain .md-button {
+	padding: 0;
+	font-style: initial;
+	color: #97abba !important;
+}
+
+/* färg på knapp */
+prm-personalize-results-button .md-button {
+	color: #24A0D8 !important;
+}
+
+/* färg på vald */
+prm-search-result-list prm-personalize-results-button .md-button md-switch.md-checked ._md-thumb {
+	background-color: #24A0D8 !important;
+}
+
+prm-search-result-list prm-personalize-results-button .md-button md-switch.md-checked ._md-label {
+	color: #24A0D8 !important;
+}
+
+prm-search-result-list prm-personalize-results-button .md-button md-switch.md-checked ._md-bar {
+	background-color: #24A0D8 !important;
 }
 
 /*****************************************************
@@ -685,6 +731,12 @@ prm-brief-result-container .result-item-actions>prm-citation-trails-indication-c
     transform: translate3d(0px,0px,0); 
 }
 
+prm-action-list .scroll-hidden {
+	flex-wrap: wrap;
+	justify-content: flex-start;
+}
+
+
 /* Ikonen för att öppna "actions" på varje sökträff */
 .result-item-actions .more-options-button prm-icon.open-icon md-icon {
 	top: 0px;
@@ -737,6 +789,11 @@ prm-brief-result-container [class*="check_"] {
 	color: #0f7d00;
 }
 
+/* röd text */
+prm-brief-result-container [class*="no_"], prm-brief-result-container [class*="unavailable"] {
+    color: #e01b1b;
+}
+
 /* dölj peer ikkonen */
 .peer-reviewed-mark-icon {
 	display: none;
@@ -778,6 +835,23 @@ prm-facet-group>div {
 /* Dölj top level */
 div [data-facet-group="tlevel"] {
 	display: none;
+}
+
+/* Reset knapp */
+.md-button.button-as-link.link-alt-color {
+	color: #4aa8ea;
+}
+/* checkboxar */
+prm-facet-group md-checkbox {
+	position: relative !important;
+	z-index: 100 !important;
+    transform: scaleX(1) !important;
+	transition: all 0s 0s !important;
+	visibility: visible !important;
+}
+
+.multiselect-facet-group .md-chip .md-range-content {
+	left: 4px !important;
 }
 
 /* se till att facetter scrollar med sidan */
@@ -1018,6 +1092,12 @@ Dialogview
 Citations
 
 ****************/
+
+/* ta bort Ex Libris egna citeringar(korrekt?) */
+prm-times-cited {
+	display:none;
+}
+
 .wostimesCited {
 	color: tomato
 }
@@ -1206,12 +1286,33 @@ prm-alma-mashup-after md-icon {
 	min-width: 20px;
 }
 
+/* dölj gul banner "login to request" */
+prm-login-alma-mashup .alert-bar {
+	display: none;
+}
+
+/* gör om loginknappen */
+prm-login-alma-mashup-after .md-button {
+    color: #5c92bd;
+    padding-left: 0px;
+    border: 1px solid;
+    border-color: #5c92bd;
+}
+
 
 /*********************************
 
 Favorites
 
 **********************************/
+
+/* färger på favoritikon(hjärta), grå resp blå*/
+.result-item-actions .pin-button.pinned {
+	color: #97abba;
+}
+prm-favorites .unpin-button {
+	color: #4aa8ea;
+}
 
 /*
 prm-favorites>prm-favorites-tool-bar.layout-column {
@@ -1297,6 +1398,21 @@ prm-personal-info md-card-content>div:nth-of-type(3) {
 	display: none;
 }
 
+prm-account .md-button.button-confirm {
+	color: #4aa8ea;
+}
+
+/***********************************
+
+Settings vid facettlistan (personalize
+material outside etc)
+
+************************************/
+
+.sidebar .personalization-section md-checkbox {
+	color: #4aa8ea;
+}
+
 /**********************************
 
 FÄRGER
@@ -1314,13 +1430,27 @@ md-input-container:after {
  }
 
  /* checkboxar */
+
 md-checkbox ._md-icon {
     opacity: 1;
     border-color: #4aa8ea;
-    border-width: 2px;
+	border-width: 2px;
 }
-md-checkbox.md-checked ._md-icon {
+md-checkbox.md-checked ._md-icon{
     background-color: #4aa8ea;
+}
+.sidebar .personalization-section .sidebar-list {
+    color: #3a3a3a;
+}
+
+/*********************************
+
+Generella
+
+*********************************/
+
+.kth-hide { 
+	display: none;
 }
 
 /*********************************

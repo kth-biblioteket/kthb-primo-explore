@@ -1727,9 +1727,9 @@ console.log(kth_vid);
 		//Se till att länken anpassas till valt språk
 		//engelska default?
 		
-		vm.parentCtrl.kthb_link = "https://www.kth.se/en/kthb";
+		vm.parentCtrl.kthb_link = "https://www.kth.se/en/biblioteket";
 		if($translate.use() == 'sv_SE') {
-			vm.parentCtrl.kthb_link = "https://www.kth.se/kthb";
+			vm.parentCtrl.kthb_link = "https://www.kth.se/biblioteket";
 		}
 	});
 	
