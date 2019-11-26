@@ -1076,7 +1076,7 @@ console.log(kth_vid);
 				'</div>'
 	});
 	
-	app.controller('FullViewAfterController', function (angularLoad, $http, kth_loginservice) {
+	app.controller('FullViewAfterController', function ($document, angularLoad, $http, kth_loginservice, $scope, $timeout) {
         var vm = this;
 		vm.data = kth_loginservice.getData();
 		/**************************************************
@@ -1101,27 +1101,31 @@ console.log(kth_vid);
 			//hämta info från orcid API
 			getorcidinfo(vm.orcid_id);
 		}
+		angular.element($document).ready(function() {
+			$timeout(function() {
+						
+			//	});
+				/*********
+				 * 
+				 * 
+				 * Flytta metrics/citations till höger full post
+				 * 
+				 */
+				//Element som ska flyttas
+				var citationTrails = document.querySelector('#citationTrails');
+				var fullviewafter = document.querySelector('prm-full-view-after');
 
-		angular.element(document).ready(function() {
-			/*********
-			 * 
-			 * 
-			 * Flytta metrics/citations till höger full post
-			 * 
-			 */
-			//Element som ska flyttas
-			var citationTrails = document.querySelector('#citationTrails');
-			var fullviewafter = document.querySelector('prm-full-view-after');
-
-			var prmrecomendations = document.querySelector('prm-recomendations');
-			//Sätt style för att flytta citation/metrics över premrecomendations i full-view(inte dialogview)
-			if(typeof(prmrecomendations) != "undefined" && prmrecomendations != null) {
-				prmrecomendations.parentNode.style.display = "flex";
-				prmrecomendations.parentNode.style.flexDirection  = "column";
-				prmrecomendations.parentNode.appendChild(citationTrails);
-				prmrecomendations.parentNode.appendChild(fullviewafter);
-			}
-			//}
+				var prmrecomendations = document.querySelector('prm-recomendations');
+				console.log(citationTrails);
+				//Sätt style för att flytta citation/metrics över premrecomendations i full-view(inte dialogview)
+				if(typeof(prmrecomendations) != "undefined" && prmrecomendations != null) {
+					prmrecomendations.parentNode.style.display = "flex";
+					prmrecomendations.parentNode.style.flexDirection  = "column";
+					prmrecomendations.parentNode.appendChild(citationTrails);
+					prmrecomendations.parentNode.appendChild(fullviewafter);
+				}
+				//}
+			},0);
 		});
         vm.$onInit = function () {
             //hämta info från altmetrics API

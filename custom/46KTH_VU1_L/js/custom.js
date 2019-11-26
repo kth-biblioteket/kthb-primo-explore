@@ -791,10 +791,17 @@ console.log(kth_vid);
 			'</div>' + 
 			
 			//Homepage layout
-			'<md-content class="main" ng-if="!$ctrl.isSearchDone() && !$ctrl.isJournalSearch" layout="row" layout-align="center start" flex>' +
-				'<div flex="0" flex-md="0" flex-lg="15" flex-xl="15" ng-class="{\'flex-lgPlus-15\': $ctrl.mediaQueries.lgPlus}"></div>' +
-				'<prm-static section="homepage" flex class="md-padding"></prm-static>' +
-				'<div flex="0" flex-md="0" flex-lg="15" flex-xl="15" ng-class="{\'flex-lgPlus-15\': $ctrl.mediaQueries.lgPlus}"></div>' +
+			//'<md-content class="main" ng-if="!$ctrl.isSearchDone() && !$ctrl.isJournalSearch" layout="row" layout-align="center start" flex>' +
+				//'<div flex="0" flex-md="0" flex-lg="15" flex-xl="15" ng-class="{\'flex-lgPlus-15\': $ctrl.mediaQueries.lgPlus}"></div>' +
+				//'<prm-static section="homepage" flex class="md-padding"></prm-static>' +
+				//'<div flex="0" flex-md="0" flex-lg="15" flex-xl="15" ng-class="{\'flex-lgPlus-15\': $ctrl.mediaQueries.lgPlus}"></div>' +
+			//'</md-content>' +
+
+			//NovemberRelease 2019
+			'<md-content class="main" ng-if="!$ctrl.isSearchDone() && !$ctrl.isAtozSearch && !$ctrl.isOrgListSearch()" layout="row" layout-align="center start" flex>' +
+    			'<div flex="0" flex-md="0" flex-lg="15" flex-xl="15" ng-class="{\'flex-lgPlus-15\': $ctrl.mediaQueries.lgPlus && !$ctrl.facetToLeft, \'flex-lgPlus-15\': $ctrl.mediaQueries.lgPlus && $ctrl.facetToLeft, \'flex-xl-15\': $ctrl.facetToLeft}"></div>' +
+    			'<prm-static section="homepage" flex class="md-padding"></prm-static>' +
+    			'<div flex="0" flex-md="0" flex-lg="15" ng-class="{\'flex-lgPlus-15\': $ctrl.mediaQueries.lgPlus && !$ctrl.facetToLeft, \'flex-lgPlus-15\': $ctrl.mediaQueries.lgPlus && $ctrl.facetToLeft, \'flex-xl-15\': $ctrl.mediaQueries.xl && !$ctrl.facetToLeft, \'flex-xl-15\': $ctrl.mediaQueries && $ctrl.facetToLeft}"></div>' +
 			'</md-content>' +
 			
 			//MayRelease 2019
