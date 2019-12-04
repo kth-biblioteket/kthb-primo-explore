@@ -120,7 +120,7 @@ console.log(kth_vid);
 		bindings: {parentCtrl: '<'},
 		controller: 'prmSearchBookmarkFilterAfterController',
 		template: 
-		'<div layout="row">' +
+		'<div layout="row" class="kth_menu">' +
 			//Hjälp
 			'<div>' +
 				'<md-button aria-label="{{$ctrl.getLibraryCardAriaLabel() | translate}}" class="button-with-icon zero-margin" ng-click="$ctrl.goToHELP()">' +

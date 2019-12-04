@@ -500,6 +500,16 @@ prm-search-bookmark-filter-after a {
 	prm-search-bookmark-filter-after span {
 		display: none !important;
 	}
+
+	.kth_menu {
+		height: 60px;
+		align-items: center;
+	}
+	prm-search-bookmark-filter-after .md-button {
+		min-width:10px;
+		padding: 0;
+		height: 60px;
+	}
 }
 
 
