@@ -146,23 +146,23 @@ console.log(kth_vid);
 				'</a>' + 
 			'</div>' +
 			//Favoriter/search
-			'<div>' +
-				'<md-button class="button-with-icon zero-margin" ng-if="!$ctrl.parentCtrl.isFavorites" id="favorites-button" aria-label="Go to my favorites" ng-click="$ctrl.goToFavorites()">' +
+			'<div>' +	
+			'<md-button class="button-with-icon zero-margin" ng-if="!$ctrl.parentCtrl.isFavorites" id="favorites-button" aria-label="Go to my favorites" ng-click="$ctrl.goToFavorites()">' +
 					'<prm-icon aria-label="Go to my favorites" icon-type="svg" svg-icon-set="action" icon-definition="ic_favorite_outline_24px">' + 
 						'<prm-icon-after parent-ctrl="ctrl"></prm-icon-after>' + 
 					'</prm-icon>' + 
-					'<md-tooltip md-delay="">' +
+					'<!--md-tooltip md-delay="">' +
 						'<span translate="nui.favorites.goFavorites.tooltip"></span>' +
-					'</md-tooltip>' + 
+					'</md-tooltip-->' + 
 					'<span translate="nui.favorites.header"></span>' + 
-				'</md-button>' +
+				'</md-button>' +				
 				'<md-button class="button-with-icon zero-margin" ng-if="$ctrl.parentCtrl.isFavorites" id="search-button" aria-label="Go to search" ng-click="$ctrl.goToSearch()">' +
 					'<prm-icon aria-label="Go to Search" icon-type="svg" svg-icon-set="primo-ui" icon-definition="magnifying-glass">' +  
 						'<prm-icon-after parent-ctrl="ctrl"></prm-icon-after>' + 
 					'</prm-icon>' + 
-					'<md-tooltip md-delay="">' +
+					'<!--md-tooltip md-delay="">' +
 						'<span translate="nui.favorites.goSearch.tooltip"></span>' +
-					'</md-tooltip>' + 
+					'</md-tooltip-->' + 
 					'<span translate="nui.search">Search</span>' + 
 				'</md-button>' +
 			'</div>' +
@@ -173,27 +173,31 @@ console.log(kth_vid);
 		'</div>'
 	});
 
-	app.controller('prmSearchBookmarkFilterAfterController', function ($translate, $rootScope, $location) {
+	app.controller('prmSearchBookmarkFilterAfterController', function ($translate, $rootScope, $location, $timeout, kth_searchurl) {
 		var vm = this;
 
 		vm.userName = $rootScope.$$childTail.$ctrl.userSessionManagerService.getUserName();
 		
 		vm.goToFavorites = goToFavorites;
+		vm.goToHELP = goToHELP;
+		vm.goToKTHDatabases = goToKTHDatabases;
+
 		function goToFavorites() {
-			$location.path( "/favorites" );
+			$location.path( "/favorites")
 		}
 
 		vm.goToSearch = goToSearch;
 		function goToSearch() {
-			$location.path( "/search" );
+			//$location.path( "/search" );
+			location.href=kth_searchurl.getData();
 		}
 
 		//Anpassa länkar till valt språk
 		vm.kth_language = $translate.use();	
 		if(vm.kth_language == 'sv_SE') {
-			vm.parentCtrl.kth_databaseurl = 'https://www.kth.se/biblioteket/soka-vardera/sok-information/databaser-och-soktjanster-1.851404';
+			vm.kth_databaseurl = 'https://www.kth.se/biblioteket/soka-vardera/sok-information/databaser-och-soktjanster-1.851404';
 		} else {
-			vm.parentCtrl.kth_databaseurl = 'https://www.kth.se/en/biblioteket/soka-vardera/sok-information/databaser-och-soktjanster-1.851404';
+			vm.kth_databaseurl = 'https://www.kth.se/en/biblioteket/soka-vardera/sok-information/databaser-och-soktjanster-1.851404';
 		}
 
 		function goToHELP() {
@@ -397,6 +401,23 @@ console.log(kth_vid);
 			return data;
 		};
 	});
+
+	/*****************************************************************
+	
+	Service som lagrar aktuell searchurl
+	
+	*****************************************************************/
+	app.service('kth_searchurl', function() {
+		
+		var data = [];
+		this.addData = function (d) {
+			data = d;
+		};
+		
+		this.getData = function () {
+			return data;
+		};
+	});
 	
 	/*****************************************************************
 	
@@ -531,12 +552,12 @@ console.log(kth_vid);
 	app.component('prmSearchResultSortByAfter', {
 		bindings: {parentCtrl: '<'},
 		controller: 'prmSearchResultSortByAfterController',
-		template: `<md-checkbox ng-model="$ctrl.stickyfacets" ng-change="$ctrl.togglestickyfacets();" aria-label="{{\'stickyfacets\' | translate}}">
+		/*template: `<md-checkbox ng-model="$ctrl.stickyfacets" ng-change="$ctrl.togglestickyfacets();" aria-label="{{\'stickyfacets\' | translate}}">
 						<span translate="Sticky">Sticky</span>
-					</md-checkbox>`
+					</md-checkbox>`*/
 	});
 
-	app.controller('prmSearchResultSortByAfterController', function () {
+	app.controller('prmSearchResultSortByAfterController', function (kth_facetdata) {
 		var vm = this;
 		vm.stickyfacets = false;
 		vm.togglestickyfacets = togglestickyfacets;
@@ -562,11 +583,44 @@ console.log(kth_vid);
 
 	app.component('prmFacetAfter', {
 		bindings: {parentCtrl: '<'},
-		controller: 'prmFacetAfterController'
+		controller: 'prmFacetAfterController',
+		/*template: `<md-button aria-label="show/collapse facets" ng-click="$ctrl.togglefacets()" style="display:flex;width: 100%;" tabindex="-1" class="section-title sidebar-section margin-top-small compensate-padding-left">
+						<h2 flex="90" class="sidebar-title margin-bottom-zero" translate="nui.facets.title" style="font-size: 1.6em;text-align:left" ></h2>
+						<!--veckla ut/ihop facetter, text i st f ikkonen?
+						TODO in i code table i Primo BO(översättning)-->
+						<span ng-if="$ctrl.allfacetscollapsed">Expand all facets</span>
+						<span ng-if="!$ctrl.allfacetscollapsed">Collapse all facets</span>
+						<prm-icon style="align-self: flex-end;padding-left: 5px" icon-type="svg" svg-icon-set="primo-ui" icon-definition="expand-list" class="rotate-180"></prm-icon>
+						<!--prm-icon style="align-self: flex-end;"icon-type="svg" svg-icon-set="primo-ui" icon-definition="chevron-up" ng-class="{\'rotate-180\': $ctrl.allfacetscollapsed}"></prm-icon-->
+					</md-button>`
+					*/
 	});
 	
 	app.controller('prmFacetAfterController', function ($scope, $timeout, kth_facetdata) {
 		var vm = this;
+		//hämta parameter från factory kth_facetdata för defaultvärde
+		vm.allfacetscollapsed = kth_facetdata.getallfacetscollapsed()
+		
+		//Definiera funktion som togglar facetter(ut- eller ihopfällda) så den kan anropas från knapp/rubrik i prm-facet
+		vm.togglefacets = togglefacets
+		function togglefacets() {
+			if (kth_facetdata.getallfacetscollapsed()) {
+				vm.allfacetscollapsed = false;
+				kth_facetdata.setallfacetscollapsed(false);
+			} else {
+				vm.allfacetscollapsed = true;
+				kth_facetdata.setallfacetscollapsed(true);
+			}
+			vm.parentCtrl.facetService.results.forEach(
+				function(item, index) {
+					if (vm.allfacetscollapsed) {
+						item.facetGroupCollapsed = true;
+					} else {
+						item.facetGroupCollapsed = false;
+					}
+				}
+			);
+		}
 	});
 	
 	/*****************************************
@@ -597,7 +651,7 @@ console.log(kth_vid);
 		var vm = this;
 
 		// Kollapsad eller inte (default = true?, exlibrisdefault = false)
-		vm.parentCtrl.facetGroup.facetGroupCollapsed = true;
+		vm.parentCtrl.facetGroup.facetGroupCollapsed = false;
 
 		//Spara undan värdet för tlevel-fasetten i factoryvariabel
 		if(vm.parentCtrl.facetGroup.name == "tlevel") {
@@ -626,25 +680,75 @@ console.log(kth_vid);
 	
 	/*****************************************
 	
-	prm-search-after
+	prm-search-bar-after
 		
 	*****************************************/
 	app.component('prmSearchAfter', {
 			bindings: {parentCtrl: '<'},
-			controller: 'prmSearchAfterController'
+			controller: 'prmSearchAfterController',
+			template: `<!--Infotext som vi själva lägger in i Primo BO
+			hämta translate-texten i controller för prm-search-after för att användas som villkor?-->
+			<div class="kth_alertbarwrapper" ng-class="!$ctrl.mediaQueries.xs  ? \'1kth_sidepadding\' : \'\' " ng-cloak ng-if="$ctrl.kthinfotext!=\'0\' && $ctrl.showkthinfomessage!=false">
+				<div flex="15" flex-md="0" flex-sm="0" flex-xs="0"></div>
+				<div style="display:flex" flex ng-cloak layout="column" layout-align="center start" class="bar alert-bar kthinfotext">
+					<!--Texten nedan ändras via Primo BO: nui.kth_infotext-->
+					<div layout="row" layout-align="center center">
+						<span class="bar-text" translate="nui.kth_infotext"></span>
+						<md-divider></md-divider>
+						<md-button aria-label="{{::(\'nui.message.dismiss\' | translate)}}" (click)="$ctrl.dismisskthinfo()" class="dismiss-alert-button zero-margin" ng-class="ctrl.mediaQueries.xs ? \'md-icon-button\' : \'button-with-icon\' ">
+							<prm-icon aria-label="{{::(\'nui.message.dismiss\' | translate)}}" icon-type="svg" svg-icon-set="navigation" icon-definition="ic_close_24px">
+								<md-icon md-svg-icon="navigation:ic_close_24px" aria-label="{{::(\'nui.message.dismiss\' | translate)}}" class="md-primoExplore-theme" aria-hidden="true"><svg width="100%" height="100%" viewBox="0 0 24 24" id="ic_close_24px_cache52" y="240" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg></md-icon>
+							</prm-icon>
+							<span translate="nui.message.dismiss" hide-xs></span>
+						</md-button>
+					</div>
+				</div>
+				<div flex="15" flex-md="0" flex-sm="0" flex-xs="0"></div>
+			</div>
+			<!--Avdelare mellan alerts (showcampusmessage = om man klickat på "dismiss")-->
+			<md-divider ng-if="!$ctrl.userName_kth.length > 0 && $ctrl.kthinfotext!=\'0\' && $ctrl.showcampusmessage!=false && $ctrl.showkthinfomessage!=false"></md-divider>
+			<!--inte på campus-->
+			<div class="kth_alertbarwrapper" ng-class="!$ctrl.mediaQueries.xs  ? \'1kth_sidepadding\' : \'\' " ng-cloak ng-if="!$ctrl.kthisoncampus && !$ctrl.userName_kth.length > 0 && $ctrl.showcampusmessage!=false">
+				<div flex="15" flex-md="0" flex-sm="0" flex-xs="0"></div>
+				<div style="display:flex" flex ng-cloak layout="column" layout-align="center start" class="bar alert-bar">
+					<!--ändra texten i BO "nui.kth_notoncampus"-->
+					<div layout="row" layout-align="center center">
+						<!--inte på campus-->
+						<span ng-if="!$ctrl.kthisoncampus" class="bar-text" translate="nui.kth_notoncampus"></span>
+						<!--prm-authentication [is-logged-in]="$ctrl.userName_kth.length > 0"></prm-authentication-->
+						<md-divider></md-divider>
+						<md-button aria-label="{{::(\'nui.message.dismiss\' | translate)}}" (click)="$ctrl.dismisscampusmessage()" class="dismiss-alert-button zero-margin" ng-class="ctrl.mediaQueries.xs ? \'md-icon-button\' : \'button-with-icon\' ">
+							<prm-icon aria-label="{{::(\'nui.message.dismiss\' | translate)}}" icon-type="svg" svg-icon-set="navigation" icon-definition="ic_close_24px">
+								<md-icon md-svg-icon="navigation:ic_close_24px" aria-label="{{::(\'nui.message.dismiss\' | translate)}}" class="md-primoExplore-theme" aria-hidden="true"><svg width="100%" height="100%" viewBox="0 0 24 24" id="ic_close_24px_cache52" y="240" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg></md-icon>
+							</prm-icon>
+							<span translate="nui.message.dismiss" hide-xs></span>
+						</md-button>
+					</div>
+				</div>
+				<div flex="15" flex-md="0" flex-sm="0" flex-xs="0"></div>
+			</div>`
 	});
 	
-	app.controller('prmSearchAfterController', function ($scope,$location,$rootScope,kth_currenturl,kth_loginservice,$timeout,$templateCache, $translate, $http, $sce) {
+	app.controller('prmSearchAfterController', function ($scope,$location,$rootScope,kth_currenturl,kth_searchurl, kth_loginservice,$timeout,$templateCache, $translate, $http, $sce) {
 		var vm = this;
-		vm.parentCtrl.kthinfotext = '0';
+		vm.kthinfotext = '0';
 		
+		/*****
+		 * 
+		 * Aktuell sökurl
+		 */
+		kth_searchurl.addData($location.absUrl());
+		console.log(kth_searchurl.getData())
+		$rootScope.$broadcast('searchurldataAdded', $location.absUrl());
+
 		/******************************************************
+		 
 		
 		kthinfotext som ska visas vid fel eller annan info
 		
 		******************************************************/
 		$translate('nui.kth_infotext').then(function (translation) {
-			vm.parentCtrl.kthinfotext = translation;
+			vm.kthinfotext = translation;
 		});
 		
 		/****************************
@@ -662,11 +766,14 @@ console.log(kth_vid);
 		för att kolla om man är inloggad etc
 		
 		**********************************/
-		vm.parentCtrl.kthisoncampus = false;
-		$scope.$watch(function() { return vm.parentCtrl.primolyticsService.jwtUtilService.getDecodedToken().onCampus; }, function(onCampus) {
+		vm.kthisoncampus = false;
+		$scope.$watch(function() { 
+				return $rootScope.$$childTail.$ctrl.jwtUtilService.getDecodedToken().onCampus; 
+			}, function(onCampus) {
+				//console.log(onCampus);
 		});
-		
-		vm.parentCtrl.userName_kth = vm.parentCtrl.primolyticsService.userSessionManagerService.jwtUtilService.getDecodedToken().userName;
+
+		vm.userName_kth = $rootScope.$$childTail.$ctrl.userSessionManagerService.getUserName();
 		/***************************************************************** 
 		Använd getDecodedToken().onCampus istället??
 		Anpassning för att kolla om man sitter på campus via ipadress 
@@ -704,46 +811,47 @@ console.log(kth_vid);
 				client_ip = response.data.ip;
 				//Kolla mot alla ipintervall som är uppsatta i Primo BO
 				if(check_if_in_iprange('130.237.202.0', '130.237.203.255', client_ip)) {
-					vm.parentCtrl.kthisoncampus = true;
-				} 
-				else if(check_if_in_iprange('130.229.128.0', '130.229.159.255', client_ip)) {
-					vm.parentCtrl.kthisoncampus = true;
+					vm.kthisoncampus = true;
+				}
+				//eduroam
+				else if(check_if_in_iprange('130.229.128.0', '130.229.140.255', client_ip)) {
+					vm.kthisoncampus = true;
 				} 
 				else if(check_if_in_iprange('130.237.206.0', '130.237.206.255', client_ip)) {
-					vm.parentCtrl.kthisoncampus = true;
+					vm.kthisoncampus = true;
 				} 
 				else if(check_if_in_iprange('130.237.1.0', '130.237.84.255', client_ip)) { 
-					vm.parentCtrl.kthisoncampus = true;
+					vm.kthisoncampus = true;
 				}
 				else if(check_if_in_iprange('130.237.209.0', '130.237.216.255', client_ip)) {
-					vm.parentCtrl.kthisoncampus = true;
+					vm.kthisoncampus = true;
 				} 
 				else if(check_if_in_iprange('130.237.218.0', '130.237.236.255', client_ip)) {
-					vm.parentCtrl.kthisoncampus = true;
+					vm.kthisoncampus = true;
 				} 
 				else if(check_if_in_iprange('130.237.238.0', '130.237.238.255', client_ip)) {
-					vm.parentCtrl.kthisoncampus = true;
+					vm.kthisoncampus = true;
 				} 
 				else if(check_if_in_iprange('130.237.250.0', '130.237.251.255', client_ip)) {
-					vm.parentCtrl.kthisoncampus = true;
+					vm.kthisoncampus = true;
 				} 
 				else if(check_if_in_iprange('192.16.124.0', '192.16.125.255', client_ip)) {
-					vm.parentCtrl.kthisoncampus = true;
+					vm.kthisoncampus = true;
 				} 
 				else if(check_if_in_iprange('192.16.127.0', '192.16.127.255', client_ip)) {
-					vm.parentCtrl.kthisoncampus = true;
+					vm.kthisoncampus = true;
 				} 
 				else if(check_if_in_iprange('193.10.156.0', '193.10.159.255', client_ip)) {
-					vm.parentCtrl.kthisoncampus = true;
+					vm.kthisoncampus = true;
 				} 
 				else if(check_if_in_iprange('193.10.37.0', '193.10.39.255', client_ip)) {
-					vm.parentCtrl.kthisoncampus = true;
+					vm.kthisoncampus = true;
 				} 
 				else if(check_if_in_iprange('90.152.114.170', '90.152.114.170', client_ip)) {
-					vm.parentCtrl.kthisoncampus = true;
+					vm.kthisoncampus = true;
 				}
 				else {
-					vm.parentCtrl.kthisoncampus = false;
+					vm.kthisoncampus = false;
 				}
 			});
 		};
@@ -754,17 +862,17 @@ console.log(kth_vid);
 		så meddelandet inte visas förrän vid en "refresh"
 		
 		****************************************************************/
-		vm.parentCtrl.dismisscampusmessage = dismisscampusmessage;
-		vm.parentCtrl.showcampusmessage = $rootScope.showcampusmessage;
+		vm.dismisscampusmessage = dismisscampusmessage;
+		vm.showcampusmessage = $rootScope.showcampusmessage;
 		function dismisscampusmessage() {
 			$rootScope.showcampusmessage = false;
-			vm.parentCtrl.showcampusmessage = $rootScope.showcampusmessage;
+			vm.showcampusmessage = $rootScope.showcampusmessage;
 		}
-		vm.parentCtrl.dismisskthinfo = dismisskthinfo;
-		vm.parentCtrl.showkthinfomessage = $rootScope.showkthinfomessage;
+		vm.dismisskthinfo = dismisskthinfo;
+		vm.showkthinfomessage = $rootScope.showkthinfomessage;
 		function dismisskthinfo() {
 			$rootScope.showkthinfomessage = false;
-			vm.parentCtrl.showkthinfomessage = $rootScope.showkthinfomessage;
+			vm.showkthinfomessage = $rootScope.showkthinfomessage;
 		}
 	});
 	
@@ -793,7 +901,14 @@ console.log(kth_vid);
 	
 	app.controller('prmLoginAlmaMashupAfterController',function ($rootScope, $scope, kth_loginservice) {
 		var vm = this;
-		vm.userName = $rootScope.$$childTail.$ctrl.primolyticsService.userSessionManagerService.getUserName();
+		console.log($rootScope)
+		if (typeof($rootScope.$$childTail.$ctrl.primolyticsService) != 'undefined') {
+			vm.userName = $rootScope.$$childTail.$ctrl.primolyticsService.userSessionManagerService.getUserName();
+		}
+		if (typeof($rootScope.$$childTail.$ctrl.userSessionManagerService) != 'undefined') {
+			vm.userName = $rootScope.$$childTail.$ctrl.userSessionManagerService.getUserName();
+		}
+		
 		vm.requestlogin = false;
 		
 		vm.data = kth_loginservice.getData();
@@ -996,31 +1111,23 @@ console.log(kth_vid);
 	
 	});	
 	
-	
 	/*****************************************
-	
-	prm-favorites-toolbar-after
-	
+	 
+	prm-search-result-frbr-line-after
+
+	Dölj "multiple sources exist"
+
 	*****************************************/
-	app.component('prmFavoritesToolBarAfter', {
-			bindings: {parentCtrl: '<'},
-			controller: 'prmFavoritesToolBarAfterController',
-			template: ``
+	app.component('prmSearchResultFrbrLineAfter', {
+		bindings: {parentCtrl: '<'},
+		controller: 'prmSearchResultFrbrLineAfterController',
+		template: ``
 	});
-	
-	app.controller('prmFavoritesToolBarAfterController', function ($scope,$location,$timeout) {
+
+	app.controller('prmSearchResultFrbrLineAfterController', function ($scope,$location,$timeout,$element) {
 		var vm = this;
-		vm.backtosearch = backtosearch;
-		vm.isFavorites = vm.parentCtrl.isFavorites;
-		vm.parentCtrl.goToSearch = backtosearch;
-		$timeout(function(){
-			//hämta href-attribut från originalfavoritikonen
-			var myEl = angular.element(document.querySelector('prm-search-bookmark-filter a'));
-			vm.absUrl = myEl.attr('href');
-		},0);
-		
-		function backtosearch() {
-			location.href = vm.absUrl;
+		if(vm.parentCtrl.result.context == "PC") {
+			$element[0].parentElement.style.visibility = "hidden"
 		}
 	});
 	
@@ -1116,7 +1223,6 @@ console.log(kth_vid);
 				var fullviewafter = document.querySelector('prm-full-view-after');
 
 				var prmrecomendations = document.querySelector('prm-recomendations');
-				console.log(citationTrails);
 				//Sätt style för att flytta citation/metrics över premrecomendations i full-view(inte dialogview)
 				if(typeof(prmrecomendations) != "undefined" && prmrecomendations != null) {
 					prmrecomendations.parentNode.style.display = "flex";

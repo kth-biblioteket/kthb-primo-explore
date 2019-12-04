@@ -505,7 +505,7 @@ prm-search-bookmark-filter-after a {
 
 /*****************************************************
 
-Alert bar
+Alert bar 
 
 ******************************************************/
 /* bort med luft */ 
@@ -536,6 +536,41 @@ prm-alert-bar .bar {
 		padding: 0em 1.5em 0em 1.5em;
 	}
 }
+
+/* flex-ordning på alert och sökresultat*/
+prm-search {
+	display: flex;
+	flex-direction: column;
+}
+prm-search-after {
+	order:1
+}
+prm-alert-bar {
+	order:2
+}
+prm-search>div {
+	order:3
+}
+
+/*egen alert bar*/
+.bar.alert-bar {
+    background-color: #fff8c4;
+    height: auto;
+    border: none;
+    justify-content: flex-start;
+}
+.kth_alertbarwrapper .bar {
+	padding: 0.5em 0 ;
+}
+.kth_alertbarwrapper div {
+	background-color: #fff8c4; /*ex libris gul*/
+}
+.kth_alertbarwrapper {
+	display: flex;
+}
+
+
+
 
 /*****************************************************
 
@@ -652,6 +687,7 @@ prm-search-result-list prm-personalize-results-button .md-button md-switch.md-ch
 	background-color: #24A0D8 !important;
 }
 
+
 /*****************************************************
 
 Resultat/Content
@@ -736,6 +772,9 @@ prm-action-list .scroll-hidden {
 	justify-content: flex-start;
 }
 
+prm-action-list #scrollActionList {
+	flex-direction: row-reverse;
+}
 
 /* Ikonen för att öppna "actions" på varje sökträff */
 .result-item-actions .more-options-button prm-icon.open-icon md-icon {
@@ -768,7 +807,7 @@ prm-copy-clipboard-btn .md-button.button-confirm {
 prm-search-result-thumbnail-container img {
 	border: 1px solid #bdbdbd;
 }
-/* dölj de som är multiple*/
+/* dölj de omslag som är multiple*/
 prm-search-result-thumbnail-container .fan-img:nth-of-type(2), prm-search-result-thumbnail-container .fan-img:nth-of-type(3) {
 	display: none;
 }
@@ -779,11 +818,22 @@ prm-search-result-thumbnail-container .fan-img:first-of-type {
 prm-brief-result-container:hover prm-search-result-thumbnail-container .fan-img:first-of-type {
 	transform: rotate(0deg) translate3d(0px,0,0) scale3d(1,1,1);
 }
+prm-full-view-service-container prm-search-result-thumbnail-container .fan-img:first-of-type {
+	transform: rotate(0deg) translate3d(-16px,0,0) scale3d(.8,.8,1);
+}
+prm-full-view-service-container prm-brief-result-container:hover prm-search-result-thumbnail-container .fan-img:first-of-type {
+	transform: rotate(0deg) translate3d(-16px,0,0) scale3d(.8,.8,1);
+}
 
 /* Dölj ikkonen framför tillgänglig text (print/online etc) */
-prm-brief-result-container .result-item-text prm-search-result-availability-line prm-icon, prm-brief-result-container .result-item-text prm-search-result-frbr-line prm-icon {
+prm-brief-result-container .result-item-text prm-search-result-availability-line prm-icon[icon-definition="link"],
+prm-brief-result-container .result-item-text prm-search-result-availability-line prm-icon[icon-definition="book-open"],
+prm-brief-result-container .result-item-text prm-search-result-frbr-line prm-icon[icon-definition="link"],
+prm-brief-result-container .result-item-text prm-search-result-frbr-line prm-icon[icon-definition="multiple-items"]
+{
 	display: none;
 }
+
 /* grön text */
 prm-brief-result-container [class*="check_"] {
 	color: #0f7d00;
@@ -804,11 +854,30 @@ prm-brief-result-container [class*="no_"], prm-brief-result-container [class*="u
 	display: none;
 }
 
+/* färg på knappen för att hämta fler träffar */
+button.button-confirm.button-large.md-button.md-primoExplore-theme.md-ink-ripple {
+	color: #4aa8ea
+}
+
 /*****************************************************
 
 Facetter
 
 ******************************************************/
+/*
+prm-facet {
+	display:flex;
+	flex-direction: column-reverse;
+}
+
+prm-facet .sidebar-title {
+	display: none;
+}
+
+prm-facet-after .sidebar-title {
+	display: block;
+}
+*/
 
 /* facettlistans rubriker */
 .sidebar-title {
@@ -833,7 +902,7 @@ prm-facet-group>div {
 }
 
 /* Dölj top level */
-div [data-facet-group="tlevel"] {
+div[data-facet-group="tlevel"] {
 	display: none;
 }
 
@@ -849,7 +918,6 @@ prm-facet-group md-checkbox {
 	transition: all 0s 0s !important;
 	visibility: visible !important;
 }
-
 .multiselect-facet-group .md-chip .md-range-content {
 	left: 4px !important;
 }
@@ -864,6 +932,74 @@ prm-facet .primo-scrollbar {
 .kth-facet-notsticky {
     position: relative !important;
 	top: 0px !important;
+}
+
+/* sorteringsväljaren */
+prm-search-result-sort-by {
+    position: relative;
+    top: -2px;
+}
+/* pilen */
+prm-search-result-sort-by ._md-select-value ._md-select-icon {
+    -webkit-transform: translate3d(0,0px,0);
+    transform: translate3d(0,0px,0);
+}
+
+/* texten på varje facett i listan */
+.section-content .md-chips .md-chip strong {
+   font-size: 1em;
+   font-weight: 400 !important; 
+}
+
+/* padding på varje facett i listor */
+prm-facet-exact .section-content {
+	padding-left: 4px
+}
+
+/*apply filterknapp*/
+.multiselect-submit .multiselect-submit-inner .md-button.md-primary, .prm-positive-bg, .multiselect-submit .multiselect-submit-inner .md-button.md-primary:focus, .multiselect-submit .multiselect-submit-inner .md-button.md-primary:hover {
+    background-color: #4aa8ea;
+}
+
+/*aktiva filter*/
+prm-breadcrumbs .md-chips .md-chip-content {
+	padding-left: 15px;
+}
+prm-breadcrumbs .md-chips .md-chip {
+	background-color: #f3f3f3;
+}
+prm-breadcrumbs .md-button.button-as-link {
+	padding: 0;
+}
+
+/*mindre runda aktiva filterknappar*/
+prm-breadcrumbs .md-chip {
+    border-radius: 0.5em;
+}
+
+/*färg och font aktiva filterknappar*/
+prm-breadcrumbs .md-chip {
+	color: #6d6d6d;
+}
+prm-breadcrumbs .md-chip strong {
+	font-size: 1em !important;
+	font-weight: 400 !important;
+}
+
+/*Låt hänglås för facetter alltid synas*/
+prm-facet prm-breadcrumbs div.md-chip-content strong {
+	padding-left: 22px;
+}
+prm-breadcrumbs .md-chips .md-chip-content .persistence-button {
+	opacity: 1;
+	transform: none;
+	padding-left: -2px;
+}
+prm-breadcrumbs .md-chip.persistent-facet strong {
+	padding-left: 0;
+}
+prm-breadcrumbs .md-chip.persistent-facet .md-chip-content .persistence-button {
+	left: -1px;
 }
 
 
@@ -1004,7 +1140,7 @@ prm-service-header>div.layout-align-center-center {
 }
 
 /* på samma hylla */
-prm-virtual-browse [md-virtual-repeat] {
+prm-virtual-browse[md-virtual-repeat] {
 	width: 84px;
 }
 
@@ -1013,7 +1149,9 @@ prm-virtual-browse [md-virtual-repeat] {
 Helsidesview
 
 *************/
-
+prm-full-view {
+	position: unset;
+}
 prm-full-view-page md-content.padded-container {
 	padding: 1em 0em 0em 0em;
 }
@@ -1400,6 +1538,37 @@ prm-personal-info md-card-content>div:nth-of-type(3) {
 
 prm-account .md-button.button-confirm {
 	color: #4aa8ea;
+}
+
+/****************************
+
+CITATION PATH
+
+****************************/
+
+prm-citation-trails-breadcrumbs>md-toolbar>div>button {
+	margin-left: 0px !important;
+	background-color: #e9e9e9 !important;
+	color: #e08303 !important;
+}
+
+prm-citation-trails-breadcrumbs md-toolbar>div {
+	padding-left: 0px !important;;
+}
+prm-citation-trails-breadcrumbs md-toolbar>div>div, prm-citation-trails-breadcrumbs .prm-horizontal-content>div:first-of-type {
+	flex: 1 1 15% !important;
+    max-width: 15% !important;
+}
+
+@media (max-width: 1279px) and (min-width: 200px) {
+	prm-citation-trails-breadcrumbs md-toolbar>div>div, prm-citation-trails-breadcrumbs .prm-horizontal-content>div:first-of-type {
+		flex: 1 1 0% !important;
+		max-width: 0% !important;
+	}
+
+	prm-citation-trails-breadcrumbs md-toolbar {
+   		padding: 0px 10px 0px 10px;
+	}
 }
 
 /***********************************

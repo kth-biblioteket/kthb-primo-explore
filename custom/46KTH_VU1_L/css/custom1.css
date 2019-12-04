@@ -1178,7 +1178,8 @@ prm-brief-result-container .result-item-text prm-search-result-availability-line
 }
 
 /*inga ikoner före "printed..., online... etc*/
-prm-brief-result-container .result-item-text prm-search-result-availability-line prm-icon, prm-brief-result-container .result-item-text prm-search-result-frbr-line prm-icon{
+prm-brief-result-container .result-item-text prm-search-result-availability-line prm-icon, 
+prm-brief-result-container .result-item-text prm-search-result-frbr-line prm-icon{
 	display:none;
 }
 
