@@ -738,7 +738,6 @@ console.log(kth_vid);
 		 * Aktuell sökurl
 		 */
 		kth_searchurl.addData($location.absUrl());
-		console.log(kth_searchurl.getData())
 		$rootScope.$broadcast('searchurldataAdded', $location.absUrl());
 
 		/******************************************************
@@ -903,7 +902,6 @@ console.log(kth_vid);
 	
 	app.controller('prmLoginAlmaMashupAfterController',function ($rootScope, $scope, kth_loginservice) {
 		var vm = this;
-		console.log($rootScope)
 		if (typeof($rootScope.$$childTail.$ctrl.primolyticsService) != 'undefined') {
 			vm.userName = $rootScope.$$childTail.$ctrl.primolyticsService.userSessionManagerService.getUserName();
 		}
