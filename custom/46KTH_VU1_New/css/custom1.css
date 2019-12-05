@@ -697,6 +697,11 @@ prm-search-result-list prm-personalize-results-button .md-button md-switch.md-ch
 	background-color: #24A0D8 !important;
 }
 
+/* Färg på "träffbanner" */
+prm-search-result-tool-bar .md-toolbar-tools {
+	background-color: #ffffff;
+}
+
 
 /*****************************************************
 

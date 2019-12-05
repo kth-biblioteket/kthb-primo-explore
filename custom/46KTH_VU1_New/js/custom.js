@@ -708,14 +708,14 @@ console.log(kth_vid);
 			<!--Avdelare mellan alerts (showcampusmessage = om man klickat på "dismiss")-->
 			<md-divider ng-if="!$ctrl.userName_kth.length > 0 && $ctrl.kthinfotext!=\'0\' && $ctrl.showcampusmessage!=false && $ctrl.showkthinfomessage!=false"></md-divider>
 			<!--inte på campus-->
-			<div class="kth_alertbarwrapper" ng-class="!$ctrl.mediaQueries.xs  ? \'1kth_sidepadding\' : \'\' " ng-cloak ng-if="!$ctrl.kthisoncampus && !$ctrl.userName_kth.length > 0 && $ctrl.showcampusmessage!=false">
+			<!--ändra texten i BO "nui.kth_notoncampus"-->
+			<!-- Använd BO signin-message och villkoren där istället. -->
+			<!--div class="kth_alertbarwrapper" ng-class="!$ctrl.mediaQueries.xs  ? \'1kth_sidepadding\' : \'\' " ng-cloak ng-if="!$ctrl.kthisoncampus && !$ctrl.userName_kth.length > 0 && $ctrl.showcampusmessage!=false">
 				<div flex="15" flex-md="0" flex-sm="0" flex-xs="0"></div>
 				<div style="display:flex" flex ng-cloak layout="column" layout-align="center start" class="bar alert-bar">
-					<!--ändra texten i BO "nui.kth_notoncampus"-->
 					<div layout="row" layout-align="center center">
-						<!--inte på campus-->
 						<span ng-if="!$ctrl.kthisoncampus" class="bar-text" translate="nui.kth_notoncampus"></span>
-						<!--prm-authentication [is-logged-in]="$ctrl.userName_kth.length > 0"></prm-authentication-->
+						<prm-authentication [is-logged-in]="$ctrl.userName_kth.length > 0"></prm-authentication>
 						<md-divider></md-divider>
 						<md-button aria-label="{{::(\'nui.message.dismiss\' | translate)}}" (click)="$ctrl.dismisscampusmessage()" class="dismiss-alert-button zero-margin" ng-class="ctrl.mediaQueries.xs ? \'md-icon-button\' : \'button-with-icon\' ">
 							<prm-icon aria-label="{{::(\'nui.message.dismiss\' | translate)}}" icon-type="svg" svg-icon-set="navigation" icon-definition="ic_close_24px">
@@ -726,7 +726,7 @@ console.log(kth_vid);
 					</div>
 				</div>
 				<div flex="15" flex-md="0" flex-sm="0" flex-xs="0"></div>
-			</div>`
+			</div-->`
 	});
 	
 	app.controller('prmSearchAfterController', function ($scope,$location,$rootScope,kth_currenturl,kth_searchurl, kth_loginservice,$timeout,$templateCache, $translate, $http, $sce) {
@@ -745,6 +745,7 @@ console.log(kth_vid);
 		 
 		
 		kthinfotext som ska visas vid fel eller annan info
+		Lägg in i BO när det är aktuellt
 		
 		******************************************************/
 		$translate('nui.kth_infotext').then(function (translation) {
@@ -801,7 +802,8 @@ console.log(kth_vid);
 		}
 		
 		var client_ip;
-		getclientip();
+		//Använd BO signin-message och villkoren där istället.
+		//getclientip();
 		function getclientip() {
 			var method = 'GET';
 			var url = "https://apps.lib.kth.se/primo/ip.php";
@@ -814,7 +816,7 @@ console.log(kth_vid);
 					vm.kthisoncampus = true;
 				}
 				//eduroam
-				else if(check_if_in_iprange('130.229.128.0', '130.229.140.255', client_ip)) {
+				else if(check_if_in_iprange('130.229.128.0', '130.229.191.255', client_ip)) {
 					vm.kthisoncampus = true;
 				} 
 				else if(check_if_in_iprange('130.237.206.0', '130.237.206.255', client_ip)) {
@@ -1129,6 +1131,21 @@ console.log(kth_vid);
 		if(vm.parentCtrl.result.context == "PC") {
 			$element[0].parentElement.style.visibility = "hidden"
 		}
+	});
+
+	/*****************************************
+	
+	prm-faourites-toolbar-after
+	
+	*****************************************/
+	app.component('prmFavoritesToolBarAfter', {
+		bindings: {parentCtrl: '<'},
+		controller: 'prmFavoritesToolBarAfterController',
+		template: ``
+	});
+
+	app.controller('prmFavoritesToolBarAfterController', function ($scope,$location,$timeout,$element,kth_searchurl) {
+		var vm = this;
 	});
 	
 	/**************************************************
