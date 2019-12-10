@@ -1,5 +1,11 @@
-var kth_vid = "46KTH_VU1_New"
+var kth_vid = "46KTH_Kiosk_New"
 console.log(kth_vid);
+
+/**************************
+
+Kioskanpassningar inlagda med "//Kiosk"
+
+***************************/
 
 (function () {
     'use strict';
@@ -17,12 +23,13 @@ console.log(kth_vid);
 	//Numera parameter i BO
 	//Starting from the Primo November 2017 Release, New UI users can define the Session Timeout per view via the Views Wizard General Views Attributes page
 	
+	//Kiosktimeout via firefox kioskvy(mkiosk)
 	app.config(['KeepaliveProvider', 'IdleProvider','$translateProvider', function(KeepaliveProvider, IdleProvider, $translateProvider) {
-		//KTHB Primo 60 minuter(eller ska vi ha nån timeout alls??)
-		//ingen timeout om man inte är inloggad låter mest logiskt.	
-		IdleProvider.idle(3600); //Idle är hur länge man kan vara inaktiv, efter x sekunder visas ExLibris "session upphör..."
-		IdleProvider.timeout(3600); //Styr hur lång tid användaren har på sig efter att ha blivit "idle" (att klicka på "håll mig inloggad")
-		KeepaliveProvider.interval(7200);
+		//Kiosk 180 sekunder
+
+		IdleProvider.idle(180); //Idle är hur länge man kan vara inaktiv, efter x sekunder visas ExLibris "session upphör..."
+		IdleProvider.timeout(0); //Styr hur lång tid användaren har på sig efter att ha blivit "idle" (att klicka på "håll mig inloggad")
+		KeepaliveProvider.interval(360);
 	}]);
 	
 	/*****************************************
@@ -91,7 +98,23 @@ console.log(kth_vid);
 	});
 	
 	app.controller('prmExploreMainAfterController', function ($compile, $scope, $http,$rootScope,$timeout,$templateCache, $element,Idle,$location,$translate) {
-        var vm = this;
+		var vm = this;
+		//Kiosk gå till tom söksida vid timeout
+		$scope.$on('IdleTimeout', function() {
+			vm.absUrl = $location.absUrl();
+			//är det redan tomma söksidan?
+			if (vm.absUrl.indexOf("primo-explore/search?sortby=rank&vid=" + kth_vid + "&lang=en_US")!== -1) {
+				document.querySelector('button[aria-label="Keep me alive"]').click();
+			} else {
+				//reset personalization?
+				//vm.primoExploreCtrl.userSessionManagerService.personalizationDialogService.resetPersonalization();
+				$window.location.assign('/primo-explore/search?vid=' + kth_vid);
+			}
+		});
+		//Kiosk sätt kiosk class på body
+		var bodyelement = document.querySelector("body");
+		bodyelement.classList.add('kiosk');
+
 		//Citation Styles(men var är dessa egentligen konfigurerade?? 
 		//Hittar inte i primo BO, men hämtas här: /primo_library/libweb/webservices/rest/v1/configuration/46KTH_VU1_L)
 		//Lägg även in dem i Primo BO för att få rätt namn/översättning (exvis default.citation.labels.vancouver)
@@ -121,61 +144,71 @@ console.log(kth_vid);
 		controller: 'prmSearchBookmarkFilterAfterController',
 		template: 
 		'<div layout="row" class="kth_menu">' +
-			//Hjälp
+			//Kiosk egen helpdialogruta
 			'<div>' +
-				'<md-button aria-label="{{$ctrl.getLibraryCardAriaLabel() | translate}}" class="button-with-icon zero-margin" ng-click="$ctrl.goToHELP()">' +
-					'<md-icon class="md-primoExplore-theme" aria-hidden="true" style="">' + 
-						'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" width="100%" height="100%" viewBox="0 0 70 70" xml:space="preserve"><path d="M50.859,45.206c-4.799-1.713-9.594-3.426-14.394-5.14c-0.292-1.569-0.567-3.153-0.774-4.741c0.135-0.559,0.188-1.146,0.141-1.75c-0.591-7.523-4.064-13.958-5.971-16.979c2.425-0.926,4.966-2.099,7.619-3.535c0.84-0.455,1.406-1.287,1.525-2.235c0.116-0.947-0.229-1.894-0.938-2.54L29.93,0.812c-1.201-1.104-3.072-1.025-4.175,0.177c-1.104,1.202-1.025,3.071,0.178,4.175l4.987,4.581c-3.637,1.68-6.948,2.751-9.881,3.193c-0.286,0.043-0.548,0.138-0.797,0.253c-0.226,0.001-0.454,0.021-0.683,0.076c-3.2,0.777-6.406,0.337-8.58-1.176C9.445,11.022,8.555,9.51,8.332,7.597c-0.19-1.621-1.657-2.785-3.277-2.594C3.434,5.193,2.272,6.66,2.461,8.28c0.421,3.617,2.198,6.611,5.14,8.66c2.454,1.71,5.604,2.605,8.912,2.605c0.716,0,1.44-0.043,2.165-0.128c0.172,0.743,0.491,1.463,0.98,2.111c0.044,0.06,4.434,6.041,4.975,12.923c0.002,0.026,0.011,0.051,0.014,0.077c-2.554,2.882-4.527,6.245-4.483,10.237c0.053,4.796,3.879,8.294,7.742,10.473c3.988,2.249,7.562-3.878,3.578-6.125c-1.631-0.918-3.997-2.236-4.228-4.348c-0.195-1.77,0.826-3.422,2.022-4.825c0.15,0.865,0.307,1.729,0.459,2.586c0.46,2.604,2.144,3.414,4.402,4.222c4.942,1.767,9.888,3.53,14.828,5.295C53.292,53.587,55.133,46.733,50.859,45.206z"/><circle cx="18.086" cy="5.554" r="5.554"/></svg>' + 
-					'</md-icon>' + 
+				'<md-button aria-label="{{$ctrl.getLibraryCardAriaLabel() | translate}}" class="button-with-icon zero-margin" ng-click="$ctrl.helpdialog()">' +
+					//'<prm-icon>' + 
+						'<md-icon class="md-primoExplore-theme" aria-hidden="true" style="">' + 
+							'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" width="100%" height="100%" viewBox="0 0 70 70" xml:space="preserve"><path d="M50.859,45.206c-4.799-1.713-9.594-3.426-14.394-5.14c-0.292-1.569-0.567-3.153-0.774-4.741c0.135-0.559,0.188-1.146,0.141-1.75c-0.591-7.523-4.064-13.958-5.971-16.979c2.425-0.926,4.966-2.099,7.619-3.535c0.84-0.455,1.406-1.287,1.525-2.235c0.116-0.947-0.229-1.894-0.938-2.54L29.93,0.812c-1.201-1.104-3.072-1.025-4.175,0.177c-1.104,1.202-1.025,3.071,0.178,4.175l4.987,4.581c-3.637,1.68-6.948,2.751-9.881,3.193c-0.286,0.043-0.548,0.138-0.797,0.253c-0.226,0.001-0.454,0.021-0.683,0.076c-3.2,0.777-6.406,0.337-8.58-1.176C9.445,11.022,8.555,9.51,8.332,7.597c-0.19-1.621-1.657-2.785-3.277-2.594C3.434,5.193,2.272,6.66,2.461,8.28c0.421,3.617,2.198,6.611,5.14,8.66c2.454,1.71,5.604,2.605,8.912,2.605c0.716,0,1.44-0.043,2.165-0.128c0.172,0.743,0.491,1.463,0.98,2.111c0.044,0.06,4.434,6.041,4.975,12.923c0.002,0.026,0.011,0.051,0.014,0.077c-2.554,2.882-4.527,6.245-4.483,10.237c0.053,4.796,3.879,8.294,7.742,10.473c3.988,2.249,7.562-3.878,3.578-6.125c-1.631-0.918-3.997-2.236-4.228-4.348c-0.195-1.77,0.826-3.422,2.022-4.825c0.15,0.865,0.307,1.729,0.459,2.586c0.46,2.604,2.144,3.414,4.402,4.222c4.942,1.767,9.888,3.53,14.828,5.295C53.292,53.587,55.133,46.733,50.859,45.206z"/><circle cx="18.086" cy="5.554" r="5.554"/></svg>' + 
+						'</md-icon>' + 
+					//'</prm-icon>' +
 					'<md-tooltip md-delay="">' +
 						'<span translate="mainmenu.help"></span>' +
 					'</md-tooltip>' + 
 					'<span translate="mainmenu.label.help"></span>' +
-				'</md-button>' + 
-			'</div>' +
-			//Databaslistan
-			'<div>' +
-				'<a class="md-button" aria-label="DB" target="_new" href="{{$ctrl.kth_databaseurl}}">' +
-					'<md-icon class="md-primoExplore-theme" aria-hidden="true" style="">' +
-						'<svg viewBox="-50 0 1100 1100"><g><path d="M436.7,379.5c229.3,0,415.1-82.7,415.1-184.8C851.8,92.7,666,10,436.7,10C207.4,10,21.6,92.7,21.6,194.8C21.6,296.8,207.4,379.5,436.7,379.5L436.7,379.5z M436.7,571.5c6.1,0,12-0.3,18.1-0.4c39.2-84.7,124.7-143.6,224.2-143.6c48.7,0,93.9,14.3,132.2,38.6c25.8-24.1,40.6-50.9,40.6-79.3V245.4c0,102.1-185.8,184.8-415.1,184.8c-229.3,0-415.1-82.7-415.1-184.8v141.3C21.6,488.8,207.4,571.5,436.7,571.5L436.7,571.5z M436.7,763.4c3.9,0,7.7-0.2,11.6-0.3c-10.6-27.5-16.6-57.2-16.6-88.4c0-18.1,2.1-35.6,5.7-52.6c-0.3,0-0.5,0-0.8,0c-229.3,0-415.1-82.7-415.1-184.8v141.3C21.6,680.8,207.4,763.4,436.7,763.4L436.7,763.4z M610.3,911.9c-56.1-16.2-104.1-51.4-136.1-98.6c-12.4,0.5-24.9,0.8-37.5,0.8c-229.3,0-415.1-82.7-415.1-184.8v141.3c0,102.1,185.8,184.8,415.1,184.8c64.1,0,124.4-6.7,178.6-18.3c-3.4-6.9-5.3-14.5-5.3-22.5C610,913.7,610.2,912.8,610.3,911.9L610.3,911.9z M969.2,913.2L840.4,784.5c-1.2-1.2-2.5-2.3-3.9-3.3c20.7-31.6,32.7-69.3,32.7-109.8c0-110.7-90.1-200.8-200.8-200.8c-110.7,0-200.8,90.1-200.8,200.8c0,110.7,90.1,200.8,200.8,200.8c36.2,0,70.2-9.7,99.6-26.5c1.3,2.3,2.9,4.3,4.8,6.2l128.7,128.7c14.7,14.7,41.8,11.6,60.4-7.1C980.7,955,983.9,927.9,969.2,913.2L969.2,913.2z M523.6,671.5c0-79.9,65-144.8,144.8-144.8c79.9,0,144.9,65,144.9,144.8s-65,144.8-144.9,144.8C588.6,816.3,523.6,751.3,523.6,671.5L523.6,671.5z"></path></g></svg>' +
-					'</md-icon>' + 
-					'<md-tooltip md-delay="">' +
-						'<span translate="mainmenu.tooltip.hitta_mer"></span>' +
-					'</md-tooltip>' + 
-					'<span translate="mainmenu.label.find_db"></span>'+
-				'</a>' + 
-			'</div>' +
-			//Favoriter/search
-			'<div>' +	
-			'<md-button class="button-with-icon zero-margin" ng-if="!$ctrl.parentCtrl.isFavorites" id="favorites-button" aria-label="Go to my favorites" ng-click="$ctrl.goToFavorites()">' +
-					'<prm-icon aria-label="Go to my favorites" icon-type="svg" svg-icon-set="action" icon-definition="ic_favorite_outline_24px">' + 
-						'<prm-icon-after parent-ctrl="ctrl"></prm-icon-after>' + 
-					'</prm-icon>' + 
-					'<!--md-tooltip md-delay="">' +
-						'<span translate="nui.favorites.goFavorites.tooltip"></span>' +
-					'</md-tooltip-->' + 
-					'<span translate="nui.favorites.header"></span>' + 
-				'</md-button>' +				
-				'<md-button class="button-with-icon zero-margin" ng-if="$ctrl.parentCtrl.isFavorites" id="search-button" aria-label="Go to search" ng-click="$ctrl.goToSearch()">' +
-					'<prm-icon aria-label="Go to Search" icon-type="svg" svg-icon-set="primo-ui" icon-definition="magnifying-glass">' +  
-						'<prm-icon-after parent-ctrl="ctrl"></prm-icon-after>' + 
-					'</prm-icon>' + 
-					'<!--md-tooltip md-delay="">' +
-						'<span translate="nui.favorites.goSearch.tooltip"></span>' +
-					'</md-tooltip-->' + 
-					'<span translate="nui.search">Search</span>' + 
 				'</md-button>' +
 			'</div>' +
-			//Mitt konto
-			'<prm-library-card-menu></prm-library-card-menu>' +
-			//Logga in/ut
-			'<prm-authentication layout="flex" [is-logged-in]="$ctrl.userName.length > 0"></prm-authentication>' + 
+			//Kiosk karta wagnerguiden NY TAB
+			'<div ng-if="$ctrl.kth_language==\'sv_SE\'">' +
+				'<a class="button-with-icon md-button" aria-label="Map" target="_blank" href="http://web.wagnerguide.com/2.1/KTHlibrary.aspx?Lang=sv&Extern=true">' +
+					'<md-icon class="md-primoExplore-theme" aria-hidden="true" style="">' + 
+						'<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 684.234 684.234" style="enable-background:new 0 0 684.234 684.234;" xml:space="preserve"><path style="" d="M342.112,0C223.053,0,126.563,96.5,126.563,215.549c0,119.04,215.549,468.685,215.549,468.685s215.559-349.645,215.559-468.685C557.681,96.5,461.181,0,342.112,0z M342.112,382.326c-91.957,0-166.767-74.8-166.767-166.777s74.81-166.796,166.767-166.796c91.986,0,166.826,74.82,166.826,166.796S434.098,382.326,342.112,382.326z M455.045,168.76v-14.851l-1.114-4.143c-0.313-0.498-5.256-9.145-15.193-18.055c-9.878-8.813-25.227-17.997-45.421-17.997c-20.185,0-35.358,9.194-45.089,18.094c-2.98,2.745-5.51,5.462-7.601,7.924c-2.091-2.501-4.739-5.208-7.787-8.012c-9.897-8.813-25.266-17.997-45.47-17.997c-20.166,0-35.329,9.194-45.089,18.094c-9.712,8.91-14.489,17.596-14.763,18.114l-1.036,3.986v14.851h-7.455v123.944h246.237V168.76H455.045L455.045,168.76z M263.101,267.556c6.585-3.889,14.558-6.722,24.24-6.732c9.672-0.01,17.801,2.833,24.543,6.732H263.101z M332.43,261.879c-9.897-8.744-25.08-17.704-45.06-17.704h-0.029c-19.579,0-34.45,8.705-44.151,17.303V156.264h-0.01c1.72-2.638,5.442-7.806,11.07-12.789c7.738-6.79,18.612-13.072,33.111-13.072c14.997,0,26.34,6.722,34.323,13.795c3.976,3.547,7.083,7.122,9.018,9.77l1.729,2.384C332.43,156.352,332.43,261.879,332.43,261.879z M369.039,267.556c6.614-3.889,14.558-6.722,24.25-6.732c9.633-0.01,17.801,2.833,24.543,6.732H369.039z M438.368,261.879c-9.887-8.744-25.109-17.704-45.031-17.704c-19.628-0.039-34.498,8.705-44.171,17.303V156.264h-0.01c1.69-2.599,5.403-7.806,11.05-12.789c7.797-6.79,18.612-13.072,33.121-13.072c14.9,0,26.292,6.722,34.401,13.795c3.898,3.547,6.937,7.122,8.959,9.77l1.7,2.384v105.528H438.368z"/></svg>' +
+					'</md-icon>' + 
+					'<md-tooltip md-delay="">' +
+						'<span translate="">Karta</span>' +
+					'</md-tooltip>' + 
+					'<span>Bibliotekskarta</span>' +
+				'</a>' +
+			'</div>' +
+			'<div ng-if="$ctrl.kth_language==\'en_US\'">' +
+				'<a class="button-with-icon md-button" aria-label="Map" target="_blank" href="http://web.wagnerguide.com/2.1/KTHlibrary.aspx?Lang=en&Extern=true">' +
+					'<md-icon class="md-primoExplore-theme" aria-hidden="true" style="">' + 
+						'<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 684.234 684.234" style="enable-background:new 0 0 684.234 684.234;" xml:space="preserve"><path style="" d="M342.112,0C223.053,0,126.563,96.5,126.563,215.549c0,119.04,215.549,468.685,215.549,468.685s215.559-349.645,215.559-468.685C557.681,96.5,461.181,0,342.112,0z M342.112,382.326c-91.957,0-166.767-74.8-166.767-166.777s74.81-166.796,166.767-166.796c91.986,0,166.826,74.82,166.826,166.796S434.098,382.326,342.112,382.326z M455.045,168.76v-14.851l-1.114-4.143c-0.313-0.498-5.256-9.145-15.193-18.055c-9.878-8.813-25.227-17.997-45.421-17.997c-20.185,0-35.358,9.194-45.089,18.094c-2.98,2.745-5.51,5.462-7.601,7.924c-2.091-2.501-4.739-5.208-7.787-8.012c-9.897-8.813-25.266-17.997-45.47-17.997c-20.166,0-35.329,9.194-45.089,18.094c-9.712,8.91-14.489,17.596-14.763,18.114l-1.036,3.986v14.851h-7.455v123.944h246.237V168.76H455.045L455.045,168.76z M263.101,267.556c6.585-3.889,14.558-6.722,24.24-6.732c9.672-0.01,17.801,2.833,24.543,6.732H263.101z M332.43,261.879c-9.897-8.744-25.08-17.704-45.06-17.704h-0.029c-19.579,0-34.45,8.705-44.151,17.303V156.264h-0.01c1.72-2.638,5.442-7.806,11.07-12.789c7.738-6.79,18.612-13.072,33.111-13.072c14.997,0,26.34,6.722,34.323,13.795c3.976,3.547,7.083,7.122,9.018,9.77l1.729,2.384C332.43,156.352,332.43,261.879,332.43,261.879z M369.039,267.556c6.614-3.889,14.558-6.722,24.25-6.732c9.633-0.01,17.801,2.833,24.543,6.732H369.039z M438.368,261.879c-9.887-8.744-25.109-17.704-45.031-17.704c-19.628-0.039-34.498,8.705-44.171,17.303V156.264h-0.01c1.69-2.599,5.403-7.806,11.05-12.789c7.797-6.79,18.612-13.072,33.121-13.072c14.9,0,26.292,6.722,34.401,13.795c3.898,3.547,6.937,7.122,8.959,9.77l1.7,2.384v105.528H438.368z"/></svg>' +
+					'</md-icon>' + 
+					'<md-tooltip md-delay="">' +
+						'<span translate="">Map</span>' +
+					'</md-tooltip>' + 
+					'<span>Library Map</span>' + 
+				'</a>' +
+			'</div>' +
+			//Kiosk Bibliotekskontoansökan NY TAB
+			'<div ng-if="$ctrl.kth_language==\'sv_SE\'">' +
+				'<a class="button-with-icon md-button" aria-label="Ansökan" target="_blank" href="https://apps.lib.kth.se/kiosk/kthbforms_libraryaccount_kiosk.php?formlanguage=swedish">' +
+					'<md-icon class="md-primoExplore-theme" aria-hidden="true" style="">' + 
+						'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="shape-rendering:geometricPrecision;text-rendering:geometricPrecision;image-rendering:optimizeQuality;width: 110%;height: 110%;" x="0px" y="0px" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 100 125"><path stroke="#1954a6" stroke-width="5" d="M76.393,96.084v-2.957v-3.429v-2.466c7.721-0.242,13.928-6.596,13.928-14.375v-40.21c0-7.932-6.455-14.387-14.387-14.387   h-5.17V8.535c0-2.909-2.367-5.275-5.273-5.275H34.509c-2.909,0-5.275,2.366-5.275,5.275v9.725h-5.168   c-7.933,0-14.387,6.455-14.387,14.387v40.21c0,7.779,6.208,14.133,13.929,14.375v2.466v3.429v2.957H76.393z M73.432,93.127H26.566   v-5.883h46.866V93.127z M32.191,8.535c0-1.279,1.039-2.318,2.318-2.318H65.49c1.279,0,2.316,1.04,2.316,2.318v9.725H32.191V8.535z    M12.636,72.857v-40.21c0-6.301,5.127-11.429,11.43-11.429h5.168h41.53h5.17c6.301,0,11.43,5.128,11.43,11.429v40.21   c0,6.303-5.129,11.431-11.43,11.431H24.066C17.763,84.288,12.636,79.16,12.636,72.857z"></path><circle cx="37.744" cy="48.038" r="4.153"></circle><circle cx="62.256" cy="48.038" r="4.153"></circle><path d="M36.82,62.893c-0.673,0.675-0.67,1.769,0.005,2.439c3.646,3.633,8.436,5.449,13.226,5.449c4.79,0,9.581-1.816,13.223-5.449   c0.676-0.671,0.68-1.765,0.008-2.439c-0.674-0.675-1.766-0.676-2.441-0.005c-5.949,5.928-15.629,5.928-21.581,0   C38.584,62.217,37.493,62.218,36.82,62.893z"></path></svg>' +
+					'</md-icon>' + 
+					'<md-tooltip md-delay="">' +
+						'<span translate="">Ansökan om bibliotekskonto</span>' +
+					'</md-tooltip>' + 
+					'<span>Ansökan om bibliotekskonto</span>' +
+				'</a>' +
+			'</div>' +
+			'<div ng-if="$ctrl.kth_language==\'en_US\'">' +
+				'<a class="button-with-icon md-button" aria-label="APplication" target="_blank" href="https://apps.lib.kth.se/kiosk/kthbforms_libraryaccount_kiosk.php?formlanguage=en">' +
+					'<md-icon class="md-primoExplore-theme" aria-hidden="true" style="">' + 
+						'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="shape-rendering:geometricPrecision;text-rendering:geometricPrecision;image-rendering:optimizeQuality;width: 110%;height: 110%;" x="0px" y="0px" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 100 125"><path stroke="#1954a6" stroke-width="5" d="M76.393,96.084v-2.957v-3.429v-2.466c7.721-0.242,13.928-6.596,13.928-14.375v-40.21c0-7.932-6.455-14.387-14.387-14.387   h-5.17V8.535c0-2.909-2.367-5.275-5.273-5.275H34.509c-2.909,0-5.275,2.366-5.275,5.275v9.725h-5.168   c-7.933,0-14.387,6.455-14.387,14.387v40.21c0,7.779,6.208,14.133,13.929,14.375v2.466v3.429v2.957H76.393z M73.432,93.127H26.566   v-5.883h46.866V93.127z M32.191,8.535c0-1.279,1.039-2.318,2.318-2.318H65.49c1.279,0,2.316,1.04,2.316,2.318v9.725H32.191V8.535z    M12.636,72.857v-40.21c0-6.301,5.127-11.429,11.43-11.429h5.168h41.53h5.17c6.301,0,11.43,5.128,11.43,11.429v40.21   c0,6.303-5.129,11.431-11.43,11.431H24.066C17.763,84.288,12.636,79.16,12.636,72.857z"></path><circle cx="37.744" cy="48.038" r="4.153"></circle><circle cx="62.256" cy="48.038" r="4.153"></circle><path d="M36.82,62.893c-0.673,0.675-0.67,1.769,0.005,2.439c3.646,3.633,8.436,5.449,13.226,5.449c4.79,0,9.581-1.816,13.223-5.449   c0.676-0.671,0.68-1.765,0.008-2.439c-0.674-0.675-1.766-0.676-2.441-0.005c-5.949,5.928-15.629,5.928-21.581,0   C38.584,62.217,37.493,62.218,36.82,62.893z"></path></svg>' +
+					'</md-icon>' + 
+					'<md-tooltip md-delay="">' +
+						'<span translate="">Library Account Application</span>' +
+					'</md-tooltip>' + 
+					'<span>Library Account Application</span>' + 
+				'</a>' +
+			'</div>' +
 		'</div>'
 	});
 
-	app.controller('prmSearchBookmarkFilterAfterController', function ($translate, $rootScope, $location, $timeout, kth_searchurl) {
+	app.controller('prmSearchBookmarkFilterAfterController', function ($translate, $rootScope, $location, $mdDialog, $scope, kth_searchurl) {
 		var vm = this;
-
 		vm.userName = $rootScope.$$childTail.$ctrl.userSessionManagerService.getUserName();
 		
 		vm.goToFavorites = goToFavorites;
@@ -193,7 +226,11 @@ console.log(kth_vid);
 		}
 
 		//Anpassa länkar till valt språk
-		vm.kth_language = $translate.use();	
+		//Kolla om skärmen är liten.
+		$scope.$watch(function() { return $translate.use(); }, function(language) {
+			vm.kth_language = $translate.use();
+		});
+		
 		if(vm.kth_language == 'sv_SE') {
 			vm.kth_databaseurl = 'https://www.kth.se/biblioteket/soka-vardera/sok-information/databaser-och-soktjanster-1.851404';
 		} else {
@@ -214,6 +251,46 @@ console.log(kth_vid);
 			} else {
 				location.href = 'https://www.kth.se/en/biblioteket/soka-vardera/sok-information/databaser-och-soktjanster-1.851404';
 			}
+		}
+
+		//Kiosk hjälp och wagnerkarta och biliotekskontosansökan
+		//ANVÄNDS INTE
+		if(vm.kth_language == 'sv_SE') {
+			vm.helpdialogurl = 'custom/' + kth_vid + '/html/helpkiosk_sv_SE.html'
+			vm.librarycarddialogurl = 'http://apps.lib.kth.se/forms/registeralmauser/almaadduserform_kiosk_nui.php?formlanguage=sv'
+			vm.librarycarddialogheader = 'Ansökan om biblitekskonto'
+		} else {
+			vm.helpdialogurl = 'custom/' + kth_vid + '/html/helpkiosk_en_US.html'
+			vm.librarycarddialogurl = 'http://apps.lib.kth.se/forms/registeralmauser/almaadduserform_kiosk_nui.php?formlanguage=en'
+			vm.librarycarddialogheader = 'Library Account Application'
+		}
+
+		function goToHELP() {
+			if(vm.kth_language == 'sv_SE') {
+				window.open('https://www.kth.se/biblioteket/soka-vardera/sok-information/primo-hjalp-1.863377', 'Help', 'height=800,width=600');
+			} else {
+				window.open('https://www.kth.se/en/biblioteket/soka-vardera/sok-information/primo-hjalp-1.863377', 'Help', 'height=800,width=600');
+			}
+		}
+
+		//Kiosk dialogruta hjälp
+		vm.helpdialog = helpdialog;
+		function helpdialog() {
+			$mdDialog.show({
+				controller: function controller() {
+					return {
+						hide: function hide() {
+							$mdDialog.hide();
+						},
+						cancel: function cancel() {
+							$mdDialog.cancel();
+						}
+					};
+				},
+				controllerAs: '$ctrl',
+				templateUrl: vm.helpdialogurl,
+				clickOutsideToClose: true,fullscreen: false,escapeToClose: true,focusOnOpen: false
+			});
 		}
 	});
 
@@ -369,9 +446,10 @@ console.log(kth_vid);
 			template: 
 				`<div>
 					<a href="{{$ctrl.parentCtrl.kthb_link}}">
-						<span class="kth-sitenameheader" translate="nui.header.sitename"></span>
+						<span class="kth-sitenameheader">{{$ctrl.parentCtrl.kthb_kioskheader}}</span>
 						<span style="color:salmon" ng-if="$ctrl.kth_vid==\'46KTH_VU1_B\'">BETA!!!</span>
 						<span style="color:red" ng-if="$ctrl.kth_vid==\'46KTH_VU1_New\'">NEW!!!</span>
+						<span style="color:red" ng-if="$ctrl.kth_vid==\'46KTH_Kiosk_New\'">NEW!!!</span>
 					</a>
 				</div>`
 	});
@@ -380,12 +458,49 @@ console.log(kth_vid);
 		var vm = this;
 		vm.kth_vid = kth_vid;
 
-		//Se till att länken anpassas till valt språk
-		vm.parentCtrl.kthb_link = "https://www.kth.se/en/biblioteket";
-		if($translate.use() == 'sv_SE') {
-			vm.parentCtrl.kthb_link = "https://www.kth.se/biblioteket";
-		}
+		//Kiosk gå till primo i st f kth, lägg till "sökdator" i rubriken
+		$scope.$watch(function() { return $translate.use(); }, function(language) {
+			vm.parentCtrl.kthb_link = "/primo-explore/search?vid=" + kth_vid;
+			vm.parentCtrl.kthb_kioskheader = "KTH Library - Search Computer";
+			if(language == 'sv_SE') {
+				vm.parentCtrl.kthb_link = "/primo-explore/search?vid=" + kth_vid + "&lang=sv_SE";
+				vm.parentCtrl.kthb_kioskheader = "KTH Biblioteket - Sökdator";
+			}
+		});
+		
 	});
+
+	/*****************************************
+	
+	prm-no-search-result-after
+	Kiosk egna suggestions i BackOffice
+		
+	*****************************************/
+	app.component('prmNoSearchResultAfter', {
+		bindings: {parentCtrl: '<'},
+		controller: 'prmNoSearchResultAfterController',
+		template:`<md-card class="default-card zero-margin _md md-primoExplore-theme">
+					<md-card-title>
+						<md-card-title-text><span translate="" class="md-headline">No results matched your search</span></md-card-title-text>
+					</md-card-title>
+					<md-card-content>
+						<p><span translate="nui.noresults.description" translate-value-term="ashg jkdhgasjkhdg"></span></p>
+						<p><span translate="" class="bold-text">Suggestions:</span></p>
+						<ul>
+							<li translate="nui.noresults_kiosk.suggestions1"></li>
+							<li translate="nui.noresults_kiosk.suggestions2"></li>
+							<li translate="nui.noresults_kiosk.suggestions3"></li>
+							<li translate="nui.noresults_kiosk.suggestions4"></li>
+							<li translate="nui.noresults_kiosk.suggestions5"></li>
+						</ul>
+					</md-card-content>
+				</md-card>`
+	});
+
+	app.controller('prmNoSearchResultAfterController',function () { 
+		var vm = this;
+	});
+	
 	
 	
 	/*****************************************************************
@@ -771,11 +886,6 @@ console.log(kth_vid);
 		
 		**********************************/
 		vm.kthisoncampus = false;
-		$scope.$watch(function() { 
-				return $rootScope.$$childTail.$ctrl.jwtUtilService.getDecodedToken().onCampus; 
-			}, function(onCampus) {
-				//console.log(onCampus);
-		});
 
 		vm.userName_kth = $rootScope.$$childTail.$ctrl.userSessionManagerService.getUserName();
 		/***************************************************************** 
@@ -888,46 +998,18 @@ console.log(kth_vid);
 		Kolla om det är tryckt material 
 		så anpassningar kan göras för 
 		login-banner på fullposten
+
+		Kiosk ingen loginknapp
 	
 	*****************************************/
 	
 	app.component('prmLoginAlmaMashupAfter', {
 			bindings: {parentCtrl: '<'},
-			controller: 'prmLoginAlmaMashupAfterController',
-			template: 
-			`<div ng-if="$ctrl.userName.length <= 0 && $ctrl.requestlogin">
-				<md-button ng-click="$ctrl.loggain();" aria-label="{{\'eshelf.signin.title\' | translate}}" class="button-with-icon zero-margin">
-					<prm-icon icon-type="svg" svg-icon-set="primo-ui" icon-definition="sign-in"></prm-icon>
-					<span ng-if="!$ctrl.requestlogin" translate="eshelf.signin.title"></span>
-					<span ng-if="$ctrl.requestlogin" translate="getit.signin_link.sign_in"></span>
-				</md-button>
-			</div>`
+			controller: 'prmLoginAlmaMashupAfterController'
 	});
 	
-	app.controller('prmLoginAlmaMashupAfterController',function ($rootScope, $scope, kth_loginservice) {
+	app.controller('prmLoginAlmaMashupAfterController',function () {
 		var vm = this;
-		if (typeof($rootScope.$$childTail.$ctrl.primolyticsService) != 'undefined') {
-			vm.userName = $rootScope.$$childTail.$ctrl.primolyticsService.userSessionManagerService.getUserName();
-		}
-		if (typeof($rootScope.$$childTail.$ctrl.userSessionManagerService) != 'undefined') {
-			vm.userName = $rootScope.$$childTail.$ctrl.userSessionManagerService.getUserName();
-		}
-		
-		vm.requestlogin = false;
-		
-		vm.data = kth_loginservice.getData();
-		vm.loggain = loggain;
-		function loggain() {
-			vm.data.handleLogin();
-		}
-
-		if ($scope.$parent.$parent.$parent.$parent.$ctrl.service.linkElement.category == "Alma-P") {
-			vm.parentCtrl.loginalmap = true;
-			vm.requestlogin = true;
-		} else {
-			var myEl = document.querySelector( 'prm-login-alma-mashup .alert-bar' );
-			myEl.classList.add("kth-hide");
-		}
 	});
 	
 	/*****************************************
@@ -1171,8 +1253,9 @@ console.log(kth_vid);
 									'<div class="section-body" layout="row" layout-align="">' +
 										'<div class="spaced-rows" layout="column">' +
 											//inga bilder
-											'<div>{{$ctrl.orcid_name}} at <a target="_new" href="{{$ctrl.orcid_url}}">ORCID <!--img style="width:48px" src="custom/' + kth_vid + '/img/orcid-logo.png"--></a></div>' +
-											'<div ng-if="$ctrl.kthprofile_url">{{$ctrl.orcid_name}} at <a target="_new" href="{{$ctrl.kthprofile_url}}">KTH <!--img style="width:20px" src="custom/' + kth_vid + '/img/KTH_Logotyp_RGB_2013-2.svg"--></a></div>' +
+											//Kiosk inga länkar
+											'<div>{{$ctrl.orcid_name}} at ORCID <!--img style="width:48px" src="custom/' + kth_vid + '/img/orcid-logo.png"--></div>' +
+											'<div ng-if="$ctrl.kthprofile_url">{{$ctrl.orcid_name}} at KTH <!--img style="width:20px" src="custom/' + kth_vid + '/img/KTH_Logotyp_RGB_2013-2.svg"--></div>' +
 										'</div>' +
 									'</div>' +
 								'</div>' +
@@ -1188,13 +1271,15 @@ console.log(kth_vid);
 						'</div>' +
 						//JCR
 						'<div ng-if="$ctrl.issn">' +
-							'<span translate="nui.kth_JCR"></span> <a target="_new" href="http://focus.lib.kth.se/login?url=http://gateway.webofknowledge.com/gateway/Gateway.cgi?GWVersion=2&SrcAuth=KTH&SrcApp=KTH_Primo&KeyISSN={{$ctrl.issn}}&DestApp=IC2JCR">JCR</a>' +
+							//Kiosk ingen länk
+							'<span translate="nui.kth_JCR"></span>JCR' +
 						'</div>' +
 						//Altmetrics
 						'<div class="" ng-if="$ctrl.doi">' +
 							'<div class="section-body" layout="row" layout-align="">' +
 								'<div class="spaced-rows" layout="column">' +
-									'<div ng-if="$ctrl.almetricsscore > 0"><span translate="nui.kth_altmetrics1">Attention score</span> <span class="wostimesCited">{{$ctrl.almetricsscore}}</span> <span translate="nui.kth_altmetrics2">in</span> <a target="_new" href="{{$ctrl.almetricsdetails_url}}"><span translate="nui.kth_altmetrics3">Altmetrics</span>&trade;</a></div>' +
+									//Kiosk ingen länk
+									'<div ng-if="$ctrl.almetricsscore > 0"><span translate="nui.kth_altmetrics1">Attention score</span> <span class="wostimesCited">{{$ctrl.almetricsscore}}</span> <span translate="nui.kth_altmetrics2">in</span> <span translate="nui.kth_altmetrics3">Altmetrics</span>&trade;</div>' +
 								'</div>' +
 							'</div>' +
 						'</div>' +
@@ -1242,6 +1327,8 @@ console.log(kth_vid);
 				var fullviewafter = document.querySelector('prm-full-view-after');
 
 				var prmrecomendations = document.querySelector('prm-recomendations');
+				//Kiosk dölj
+				prmrecomendations.style.display = "none";
 				//Sätt style för att flytta citation/metrics över premrecomendations i full-view(inte dialogview)
 				if(typeof(prmrecomendations) != "undefined" && prmrecomendations != null) {
 					prmrecomendations.parentNode.style.display = "flex";
@@ -1317,9 +1404,24 @@ console.log(kth_vid);
 			template: ''
 	});
 	
-	app.controller('FullViewAfterKthController', function (angularLoad, $http) {
+	app.controller('FullViewAfterKthController', function () {
 		var vm = this;
-    });
+	});
+	
+	/***************************************************
+	 * 
+	 * prm-view-online-after
+	 * 
+	 ***************************************************/
+	app.component('prmViewOnlineAfter', {
+		bindings: {parentCtrl: '<'},
+		controller: 'prmViewOnlineAfterController',
+		template: `<span translate="nui.kth_noaccesstext">No access to online material from this search computer</span>`
+	});
+
+	app.controller('prmViewOnlineAfterController', function () {
+		var vm = this;
+	});
 
 	/********************************************************
 	
@@ -1383,41 +1485,18 @@ console.log(kth_vid);
 	prm-search-result-availability-line Träfflista
 
 	Denna är dold i fullposten.
-
-	Visa OA länk från unpaywall
+	Kiosk inga open access länkar
 	
 	**********************************************************/
 	app.component('prmSearchResultAvailabilityLineAfter', {
 		bindings: {parentCtrl: '<'},
 		controller: 'prmFullViewServiceContainerAfterController',
-		template: '<div ng-if="$ctrl.showOA">' +
-					'<div class="">' +
-						'<div class="section-body" layout="row" layout-align="">' +
-							'<div class="spaced-rows" layout="column">' +
-								'<div>' +
-									'<a style="color: #0f7d00" target="_new" href="{{$ctrl.best_oa_location_url}}">' +
-										'<span>Online open access</span>' +
-										'<prm-icon external-link="" icon-type="svg" svg-icon-set="primo-ui" icon-definition="open-in-new" aria-label="externalLink">' +
-										'</prm-icon>' +
-									'</a>' +
-									'<span class="tooltip">' +
-										'<svg width="20px" height="20px" viewBox="0 0 24 24" id="ic_info_24px" y="1368" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path></svg>' +
-										'<span class="tooltiptext tooltip-top">' +
-											'<div ng-bind-html="$ctrl.infotext"></div>' +
-										'</span>' +
-									'</span>' +
-								'</div>' +
-							'</div>' +
-						'</div>' +
-					'</div>' +
-				  '</div>'
+		template: 	''
 	});
 
 	/*****************************************
 
 	prm-full-view-service-container-after Fullpost
-
-	Visa OA länk från unpaywall
 
 	*****************************************/
 
@@ -1425,39 +1504,10 @@ console.log(kth_vid);
 			bindings: {parentCtrl: '<'},
 			controller: 'prmFullViewServiceContainerAfterController',
 			//visa endast på alma-service!
-			template: '<div ng-if="$ctrl.parentCtrl.service.title.indexOf(\'alma\')> -1">' +
-						'<div class="layout-full-width" ng-if="$ctrl.showOA">' +
-							'<div layout="column" layout-align="">' +
-								//TODO in i code table i Primo BO(översättning)
-								'<h4 class="section-title md-title light-text">' +
-									'Open Access' +
-								'</h4>' +
-								'<md-divider flex></md-divider>' +
-							'</div>' +
-						'</div>' +
-						'<div class="" ng-if="$ctrl.showOA">' +
-							'<div class="section-body" layout="row" layout-align="">' +
-								'<div class="spaced-rows" layout="column">' +
-									'<div>' +
-										'<a style="color: #0f7d00" target="_new" href="{{$ctrl.best_oa_location_url}}">' +
-											'<span>Online open access</span>' +
-											'<prm-icon external-link="" icon-type="svg" svg-icon-set="primo-ui" icon-definition="open-in-new" aria-label="externalLink">' +
-											'</prm-icon>' +
-										'</a>' +
-										'<span class="tooltip">' +
-											'<svg width="20px" height="20px" viewBox="0 0 24 24" id="ic_info_24px" y="1368" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path></svg>' +
-											'<span class="tooltiptext tooltip-top">' +
-												'<div ng-bind-html="$ctrl.infotext"></div>' +
-											'</span>' +
-										'</span>' +
-									'</div>' +
-								'</div>' +
-							'</div>' +
-						'</div>' +
-					'</div>'
+			template: ''
 	});
 
-	app.controller('prmFullViewServiceContainerAfterController',function ($scope, $http, kth_oadoi, kth_logg, $sce, $translate) {
+	app.controller('prmFullViewServiceContainerAfterController',function ($scope, $http, kth_oadoi, $mdDialog, $sce, $translate, $element) {
 		var vm = this;
 		vm.unpaywalljson = "";
 		vm.showOA = false;
@@ -1467,6 +1517,56 @@ console.log(kth_vid);
 		vm.infotext = "";
 
 		vm.kth_language = $translate.use();
+		//Kiosk no online access
+		//$scope.$watch(function() { return vm.parentCtrl.result.pnx.delivery.delcategory[0]; }, function(delcategory) {
+		$scope.$watch(function() { return vm.parentCtrl.result; }, function(result) {
+			vm.kth_language = $translate.use();
+			if($element[0].parentElement.tagName == "PRM-SEARCH-RESULT-AVAILABILITY-LINE") {
+				if(result.pnx.delivery.delcategory[0] != 'Alma-P') {
+					$element[0].parentElement.querySelector("div").innerHTML ="<span>No access to online material from this search computer</span>";
+					//$element[0].parentElement.querySelector("div").innerHTML =""
+				}
+			}
+		});
+
+		vm.noaccess = noaccess;		
+		
+		function noaccess() {
+			$mdDialog.show({
+				controller: function controller() {
+					return {
+						hide: function hide() {
+							$mdDialog.hide();
+						},
+						cancel: function cancel() {
+							$mdDialog.cancel();
+						}
+					};
+				},
+				controllerAs: '$ctrl',
+				template:'<md-dialog id="noaccessdialog" aria-label="No access dialog">' +
+							'<md-toolbar class="_md _md-toolbar-transitions">' +
+								'<div class="md-toolbar-tools">' +
+									'<h2 translate="nui.kth_noaccessheader"></h2>' +
+									'<span flex="" class="flex"></span>' +
+									'<button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.cancel()">' +
+										'<prm-icon icon-type="svg" svg-icon-set="primo-ui" icon-definition="close">'+ 
+											'<md-icon md-svg-icon="primo-ui:close" aria-label="icon-close" class="md-primoExplore-theme" aria-hidden="true">' +
+											'</md-icon>' +
+										'</prm-icon>' +
+									'</button>' +
+								'</div>' +
+							'</md-toolbar>' +
+							'<md-dialog-content>'+
+								'<div class="md-dialog-content">' + 
+									'<div class="md-dialog-content" translate="nui.kth_noaccesstext">' +
+									'</div>' + 
+								'</div>' +
+							'</md-dialog-content>' +
+						'</md-dialog>',
+				clickOutsideToClose: true,fullscreen: false,escapeToClose: true,focusOnOpen: false
+			});
+		}
 
 		//Bevaka (watch) eftersom värden inte alltid hunnit sättas.
 		//träfflista
@@ -1671,12 +1771,16 @@ console.log(kth_vid);
 		'<div ng-if="$ctrl.wostimesCited!==\'\'">' +
 			'<span class="wostimesCited">{{$ctrl.wostimesCited}}</span> ' +
 			'<span translate="{{\'nui.citation_trail.link.citedExternal\'}}"></span>' +
-			'<a target="_new" href="{{$ctrl.wossourceURL}}"> Web of Science&trade;</a>' +
+			//Kiosk ingen länk
+			'Web of Science&trade;' +
 		'</div>' +
 		//scopus citations
 		'<div ng-if="$ctrl.scopustimesCited!==\'\'">' +
 			//class="wostimesCited
-			'<span class="wostimesCited">{{$ctrl.scopustimesCited}} </span><span translate="{{\'nui.citation_trail.link.citedExternal\'}}" "></span><a target="_new" href="{{$ctrl.scopussourceURL}}"> Scopus&trade;</a>' +
+			'<span class="wostimesCited">{{$ctrl.scopustimesCited}} </span>' +
+			'<span translate="{{\'nui.citation_trail.link.citedExternal\'}}" "></span>' +
+			//Kiosk ingen länk
+			'Scopus&trade;' +
 		'</div>'
 	});
 	

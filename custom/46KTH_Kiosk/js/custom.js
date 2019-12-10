@@ -2318,6 +2318,7 @@ Kioskanpassningar inlagda med "//Kiosk"
 		******************************************************/
 		$translate('nui.kth_infotext').then(function (translation) {
 			vm.parentCtrl.kthinfotext = translation;
+			vm.kthinfotext = "bla bla bla bla";
 		});
 		
 		/****************************
@@ -2336,7 +2337,8 @@ Kioskanpassningar inlagda med "//Kiosk"
 		
 		**********************************/
 		vm.parentCtrl.kthisoncampus = false;
-		$scope.$watch(function() { return vm.parentCtrl.primolyticsService.jwtUtilService.getDecodedToken().onCampus; }, function(onCampus) {
+		$scope.$watch(function() { 
+			return vm.parentCtrl.primolyticsService.jwtUtilService.getDecodedToken().onCampus; }, function(onCampus) {
 			//console.log(' watch oncampus: ' + onCampus);
 			//vm.parentCtrl.kthisoncampus = onCampus;
 		});
@@ -2909,25 +2911,25 @@ Kioskanpassningar inlagda med "//Kiosk"
 		
 	*****************************************/
 	app.component('prmSearchResultAvailabilityLineAfter', {
-			bindings: {parentCtrl: '<'},
-			controller: 'prmFullViewServiceContainerAfterController',
-			template: '<div ng-if="$ctrl.showOA">' +
-						'<div class="">' +
-							'<div class="section-body" layout="row" layout-align="">' +
-								'<div class="spaced-rows" layout="column">' +
-									//Kiosk ingen länk
-									'<div>' +
-										//'<a style="color: #0f7d00" target="_new" href="{{$ctrl.best_oa_location_url}}">' +
-											'Online open access' +
-											'<img style="width:14px;position: relative;top: 2px;" src="custom/' + kth_vid + '/img/open-access-icon.png"></img>' +
-											'<prm-icon external-link="" icon-type="svg" svg-icon-set="primo-ui" icon-definition="open-in-new" aria-label="externalLink">' +
-											'</prm-icon>' +
-										//'</a>' +
-									'</div>' +
+		bindings: {parentCtrl: '<'},
+		controller: 'prmFullViewServiceContainerAfterController',
+		template: '<div ng-if="$ctrl.showOA">' +
+					'<div class="">' +
+						'<div class="section-body" layout="row" layout-align="">' +
+							'<div class="spaced-rows" layout="column">' +
+								//Kiosk ingen länk
+								'<div>' +
+									//'<a style="color: #0f7d00" target="_new" href="{{$ctrl.best_oa_location_url}}">' +
+										'Online open access' +
+										'<img style="width:14px;position: relative;top: 2px;" src="custom/' + kth_vid + '/img/open-access-icon.png"></img>' +
+										'<prm-icon external-link="" icon-type="svg" svg-icon-set="primo-ui" icon-definition="open-in-new" aria-label="externalLink">' +
+										'</prm-icon>' +
+									//'</a>' +
 								'</div>' +
 							'</div>' +
 						'</div>' +
-					  '</div>'
+					'</div>' +
+					'</div>'
 	});
 	
 	/*****************************************
