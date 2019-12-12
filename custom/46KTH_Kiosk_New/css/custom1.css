@@ -647,7 +647,7 @@ md-card för generell!
 prm-search-result-list md-card {
 	background-color: #fff !important;
 	box-shadow: none !important;
-	padding: 0px 0px !important;
+	padding: 1em 0em 1em 0em !important;
 }
 
 prm-did-u-mean {
@@ -900,8 +900,17 @@ button.button-confirm.button-large.md-button.md-primoExplore-theme.md-ink-ripple
 	color: #4aa8ea
 }
 
+/* no result */
+prm-no-search-result md-card-title,
+prm-no-search-result md-card-content,
+prm-no-search-result-after md-card-title,
+prm-no-search-result-after md-card-content
+{
+	padding: 0  !important;
+}
+
 /* Kiosk no result */
-prm-no-search-result>md-card {
+body.kiosk prm-no-search-result>md-card {
 	display: none;
 }
 
