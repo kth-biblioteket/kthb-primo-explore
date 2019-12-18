@@ -703,6 +703,7 @@ prm-search-result-list prm-personalize-results-button .md-button md-switch.md-ch
 /* Färg på "träffbanner" */
 prm-search-result-tool-bar .md-toolbar-tools {
 	background-color: #ffffff;
+	padding-left: 0.8em !important
 }
 
 /* Kiosk, visa inte*/
