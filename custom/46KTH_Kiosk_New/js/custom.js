@@ -1,4 +1,4 @@
-var kth_vid = "46KTH_Kiosk_New"
+var kth_vid = "46KTH_Kiosk"
 console.log(kth_vid);
 
 /**************************
