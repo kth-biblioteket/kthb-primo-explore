@@ -106,7 +106,6 @@ console.log(kth_vid);
 		window.appConfig['mapping-tables']['Citation styles'].push({ source1: '11', target: 'ieee' });
 		//window.appConfig['mapping-tables']['Citation styles'].push({ source1: '12', target: 'oscola' });
 	});
-	
 
 	/*****************************************************
 	 * 
@@ -283,21 +282,44 @@ console.log(kth_vid);
 		bindings: {parentCtrl: '<'},
 		controller: 'prmPersonalizeResultsButtonAfterController',
 		template: 
-		'<div class="kth_loggain" ng-if="!$ctrl.userName.length > 0">' +
-			//logga in för att spara fråga etc
-			'<button class="button-as-link link-alt-color zero-margin md-button md-primoExplore-theme md-ink-ripple" type="button" (click)="$ctrl.loggain()" aria-label="">' +
-				'<prm-icon class="pin-icon" aria-label="Välj register " [icon-type]="::$ctrl.actionsIcons.pin.type" svg-icon-set="action" icon-definition="ic_favorite_outline_24px">' +
-				'</prm-icon>' +
-				//nytt värde i FE code table i Primo BO
-				'<span class="bold-text" translate="results.logintosavequery"></span>' +
-				'<div class="md-ripple-container"></div>' +
-			'</button>' +
-		'</div>'
+		`
+		<div class="kth_loggain" ng-if="!$ctrl.userName.length > 0">
+			<!--logga in för att spara fråga etc-->
+			<button id="kth_logintoquery" class="button-as-link link-alt-color zero-margin md-button md-primoExplore-theme md-ink-ripple" type="button" (click)="$ctrl.loggain()" aria-label="">
+				<prm-icon class="pin-icon" aria-label="Välj register " [icon-type]="::$ctrl.actionsIcons.pin.type" svg-icon-set="action" icon-definition="ic_favorite_outline_24px">
+				</prm-icon>
+				<!--nytt värde i FE code table i Primo BO-->
+				<span class="bold-text" translate="results.logintosavequery"></span>
+				<div class="md-ripple-container"></div>
+			</button>
+			<button id="kth_advancedsearch" ng-if="!$ctrl.mdMedia('gt-sm')" class="button-as-link link-alt-color zero-margin md-button md-primoExplore-theme md-ink-ripple" type="button" (click)="$ctrl.switchAdvancedSearch()" aria-label="">
+			<!--svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><defs><style>.cls-1{fill:none;}</style></defs><title/><g data-name="Layer 2" id="Layer_2"><path d="M28,9H11a1,1,0,0,1,0-2H28a1,1,0,0,1,0,2Z"/><path d="M7,9H4A1,1,0,0,1,4,7H7A1,1,0,0,1,7,9Z"/><path d="M21,17H4a1,1,0,0,1,0-2H21a1,1,0,0,1,0,2Z"/><path d="M11,25H4a1,1,0,0,1,0-2h7a1,1,0,0,1,0,2Z"/><path d="M9,11a3,3,0,1,1,3-3A3,3,0,0,1,9,11ZM9,7a1,1,0,1,0,1,1A1,1,0,0,0,9,7Z"/><path d="M23,19a3,3,0,1,1,3-3A3,3,0,0,1,23,19Zm0-4a1,1,0,1,0,1,1A1,1,0,0,0,23,15Z"/><path d="M13,27a3,3,0,1,1,3-3A3,3,0,0,1,13,27Zm0-4a1,1,0,1,0,1,1A1,1,0,0,0,13,23Z"/><path d="M28,17H25a1,1,0,0,1,0-2h3a1,1,0,0,1,0,2Z"/><path d="M28,25H15a1,1,0,0,1,0-2H28a1,1,0,0,1,0,2Z"/></g><g id="frame"><rect class="cls-1" height="32" width="32"/></g></svg-->
+			<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"  viewBox="0 0 410.23 410.23" style="enable-background:new 0 0 410.23 410.23;" xml:space="preserve">
+				<g>
+					<g>
+						<polygon points="172.125,77.217 153,77.217 153,153.717 76.5,153.717 76.5,172.842 153,172.842 153,249.342 172.125,249.342 
+						172.125,172.842 248.625,172.842 248.625,153.717 172.125,153.717 		" />
+						<path d="M401.625,364.092l-107.1-107.1c19.125-26.775,30.6-59.288,30.6-93.713c0-89.888-72.675-162.562-162.562-162.562
+						S0,73.392,0,163.279s72.675,162.562,162.562,162.562c34.425,0,66.938-11.475,93.713-30.6l107.1,107.1
+						c9.562,9.562,26.775,9.562,38.25,0l0,0C413.1,390.867,413.1,375.566,401.625,364.092z M162.562,287.592
+						c-68.85,0-124.312-55.463-124.312-124.312c0-68.85,55.462-124.312,124.312-124.312c68.85,0,124.312,55.462,124.312,124.312
+						C286.875,232.129,231.412,287.592,162.562,287.592z" />
+					</g>
+				</g>
+			</svg>
+				<!--nytt värde i FE code table i Primo BO-->
+				<span class="bold-text" translate=""></span>
+				<div class="md-ripple-container"></div>
+			</button>
+		</div>
+		`
 	});
 
-	app.controller('prmPersonalizeResultsButtonAfterController', function (kth_loginservice,$rootScope) {
+	app.controller('prmPersonalizeResultsButtonAfterController', function (kth_loginservice, $rootScope, $mdMedia) {
 		var vm = this;
-
+		console.log(vm.parentCtrl)
+		vm.mdMedia = $mdMedia;
+		console.log(vm.mdMedia('gt-sm'))
 		try {
 			vm.userName = $rootScope.$$childTail.$ctrl.userSessionManagerService.getUserName();
 		} catch(error) {
@@ -308,9 +330,15 @@ console.log(kth_vid);
 			//hämta loginfunktion
 			vm.data = kth_loginservice.getData();
 		}
+		console.log(vm.data)
+		vm.switchAdvancedSearch = switchAdvancedSearch;
+		function switchAdvancedSearch() {
+			vm.data['prmSearchBarAfter'].switchAdvancedSearch();
+		}
+
 		vm.loggain = loggain;
 		function loggain() {
-			vm.data.handleLogin();
+			vm.data['prmAuthenticationAfter'].handleLogin();
 		}
 	});
 
@@ -464,8 +492,8 @@ console.log(kth_vid);
 	app.service('kth_loginservice', function() {
 		
 		var data = [];
-		this.addData = function (d) {
-			data = d;
+		this.addData = function (directive,d) {
+			data[directive] = d;
 		};
 		
 		this.getData = function () {
@@ -531,7 +559,7 @@ console.log(kth_vid);
 		var session = vm.parentCtrl.primolyticsService.userSessionManagerService;	
 
 		//spara loginfunktion i service som sen kan hämtas från controllers
-		kth_loginservice.addData(vm.parentCtrl);
+		kth_loginservice.addData('prmAuthenticationAfter',vm.parentCtrl);
 		$rootScope.$broadcast('logindataAdded', vm.parentCtrl);
 		
 		//spara session i service som sen kan hämtas från controllers
@@ -576,6 +604,25 @@ console.log(kth_vid);
 				myEl.classList.remove("kth-facet-notsticky");
 			}
 		}
+	});
+
+	/*****************************************************
+	 * 
+	 * New 1906XX
+	 * 
+	 * prm-search-bar-after
+	 * 
+	 *  
+	 *****************************************************/
+
+	app.component('prmSearchBarAfter', {
+		bindings: {parentCtrl: '<'},
+		controller: 'prmSearchBarAfterController'
+	});
+
+	app.controller('prmSearchBarAfterController', function (kth_loginservice) {
+		var vm = this;
+		kth_loginservice.addData('prmSearchBarAfter',vm.parentCtrl)
 	});
 	
 	/*****************************************************
@@ -684,7 +731,7 @@ console.log(kth_vid);
 	
 	/*****************************************
 	
-	prm-search-bar-after
+	prm-search-after
 		
 	*****************************************/
 	app.component('prmSearchAfter', {
