@@ -965,7 +965,7 @@ console.log(kth_vid);
 		vm.data = kth_loginservice.getData();
 		vm.loggain = loggain;
 		function loggain() {
-			vm.data.handleLogin();
+			vm.data['prmAuthenticationAfter'].handleLogin();
 		}
 
 		if ($scope.$parent.$parent.$parent.$parent.$ctrl.service.linkElement.category == "Alma-P") {
@@ -1251,7 +1251,6 @@ console.log(kth_vid);
 	
 	app.controller('FullViewAfterController', function ($document, angularLoad, $http, kth_loginservice, $scope, $timeout) {
         var vm = this;
-		vm.data = kth_loginservice.getData();
 		/**************************************************
 		
 		Hämta olika metricsdata

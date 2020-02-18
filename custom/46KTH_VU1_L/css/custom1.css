@@ -261,7 +261,7 @@ prm-top-bar-before>div:nth-of-type(1),prm-top-bar-before>div:nth-of-type(3) {
 		max-width: 0%;
 	}
 	prm-topbar .top-nav-bar {
-		padding: 1.5em;
+		padding: 0.5em;
 	}
 	prm-top-bar-before {
 		padding: 0em 0.5em 0em 0.5em;
@@ -768,6 +768,16 @@ prm-search-result-tool-bar .md-toolbar-tools {
 prm-search-result-list .search-result-tool-bar-mobile {
     top: 0px;
 }
+@media (max-width: 599px) and (min-width: 200px) {
+	prm-search-result-list .pages-separated-with-gaps .results-title:not(.results-title-favorites) {
+		padding-left: 10px;
+	}
+
+	.results-count {
+		position: relative;
+		left: 50px;
+	}
+}
 
 /* Kiosk, visa inte*/
 body.kiosk prm-personalize-results-button-after,
@@ -828,7 +838,7 @@ prm-search-result-list-after {
 	background-color: #ffffff;
 	padding-bottom: 30px;
 }
-@media (max-width: 959px) and (min-width: 200px) { 
+@media (max-width: 1279px) and (min-width: 200px) { 
 	prm-search-result-list {
 		border-right: 0;
 		padding-right: 0em;

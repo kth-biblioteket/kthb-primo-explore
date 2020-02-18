@@ -4,6 +4,12 @@ KTH-Anpassningar för Primo New UI
 
 **********************************************
 
+/*********************************************
+
+Imortera open sans (KTH's huvudfont)
+**********************************************/
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
 /****************************************************
 
 Rättning för iPhone IOS 11 från Ex libris 2017-11-01
@@ -255,10 +261,10 @@ prm-top-bar-before>div:nth-of-type(1),prm-top-bar-before>div:nth-of-type(3) {
 		max-width: 0%;
 	}
 	prm-topbar .top-nav-bar {
-		padding: 1.5em;
+		padding: 0.5em;
 	}
 	prm-top-bar-before {
-		padding: 0em 1.5em 0em 1.5em;
+		padding: 0em 0.5em 0em 0.5em;
 	}
 }
 
@@ -314,7 +320,7 @@ prm-search-bookmark-filter {
 /* sätt loggans höjd/storlek */
 prm-logo .product-logo {
 	padding: 0px;
-	height: 40px;
+	height: 50px;
 }
 
 prm-logo .md-button {
@@ -324,10 +330,13 @@ prm-logo .md-button {
 
 /* placera rubriken "KTH Biblioteket" rätt och sätt fontstorlek */
 prm-topbar prm-logo-after {
-	top: 8px;
+	top: -5px;
 	position: relative;
-	padding-left: 10px;
-	font-size: 2em;
+	padding-left: 15px;
+	font-size: 1.25em;
+    font-family: "Open Sans",Arial,"Helvetica Neue",helvetica,sans-serif;
+	font-weight: 600;
+	height: 50px;
 }
 
 /* fixa länkar */
@@ -351,7 +360,7 @@ prm-logo a, prm-logo prm-logo-after a {
 	prm-topbar .top-nav-bar {
 		flex-direction: column;
 		height: auto;
-		padding: 0 1.5em;
+		padding: 0 0.5em;
 	}
 	prm-search-bookmark-filter-after, prm-search-bookmark-filter-after>div>div,
 	prm-search-bookmark-filter-after>div>prm-library-card-menu,
@@ -380,11 +389,15 @@ prm-search-bar, prm-tags-search-bar {
 	padding: 1.5em 0em 1.5em 0em !important;
 }
 
+/* luft inne i rutan*/
+prm-search-bar .simple-search-wrapper md-autocomplete-wrap input {
+	padding-left:10px;
+}
 /* anpassningar till mindre skärmar */
 @media (max-width: 1279px) and (min-width: 200px) {
 	/* luft på sidorna */
 	prm-search-bar {
-		padding: 1.5em 1.5em 1.5em 1.5em !important;
+		padding: 0.5em !important;
 	}
 }
 @media (max-width: 959px) and (min-width: 200px) { 
@@ -399,6 +412,12 @@ prm-search-bar, prm-tags-search-bar {
 prm-search-bar prm-icon[icon-definition="magnifying-glass"] md-icon svg{
     transform: scale(1,1) !important;
 	color: #e08303;
+}
+
+/* runda hörn */
+prm-search-bar .search-element-inner, 
+prm-search-bar #searchBar {
+	border-radius: 5px;
 }
 
 
@@ -498,7 +517,8 @@ prm-search-bookmark-filter-after a {
 @media (max-width: 599px) and (min-width: 200px) {
 	/* bort med knapptexter */
 	prm-search-bookmark-filter-after span {
-		display: none !important;
+		/*display: none !important;*/
+		font-size: 12px;
 	}
 
 	.kth_menu {
@@ -622,6 +642,13 @@ prm-search-result-list .pages-separated-with-gaps .list-item-wrapper.first-in-pa
 	top: -27px;
 	left: 0px;
 }
+/* anpassningar till mindre skärmar */
+@media (max-width: 599px) and (min-width: 200px) {
+	prm-search-result-list .pages-separated-with-gaps .list-item-wrapper.first-in-page:first-of-type .md-subheader ._md-subheader-inner {
+		top: -34px;
+		left: 5px;
+	}
+}
 
 /* antal sökträffars placering */
 prm-search-result-list .results-title {
@@ -667,19 +694,51 @@ Yta ovan sökresultat (personalize button etc)
 /* placera in egen "login to save query" (via after-directive i JS) */
 prm-personalize-results-button {
 	display: flex;
-    flex-direction: row-reverse;
+	flex-direction: row-reverse;
 }
 prm-personalize-results-button-after {
 	top: -5px;
 	position: relative;
 }
+
+@media (max-width: 599px) and (min-width: 200px) {
+	prm-personalize-results-button-after {
+		top: -10px;
+	}
+}
+/* Mobilanpassning*/
+prm-personalize-results-button {
+	order:0;
+}
+#kth_logintoquery {
+	margin-right: 1em !important;
+}
+#kth_advancedsearch {
+	width: 20px;
+	height: 20px;
+	position: relative;
+	top: 4px !important;
+	fill: #4aa8ea;
+	margin-right: 1em !important;
+}
+.mobile-actions>button:nth-of-type(1) {
+	order:2;
+}
+.mobile-actions>button:nth-of-type(2) {
+	order:3;
+}
+.md-button.button-as-link-mobile.link-alt-color, 
+.section-title prm-icon.md-button.button-as-link-mobile {
+    color: #4aa8ea;
+}
+
 .kth_loggain {
-	padding-top: 10px;
+	padding-top: 5px;
 }
 .kth_loggain .md-button {
 	padding: 0;
 	font-style: initial;
-	color: #97abba !important;
+	color: #97abba;
 }
 
 /* färg på knapp */
@@ -706,6 +765,20 @@ prm-search-result-tool-bar .md-toolbar-tools {
 	padding-left: 0.8em !important
 }
 
+prm-search-result-list .search-result-tool-bar-mobile {
+    top: 0px;
+}
+@media (max-width: 599px) and (min-width: 200px) {
+	prm-search-result-list .pages-separated-with-gaps .results-title:not(.results-title-favorites) {
+		padding-left: 10px;
+	}
+
+	.results-count {
+		position: relative;
+		left: 50px;
+	}
+}
+
 /* Kiosk, visa inte*/
 body.kiosk prm-personalize-results-button-after,
 body.kiosk prm-search-result-tool-bar
@@ -728,9 +801,11 @@ prm-search md-content.padded-container {
 /* anpassning mindre skärmar */
 @media (max-width: 1279px) and (min-width: 200px) {
 	/* in med luft */
+	/*
 	prm-search md-content {
-		padding: 1.5em !important;
+		padding: 0.5em !important;
 	}
+	*/
 }
 
 /* grått streck på översta träffens topp */
@@ -763,6 +838,17 @@ prm-search-result-list-after {
 	background-color: #ffffff;
 	padding-bottom: 30px;
 }
+@media (max-width: 1279px) and (min-width: 200px) { 
+	prm-search-result-list {
+		border-right: 0;
+		padding-right: 0em;
+	}
+	prm-search-result-list-after {
+		padding-left: 0.5em;
+		padding-right: 0.5em;
+	}
+}
+
 
 /* Actions */
 
@@ -806,9 +892,11 @@ prm-action-list .scroll-hidden {
 	justify-content: flex-start;
 }
 
+/*
 prm-action-list #scrollActionList {
 	flex-direction: row-reverse;
 }
+*/
 
 /* Ikonen för att öppna "actions" på varje sökträff */
 .result-item-actions .more-options-button prm-icon.open-icon md-icon {

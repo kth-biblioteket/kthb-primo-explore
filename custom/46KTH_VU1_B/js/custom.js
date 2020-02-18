@@ -317,20 +317,20 @@ console.log(kth_vid);
 
 	app.controller('prmPersonalizeResultsButtonAfterController', function (kth_loginservice, $rootScope, $mdMedia) {
 		var vm = this;
-		console.log(vm.parentCtrl)
 		vm.mdMedia = $mdMedia;
-		console.log(vm.mdMedia('gt-sm'))
+
 		try {
 			vm.userName = $rootScope.$$childTail.$ctrl.userSessionManagerService.getUserName();
 		} catch(error) {
 			console.log("error: " + error);
 		}
+
 		vm.isfavorites = vm.parentCtrl.isFavorites;
 		if (!vm.isfavorites) {
 			//hämta loginfunktion
 			vm.data = kth_loginservice.getData();
 		}
-		console.log(vm.data)
+		
 		vm.switchAdvancedSearch = switchAdvancedSearch;
 		function switchAdvancedSearch() {
 			vm.data['prmSearchBarAfter'].switchAdvancedSearch();
