@@ -1847,3 +1847,13 @@ TODO: Anpassa till små skärmar
 	visibility: visible;
 	opacity: 1;
 }
+
+/*************
+
+Kundo Chat
+
+**************/
+
+#kundo-chat #kundo-chat-widget.kundo-chat-widget .kundo-chat-flow-selector__label {
+	display:block
+}

@@ -312,7 +312,7 @@ Kioskanpassningar inlagda med "//Kiosk"
 		'<div flex="15" flex-md="0" flex-sm="0" flex-xs="0" class="flex-xs-0 flex-sm-0 flex-md-0 flex-15"></div>' +
 		'<div flex layout="row" layout-align="end center" ng-if="$ctrl.kth_language == \'en_US\'">' +
 			'<div style="padding-bottom: .1em;" ng-if="$ctrl.username.length > 0">Logged in as: {{$ctrl.username}}&nbsp</div>' +
-			'<a class="kth_link" ng-click="changelang(\'sv_SE\')">' +
+			'<a class="kth_link" ng-click="$ctrl.changelang(\'sv_SE\')">' +
 				'<span>Svenska&nbsp</span>' +
 				//'<svg xmlns="http://www.w3.org/2000/svg" width="20" height="12.5" viewBox="0 0 16 10"><rect width="16" height="10" fill="#005293"/><rect width="2" height="10" x="5" fill="#FECB00"/><rect width="16" height="2" y="4" fill="#FECB00"/></svg>' +
 				'<img style="position: relative;top: 2px;width: 16px" src="custom/' + kth_vid + '/img/globe-lang.svg"></img>' + 
@@ -320,7 +320,7 @@ Kioskanpassningar inlagda med "//Kiosk"
 		'</div>' +
 		'<div flex layout="row" layout-align="end center" ng-if="$ctrl.kth_language == \'sv_SE\'">' +
 			'<div style="padding-bottom: .1em;" ng-if="$ctrl.username.length > 0">Inloggad som: {{$ctrl.username}}&nbsp</div>' +
-			'<a class="kth_link" ng-click="changelang(\'en_US\')">' +
+			'<a class="kth_link" ng-click="$ctrl.changelang(\'en_US\')">' +
 				'<span>English&nbsp</span>' +
 				//'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 30" width="20" height="12"><clipPath id="t"><path d="M25,15 h25 v15 z v15 h-25 z h-25 v-15 z v-15 h25 z"/></clipPath><path d="M0,0 v30 h50 v-30 z" fill="#00247d"/><path d="M0,0 L50,30 M50,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L50,30 M50,0 L0,30" clip-path="url(#t)" stroke="#cf142b" stroke-width="4"/><path d="M25,0 v30 M0,15 h50" stroke="#fff" stroke-width="10"/><path d="M25,0 v30 M0,15 h50" stroke="#cf142b" stroke-width="6"/></svg>' +
 				'<img style="position: relative;top: 2px;width: 16px" src="custom/' + kth_vid + '/img/globe-lang.svg"></img>' + 
@@ -329,19 +329,24 @@ Kioskanpassningar inlagda med "//Kiosk"
 		'<div flex="15" flex-md="0" flex-sm="0" flex-xs="0" class="flex-xs-0 flex-sm-0 flex-md-0 flex-15"></div>'
 	});
 
-	app.controller('prmTopBarBeforeController', function ($rootScope, $scope, $translate) {
+	app.controller('prmTopBarBeforeController', function ($rootScope, $translate) {
 		var vm = this;
 		
 		//Hämta username att visa i översta sidhuvudet
 		vm.username = $rootScope.$$childTail.$ctrl.userSessionManagerService.getUserName();
 
+		vm.kth_language = $translate.use();
 		//Funktion för att ändra språk 
-		vm.kth_language = $translate.use();	
-		$scope.changelang = function (langKey) {
-			$translate.use(langKey).then((la) => {
+		vm.changelang = changelang;
+		function changelang(langKey) {
+			//ladda om sidan med parameter för att chatten ska ändra språk också.
+			location.search = location.search.replace(/lang=[^&$]*/i, 'lang='+ langKey);
+			/*
+			$translate.use(langKey).then(function(la) {
 				vm.kth_language = la;
 			});
-		};
+			*/
+		}
 	});
 
 	/*****************************************************
@@ -1943,6 +1948,40 @@ Kioskanpassningar inlagda med "//Kiosk"
 	ga('send', 'pageview');
 	
 })();
+
+/********************
+ * 
+ * Kundo Chat
+ * 
+ *******************/
+
+(function () {
+	var x = document.createElement("script");x.type = "text/javascript";x.async = true;
+	x.src = (document.location.protocol === "https:" ? "https://" : "http://") + "static-chat.kundo.se/chat-js/org/1199/widget.js";
+	var y = document.getElementsByTagName("script")[0];y.parentNode.insertBefore(x, y);
+})();
+
+(function(w){
+	
+	w.$kundo_chat=w.$kundo_chat||{};
+	
+	var lang = getUrlVars()["lang"];
+	w.$kundo_chat.custom_texts = {
+		START_TEXT: "Chat with us",
+	};
+	if(typeof(lang) !== 'undefined') {
+		if (lang.indexOf('sv') != -1) {
+			w.$kundo_chat.custom_texts = {
+				START_TEXT: "Chatta med oss",
+			};
+		}
+	}
+	w.$kundo_chat.widget_styles = {
+		background_color: "#d85497",
+		text_color: "#ffffff"
+	};
+	
+}(this));
 
 /****************************
 	 
