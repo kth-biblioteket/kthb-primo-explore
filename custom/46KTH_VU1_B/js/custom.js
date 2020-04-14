@@ -19,7 +19,7 @@ console.log(kth_vid);
 	
 	app.config(['KeepaliveProvider', 'IdleProvider','$translateProvider', function(KeepaliveProvider, IdleProvider, $translateProvider) {
 		//KTHB Primo 60 minuter(eller ska vi ha nån timeout alls??)
-		//ingen timeout om man inte är inloggad låter mest logiskt.
+		//ingen timeout om man inte är inloggad låter mest logiskt.	
 		IdleProvider.idle(3600); //Idle är hur länge man kan vara inaktiv, efter x sekunder visas ExLibris "session upphör..."
 		IdleProvider.timeout(3600); //Styr hur lång tid användaren har på sig efter att ha blivit "idle" (att klicka på "håll mig inloggad")
 		KeepaliveProvider.interval(7200);
@@ -63,7 +63,7 @@ console.log(kth_vid);
 				primoExploreCtrl: '^primoExplore'
 			}
 	});	
-		
+	
 	/*****************************************
 	
 	prm-tags ange samma controller som prmExploreMainAfter
@@ -76,7 +76,7 @@ console.log(kth_vid);
 				primoExploreCtrl: '^primoExplore'
 			}
 	});
-
+	
 	/*****************************************
 	
 	prm-services-page ange samma controller som prmExploreMainAfter
@@ -234,7 +234,7 @@ console.log(kth_vid);
 		'<div flex="15" flex-md="0" flex-sm="0" flex-xs="0" class="flex-xs-0 flex-sm-0 flex-md-0 flex-15"></div>' +
 		'<div flex layout="row" layout-align="end center" ng-if="$ctrl.kth_language == \'en_US\'">' +
 			'<div style="padding-bottom: .1em;" ng-if="$ctrl.username.length > 0">Logged in as: {{$ctrl.username}}&nbsp</div>' +
-			'<a class="kth_link" ng-click="changelang(\'sv_SE\')">' +
+			'<a class="kth_link" ng-click="$ctrl.changelang(\'sv_SE\')">' +
 				'<span>Svenska&nbsp</span>' +
 				//'<svg xmlns="http://www.w3.org/2000/svg" width="20" height="12.5" viewBox="0 0 16 10"><rect width="16" height="10" fill="#005293"/><rect width="2" height="10" x="5" fill="#FECB00"/><rect width="16" height="2" y="4" fill="#FECB00"/></svg>' +
 				'<img style="position: relative;top: 2px;width: 16px" src="custom/' + kth_vid + '/img/globe-lang.svg"></img>' + 
@@ -242,7 +242,7 @@ console.log(kth_vid);
 		'</div>' +
 		'<div flex layout="row" layout-align="end center" ng-if="$ctrl.kth_language == \'sv_SE\'">' +
 			'<div style="padding-bottom: .1em;" ng-if="$ctrl.username.length > 0">Inloggad som: {{$ctrl.username}}&nbsp</div>' +
-			'<a class="kth_link" ng-click="changelang(\'en_US\')">' +
+			'<a class="kth_link" ng-click="$ctrl.changelang(\'en_US\')">' +
 				'<span>English&nbsp</span>' +
 				//'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 30" width="20" height="12"><clipPath id="t"><path d="M25,15 h25 v15 z v15 h-25 z h-25 v-15 z v-15 h25 z"/></clipPath><path d="M0,0 v30 h50 v-30 z" fill="#00247d"/><path d="M0,0 L50,30 M50,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L50,30 M50,0 L0,30" clip-path="url(#t)" stroke="#cf142b" stroke-width="4"/><path d="M25,0 v30 M0,15 h50" stroke="#fff" stroke-width="10"/><path d="M25,0 v30 M0,15 h50" stroke="#cf142b" stroke-width="6"/></svg>' +
 				'<img style="position: relative;top: 2px;width: 16px" src="custom/' + kth_vid + '/img/globe-lang.svg"></img>' + 
@@ -251,19 +251,24 @@ console.log(kth_vid);
 		'<div flex="15" flex-md="0" flex-sm="0" flex-xs="0" class="flex-xs-0 flex-sm-0 flex-md-0 flex-15"></div>'
 	});
 
-	app.controller('prmTopBarBeforeController', function ($rootScope, $scope, $translate) {
+	app.controller('prmTopBarBeforeController', function ($rootScope, $translate) {
 		var vm = this;
 		
 		//Hämta username att visa i översta sidhuvudet
 		vm.username = $rootScope.$$childTail.$ctrl.userSessionManagerService.getUserName();
-
-		//Funktion för att ändra språk 
+		
 		vm.kth_language = $translate.use();	
-		$scope.changelang = function (langKey) {
-			$translate.use(langKey).then((la) => {
+		//Funktion för att ändra språk 
+		vm.changelang = changelang;
+		function changelang(langKey) {
+			//ladda om sidan med parameter för att chatten ska ändra språk också.
+			location.search = location.search.replace(/lang=[^&$]*/i, 'lang='+ langKey);
+			/*
+			$translate.use(langKey).then(function(la) {
 				vm.kth_language = la;
 			});
-		};
+			*/
+		}
 	});
 
 	/*****************************************************
@@ -294,7 +299,7 @@ console.log(kth_vid);
 			</button>
 			<button id="kth_advancedsearch" ng-if="!$ctrl.mdMedia('gt-sm')" class="button-as-link link-alt-color zero-margin md-button md-primoExplore-theme md-ink-ripple" type="button" (click)="$ctrl.switchAdvancedSearch()" aria-label="">
 			<!--svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><defs><style>.cls-1{fill:none;}</style></defs><title/><g data-name="Layer 2" id="Layer_2"><path d="M28,9H11a1,1,0,0,1,0-2H28a1,1,0,0,1,0,2Z"/><path d="M7,9H4A1,1,0,0,1,4,7H7A1,1,0,0,1,7,9Z"/><path d="M21,17H4a1,1,0,0,1,0-2H21a1,1,0,0,1,0,2Z"/><path d="M11,25H4a1,1,0,0,1,0-2h7a1,1,0,0,1,0,2Z"/><path d="M9,11a3,3,0,1,1,3-3A3,3,0,0,1,9,11ZM9,7a1,1,0,1,0,1,1A1,1,0,0,0,9,7Z"/><path d="M23,19a3,3,0,1,1,3-3A3,3,0,0,1,23,19Zm0-4a1,1,0,1,0,1,1A1,1,0,0,0,23,15Z"/><path d="M13,27a3,3,0,1,1,3-3A3,3,0,0,1,13,27Zm0-4a1,1,0,1,0,1,1A1,1,0,0,0,13,23Z"/><path d="M28,17H25a1,1,0,0,1,0-2h3a1,1,0,0,1,0,2Z"/><path d="M28,25H15a1,1,0,0,1,0-2H28a1,1,0,0,1,0,2Z"/></g><g id="frame"><rect class="cls-1" height="32" width="32"/></g></svg-->
-			<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="410.23px" height="410.23px" viewBox="0 0 410.23 410.23" style="enable-background:new 0 0 410.23 410.23;" xml:space="preserve">
+			<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"  viewBox="0 0 410.23 410.23" style="enable-background:new 0 0 410.23 410.23;" xml:space="preserve">
 				<g>
 					<g>
 						<polygon points="172.125,77.217 153,77.217 153,153.717 76.5,153.717 76.5,172.842 153,172.842 153,249.342 172.125,249.342 
@@ -965,7 +970,7 @@ console.log(kth_vid);
 		vm.data = kth_loginservice.getData();
 		vm.loggain = loggain;
 		function loggain() {
-			vm.data.handleLogin();
+			vm.data['prmAuthenticationAfter'].handleLogin();
 		}
 
 		if ($scope.$parent.$parent.$parent.$parent.$ctrl.service.linkElement.category == "Alma-P") {
@@ -1251,7 +1256,6 @@ console.log(kth_vid);
 	
 	app.controller('FullViewAfterController', function ($document, angularLoad, $http, kth_loginservice, $scope, $timeout) {
         var vm = this;
-		vm.data = kth_loginservice.getData();
 		/**************************************************
 		
 		Hämta olika metricsdata
@@ -1824,12 +1828,13 @@ console.log(kth_vid);
 		});
 	}]);
 			
-	/*****************************************
-	ALLT NEDAN ÄR BETA för VU1_B(eta)
-	UTOM det som kommer efter ANGULAR-delen!!!
+	///////////////////////////////////////////////////
+	//ALLT NEDAN ÄR BETA för VU1_B(eta)
+	//UTOM det som kommer efter ANGULAR-delen!!!
 	
-	BETA prm-alma-mashup-after
-	*****************************************/
+	//BETA prm-alma-mashup-after
+	///////////////////////////////////////////////////
+/*
 	//ANVÄNDS INTE FÖR TILLFÄLLET. Visa almas uresolver istället. (visa i BETA?)
 	app.component('prmAlmaMashupAfter', {
 			bindings: {parentCtrl: '<'},
@@ -1927,11 +1932,11 @@ console.log(kth_vid);
 		//en variant är 
 		vm.kth_language = $translate.use();
 		
-		/*****
+		///////////////////////////////////////////////////
 		
-		Öppna beställningsformulär och skicka med data
+		//Öppna beställningsformulär och skicka med data
 		
-		******/
+		///////////////////////////////////////////////////
 		vm.openurl = function(){
 			//språk default
 			var lang = "en/";
@@ -1941,12 +1946,12 @@ console.log(kth_vid);
 			openRequestForm($scope.$parent.$parent.$parent.$parent.$ctrl.item, lang);
 		}
 		
-		/**************************************************
+		///////////////////////////////////////////////////
 		
-		Hämta username från alma via sessionusername
-		kolla om inloggad (anonymous om inte inloggad)
+		//Hämta username från alma via sessionusername
+		//kolla om inloggad (anonymous om inte inloggad)
 		
-		**************************************************/
+		///////////////////////////////////////////////////
 		vm.session = kth_session.getData();
 		vm.almausername = vm.session.jwtUtilService.getDecodedToken().user;
 		console.log("vm.session");
@@ -2004,7 +2009,7 @@ console.log(kth_vid);
 				});	
 		}
 		
-		/* Funktion som byter src i en iframe vid klick på object inne i iframe*/
+		// Funktion som byter src i en iframe vid klick på object inne i iframe //
 		vm.changeiframeurl = function (physicalServicesResultId,internaluserid,mmsid,itemid,description) {
 
 			function findPos(obj) {
@@ -2047,11 +2052,11 @@ console.log(kth_vid);
 
 		}
 		
-		/*************************
+		///////////////////////////////////////////////////
 		
-		Hämta tryckt material från Alma
+		//Hämta tryckt material från Alma
 		
-		*************************/
+		///////////////////////////////////////////////////
 
 		function almagetprinteditem(mmsids) {
 			vm.isLoading = true;
@@ -2079,23 +2084,23 @@ console.log(kth_vid);
 								//lägg in karthtml i "map"
 								response.data.records[item].map = map(response.data.records[item].locations, response.data.records[item].location, response.data.records[item].shelf);
 							}
-							/*
-							if($translate.use() == "en_US") {
-								if(response.data.records[item].requests != "0") {
-									vm.headers = ["Library", "Location", "Description", "Shelf", "Status", "Requests", "Loan period"];
-								}
-								else {
-									vm.headers = ["Library", "Location", "Description", "Shelf", "Status", "Loan period"];
-								}
-							} else {
-								if(response.data.records[item].requests != "0") {
-									vm.headers = ["Bibliotek", "Lokation", "Beskrivning", "Hylla", "Status", "Reservationer", "Låneperiod"];	
-								}
-								else {
-									vm.headers = ["Bibliotek", "Lokation", "Beskrivning", "Hylla", "Status", "Låneperiod"];	
-								}
-							}
-							*/
+							
+							// if($translate.use() == "en_US") {
+							// 	if(response.data.records[item].requests != "0") {
+							// 		vm.headers = ["Library", "Location", "Description", "Shelf", "Status", "Requests", "Loan period"];
+							// 	}
+							// 	else {
+							// 		vm.headers = ["Library", "Location", "Description", "Shelf", "Status", "Loan period"];
+							// 	}
+							// } else {
+							// 	if(response.data.records[item].requests != "0") {
+							// 		vm.headers = ["Bibliotek", "Lokation", "Beskrivning", "Hylla", "Status", "Reservationer", "Låneperiod"];	
+							// 	}
+							// 	else {
+							// 		vm.headers = ["Bibliotek", "Lokation", "Beskrivning", "Hylla", "Status", "Låneperiod"];	
+							// 	}
+							// }
+							
 						}
 						if($translate.use() == "en_US") {
 							vm.headers = ["Library", "Location", "Description", "Shelf", "Status", "Requests", "Loan period"];
@@ -2144,11 +2149,11 @@ console.log(kth_vid);
 			}
 		}
 		
-		/******************************
+		///////////////////////////////////////////////////
 		
-		Kartinfo att visa på fullposten
+		//Kartinfo att visa på fullposten
 		
-		******************************/
+		///////////////////////////////////////////////////
 		function map(locations, locationname, shelfname) {
 			if (self.parentCtrl.almap == true) {
 				//sätt kartbildernas originalproportioner
@@ -2242,11 +2247,11 @@ console.log(kth_vid);
 		}
 	});
 	
-	/*******************************************************************
+	///////////////////////////////////////////////////
 	
-	Dialogformulär BETA, Används INTE
+	//Dialogformulär BETA, Används INTE
 	
-	********************************************************************/
+	///////////////////////////////////////////////////
 	
 	app.component('prmContactUs', {
 		bindings: {
@@ -2370,10 +2375,42 @@ console.log(kth_vid);
 		console.log("prmActionListAfterController");
 		console.log(vm.parentCtrl);
 	});
-	
-	
-	
+*/
 })();
+
+/********************
+ * 
+ * Kundo Chat
+ * 
+ *******************/
+
+(function () {
+	var x = document.createElement("script");x.type = "text/javascript";x.async = true;
+	x.src = (document.location.protocol === "https:" ? "https://" : "http://") + "static-chat.kundo.se/chat-js/org/1199/widget.js";
+	var y = document.getElementsByTagName("script")[0];y.parentNode.insertBefore(x, y);
+})();
+
+(function(w){
+	
+	w.$kundo_chat=w.$kundo_chat||{};
+	
+	var lang = getUrlVars()["lang"];
+	w.$kundo_chat.custom_texts = {
+		START_TEXT: "Chat with us",
+	};
+	if(typeof(lang) !== 'undefined') {
+		if (lang.indexOf('sv') != -1) {
+			w.$kundo_chat.custom_texts = {
+				START_TEXT: "Chatta med oss",
+			};
+		}
+	}
+	w.$kundo_chat.widget_styles = {
+		background_color: "#d85497",
+		text_color: "#ffffff"
+	};
+	
+}(this));
 
 /****************************
 	 
@@ -2427,136 +2464,137 @@ function receiveMessagefromalma(event)
 	}
 }
 
-/* BETA
-Funktion för att öppna beställningsformulär
-lang="en/" eller ""
+// ///////////////////////////////////////////////////
+// // BETA
+// // Funktion för att öppna beställningsformulär
+// // lang="en/" eller ""
 
-*/
-function openRequestForm(item,lang) {
-	//Init
-	rsrctype = "";
-	booktitle = "";
-	journaltitle = "";
-	articletitle = "";
-	issue = "";
-	volume = "";
-	spage = "";
-	epage = "";
-	isbn = "";
-	issn = "";
-	au = "";
-	doi = "";
-	creationdate = "";
-	publisher = "";
-	//hantera de parametrar som inte har nåt värde
-	if (item.pnx.search.rsrctype) {
-		//hantera typ(book,book_chapter,journal,article
-		rsrctype = item.pnx.search.rsrctype[0];
-		if (rsrctype == "book" || rsrctype == "book_chapter") {
-			if (item.pnx.display.title) {
-				booktitle = item.pnx.display.title[0];
-			}
-		}
-		if (rsrctype == "journal") {
-			if (item.pnx.display.title) {
-				journaltitle = item.pnx.display.title[0];
-			}
-		}
-		if (rsrctype == "article") {
-			if (item.pnx.display.title) {
-				articletitle = item.pnx.display.title[0];
-			}
-		}
-	}
-	if (item.pnx.addata.issue) {
-		issue = item.pnx.addata.issue[0];
-	}
-	if (item.pnx.addata.volume) {
-		volume = item.pnx.addata.volume[0];
-	}
-	if (item.pnx.addata.spage) {
-		spage = item.pnx.addata.spage[0];
-	}
-	if (item.pnx.addata.epage) {
-		epage = item.pnx.addata.epage[0];
-	}
-	if (item.pnx.addata.isbn) {
-		isbn = item.pnx.addata.isbn[0];
-	}
-	if (item.pnx.addata.issn) {
-		issn = item.pnx.addata.issn[0];
-	}
-	if (item.pnx.addata.au) {
-		au = item.pnx.addata.au[0];
-	}
-	if (item.pnx.addata.doi) {
-		doi = item.pnx.addata.doi[0];
-	}
-	if (item.pnx.display.creationdate) {
-		creationdate = item.pnx.display.creationdate[0];
-	}
-	if (item.pnx.display.publisher) {
-		publisher = item.pnx.display.publisher[0];
-	}
-	window.open('https://www.kth.se/' + lang + 'kthb/lana-och-bestall/lana-och-bestall/bestall-material?source=primo&genre=' + rsrctype + '&bookTitle=' + booktitle + '&abbrev=&article=' + articletitle + '&journal=' + journaltitle + '&day=&month=&volume=' + volume + '&issue=' + issue + '&rft.number=&pages=' + spage + '-' + epage + '&rft.edition=&ISBN=' + isbn + '&EISBN=&author=' + au + '&rft.pub=' + publisher + '&publisher=' + publisher + '&publiPlace=&rft.doi=' + doi + '&ISSN=' + issn + '&EISSN=&year=' + creationdate, '_newTab');
-}
+// ///////////////////////////////////////////////////
+// function openRequestForm(item,lang) {
+// 	//Init
+// 	rsrctype = "";
+// 	booktitle = "";
+// 	journaltitle = "";
+// 	articletitle = "";
+// 	issue = "";
+// 	volume = "";
+// 	spage = "";
+// 	epage = "";
+// 	isbn = "";
+// 	issn = "";
+// 	au = "";
+// 	doi = "";
+// 	creationdate = "";
+// 	publisher = "";
+// 	//hantera de parametrar som inte har nåt värde
+// 	if (item.pnx.search.rsrctype) {
+// 		//hantera typ(book,book_chapter,journal,article
+// 		rsrctype = item.pnx.search.rsrctype[0];
+// 		if (rsrctype == "book" || rsrctype == "book_chapter") {
+// 			if (item.pnx.display.title) {
+// 				booktitle = item.pnx.display.title[0];
+// 			}
+// 		}
+// 		if (rsrctype == "journal") {
+// 			if (item.pnx.display.title) {
+// 				journaltitle = item.pnx.display.title[0];
+// 			}
+// 		}
+// 		if (rsrctype == "article") {
+// 			if (item.pnx.display.title) {
+// 				articletitle = item.pnx.display.title[0];
+// 			}
+// 		}
+// 	}
+// 	if (item.pnx.addata.issue) {
+// 		issue = item.pnx.addata.issue[0];
+// 	}
+// 	if (item.pnx.addata.volume) {
+// 		volume = item.pnx.addata.volume[0];
+// 	}
+// 	if (item.pnx.addata.spage) {
+// 		spage = item.pnx.addata.spage[0];
+// 	}
+// 	if (item.pnx.addata.epage) {
+// 		epage = item.pnx.addata.epage[0];
+// 	}
+// 	if (item.pnx.addata.isbn) {
+// 		isbn = item.pnx.addata.isbn[0];
+// 	}
+// 	if (item.pnx.addata.issn) {
+// 		issn = item.pnx.addata.issn[0];
+// 	}
+// 	if (item.pnx.addata.au) {
+// 		au = item.pnx.addata.au[0];
+// 	}
+// 	if (item.pnx.addata.doi) {
+// 		doi = item.pnx.addata.doi[0];
+// 	}
+// 	if (item.pnx.display.creationdate) {
+// 		creationdate = item.pnx.display.creationdate[0];
+// 	}
+// 	if (item.pnx.display.publisher) {
+// 		publisher = item.pnx.display.publisher[0];
+// 	}
+// 	window.open('https://www.kth.se/' + lang + 'kthb/lana-och-bestall/lana-och-bestall/bestall-material?source=primo&genre=' + rsrctype + '&bookTitle=' + booktitle + '&abbrev=&article=' + articletitle + '&journal=' + journaltitle + '&day=&month=&volume=' + volume + '&issue=' + issue + '&rft.number=&pages=' + spage + '-' + epage + '&rft.edition=&ISBN=' + isbn + '&EISBN=&author=' + au + '&rft.pub=' + publisher + '&publisher=' + publisher + '&publiPlace=&rft.doi=' + doi + '&ISSN=' + issn + '&EISSN=&year=' + creationdate, '_newTab');
+// }
 		
-/******************************************************************************
+// ///////////////////////////////////////////////////
 
-BETA Funktion som konverterar XML to JSON
-//http://coursesweb.net/javascript/convert-xml-json-javascript_s2
+// // BETA Funktion som konverterar XML to JSON
+// //http://coursesweb.net/javascript/convert-xml-json-javascript_s2
 
-******************************************************************************/
-function XMLtoJSON() {
-	var me = this;
+// ///////////////////////////////////////////////////
+// function XMLtoJSON() {
+// 	var me = this;
 	
-	me.fromStr = function(xml, rstr) {
-		if(window.DOMParser) {
-			var getxml = new DOMParser();
-			var xmlDoc = getxml.parseFromString(xml,"text/xml");
-		}
-		else {
-		var xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-		xmlDoc.async = "false";
-		}
-		var json_str = jsontoStr(setJsonObj(xmlDoc));
-		return (typeof(rstr) == 'undefined') ? JSON.parse(json_str) : json_str;
-	}
+// 	me.fromStr = function(xml, rstr) {
+// 		if(window.DOMParser) {
+// 			var getxml = new DOMParser();
+// 			var xmlDoc = getxml.parseFromString(xml,"text/xml");
+// 		}
+// 		else {
+// 		var xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+// 		xmlDoc.async = "false";
+// 		}
+// 		var json_str = jsontoStr(setJsonObj(xmlDoc));
+// 		return (typeof(rstr) == 'undefined') ? JSON.parse(json_str) : json_str;
+// 	}
 
-	var setJsonObj = function(xml) {
-		var js_obj = {};
-		if (xml.nodeType == 1) {
-			if (xml.attributes.length > 0) {
-				js_obj["@attributes"] = {};
-				for (var j = 0; j < xml.attributes.length; j++) {
-					var attribute = xml.attributes.item(j);
-					js_obj["@attributes"][attribute.nodeName] = attribute.value;
-				}
-			}
-		} else if (xml.nodeType == 3) {
-			js_obj = xml.nodeValue;
-		}            
-		if (xml.hasChildNodes()) {
-			for (var i = 0; i < xml.childNodes.length; i++) {
-				var item = xml.childNodes.item(i);
-				var nodeName = item.nodeName;
-				if (typeof(js_obj[nodeName]) == "undefined") {
-					js_obj[nodeName] = setJsonObj(item);
-				} else {
-					if (typeof(js_obj[nodeName].push) == "undefined") {
-						var old = js_obj[nodeName];
-						js_obj[nodeName] = [];
-						js_obj[nodeName].push(old);
-					}
-					js_obj[nodeName].push(setJsonObj(item));
-				}
-			}
-		}
-		return js_obj;
-	}
+// 	var setJsonObj = function(xml) {
+// 		var js_obj = {};
+// 		if (xml.nodeType == 1) {
+// 			if (xml.attributes.length > 0) {
+// 				js_obj["@attributes"] = {};
+// 				for (var j = 0; j < xml.attributes.length; j++) {
+// 					var attribute = xml.attributes.item(j);
+// 					js_obj["@attributes"][attribute.nodeName] = attribute.value;
+// 				}
+// 			}
+// 		} else if (xml.nodeType == 3) {
+// 			js_obj = xml.nodeValue;
+// 		}            
+// 		if (xml.hasChildNodes()) {
+// 			for (var i = 0; i < xml.childNodes.length; i++) {
+// 				var item = xml.childNodes.item(i);
+// 				var nodeName = item.nodeName;
+// 				if (typeof(js_obj[nodeName]) == "undefined") {
+// 					js_obj[nodeName] = setJsonObj(item);
+// 				} else {
+// 					if (typeof(js_obj[nodeName].push) == "undefined") {
+// 						var old = js_obj[nodeName];
+// 						js_obj[nodeName] = [];
+// 						js_obj[nodeName].push(old);
+// 					}
+// 					js_obj[nodeName].push(setJsonObj(item));
+// 				}
+// 			}
+// 		}
+// 		return js_obj;
+// 	}
 
-	var jsontoStr = function(js_obj) {
-		var rejsn = JSON.stringify(js_obj, undefined, 2).replace(/(\\t|\\r|\\n)/g, '').replace(/"",[\n\t\r\s]+""[,]*/g, '').replace(/(\n[\t\s\r]*\n)/g, '').replace(/[\s\t]{2,}""[,]{0,1}/g, '').replace(/"[\s\t]{1,}"[,]{0,1}/g, '').replace(/\[[\t\s]*\]/g, '""');
-		return (rejsn.indexOf('"parsererror": {') == -1) ? rejsn : 'Invalid XML format';
-	}
-};
+// 	var jsontoStr = function(js_obj) {
+// 		var rejsn = JSON.stringify(js_obj, undefined, 2).replace(/(\\t|\\r|\\n)/g, '').replace(/"",[\n\t\r\s]+""[,]*/g, '').replace(/(\n[\t\s\r]*\n)/g, '').replace(/[\s\t]{2,}""[,]{0,1}/g, '').replace(/"[\s\t]{1,}"[,]{0,1}/g, '').replace(/\[[\t\s]*\]/g, '""');
+// 		return (rejsn.indexOf('"parsererror": {') == -1) ? rejsn : 'Invalid XML format';
+// 	}
+// };
