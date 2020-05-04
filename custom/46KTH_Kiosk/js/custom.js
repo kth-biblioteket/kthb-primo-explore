@@ -852,7 +852,7 @@ Kioskanpassningar inlagda med "//Kiosk"
 	
 	/*****************************************
 	
-	prm-search-bar-after
+	prm-search-after
 		
 	*****************************************/
 	app.component('prmSearchAfter', {
@@ -1463,7 +1463,7 @@ Kioskanpassningar inlagda med "//Kiosk"
 	/***************************************************
 	 * 
 	 * prm-view-online-after
-	 * 
+	 * Kiosk
 	 ***************************************************/
 	app.component('prmViewOnlineAfter', {
 		bindings: {parentCtrl: '<'},
