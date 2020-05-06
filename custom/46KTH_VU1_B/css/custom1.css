@@ -1334,6 +1334,12 @@ prm-full-view-page md-content>div:nth-of-type(1) {
 	flex: 1 1 15% !important;
 	max-width: 15% !important;
 }
+/* permalink prm-citation */
+prm-full-view-page prm-permalink md-content>div:nth-of-type(1),
+prm-full-view-page prm-citation md-content>div:nth-of-type(1) {
+	flex: 1 1 100% !important;
+	max-width: 100% !important;
+}
 
 prm-full-view-page md-content .full-view-container:after {
 	content: "";
