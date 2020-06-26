@@ -991,181 +991,217 @@ console.log(kth_vid);
 	
 	*****************************************/
 	app.component('prmSearchResultListAfter', {
-			bindings: {parentCtrl: '<'},
-			controller: 'prmSearchResultListAfterController',
-			template: 
-			`<div ng-if="!$ctrl.isfavorites && $ctrl.showfacets">
-				<div id="facettmenudiv">
-					<ul id="facettmenu">
-						<li ng-if="$ctrl.physical_item_enabled">
-							<a href="{{$ctrl.absUrl + $ctrl.physical_item}}" translate="facets.facet.tlevel.physical_item"></a>&nbsp;<span ng-if="$ctrl.physical_item_enabled">({{$ctrl.physical_item_nr}})</span>
-							</li>
-						<li ng-if="!$ctrl.physical_item_enabled" translate="facets.facet.tlevel.physical_item"></li>&nbsp;|&nbsp;
-						<li ng-if="$ctrl.online_resources_enabled">
-							<a href="{{$ctrl.absUrl + $ctrl.online_resources}}" translate="facets.facet.tlevel.online_resources"></a>&nbsp;<span ng-if="$ctrl.online_resources_enabled">({{$ctrl.online_resources_nr}})</span>
+		bindings: {parentCtrl: '<'},
+		controller: 'prmSearchResultListAfterController',
+		template: 
+		`<div ng-if="!$ctrl.isfavorites && $ctrl.showfacets">
+			<div id="facettmenudiv">
+				<ul id="facettmenu">
+					<li ng-if="$ctrl.physical_item_enabled">
+						<a href="{{$ctrl.absUrl + $ctrl.physical_item}}" translate="facets.facet.tlevel.physical_item"></a>&nbsp;<span ng-if="$ctrl.physical_item_enabled">({{$ctrl.physical_item_nr}})</span>
+					</li>
+					<li ng-if="!$ctrl.physical_item_enabled" translate="facets.facet.tlevel.physical_item"></li>&nbsp;|&nbsp;
+
+					<li ng-if="$ctrl.online_resources_enabled">
+						<a href="{{$ctrl.absUrl + $ctrl.online_resources}}" translate="facets.facet.tlevel.online_resources"></a>&nbsp;<span ng-if="$ctrl.online_resources_enabled">({{$ctrl.online_resources_nr}})</span>
+					</li>
+					<li ng-if="$ctrl.online_resources2_enabled">
+						<a href="{{$ctrl.absUrl + $ctrl.online_resources2}}" translate="facets.facet.tlevel.online_resources"></a>&nbsp;<span ng-if="$ctrl.online_resources2_enabled">({{$ctrl.online_resources2_nr}})</span>
+					</li>
+					<li ng-if="!$ctrl.online_resources_enabled && !$ctrl.online_resources2_enabled" translate="facets.facet.tlevel.online_resources"></li>&nbsp;|&nbsp;
+
+					<li ng-if="$ctrl.books_enabled">
+						<a ng-if="$ctrl.books_enabled" href="{{$ctrl.absUrl + $ctrl.books}}" translate="facets.facet.facet_rtype.books"></a>&nbsp;<span ng-if="$ctrl.books_enabled">({{$ctrl.books_nr}})</span>
+					</li>
+					<li ng-if="!$ctrl.books_enabled" translate="facets.facet.facet_rtype.books"></li>&nbsp;|&nbsp;
+					<!--
+					<li ng-if="$ctrl.journals_enabled">
+						<a href="{{$ctrl.absUrl + $ctrl.journals}}" translate="facets.facet.facet_rtype.journals"></a>&nbsp;<span ng-if="$ctrl.journals_enabled">({{$ctrl.journals_nr}})</span>
 						</li>
-						<li ng-if="!$ctrl.online_resources_enabled" translate="facets.facet.tlevel.online_resources"></li>&nbsp;|&nbsp;
-						<li ng-if="$ctrl.books_enabled">
-							<a ng-if="$ctrl.books_enabled" href="{{$ctrl.absUrl + $ctrl.books}}" translate="facets.facet.facet_rtype.books"></a>&nbsp;<span ng-if="$ctrl.books_enabled">({{$ctrl.books_nr}})</span>
+					<li ng-if="!$ctrl.journals_enabled" translate="facets.facet.facet_rtype.journals"></li>&nbsp;|&nbsp;
+					-->
+					<li ng-if="$ctrl.kthbjournal_enabled">
+						<a href="{{$ctrl.absUrl + $ctrl.kthbjournal}}" translate="facets.facet.facet_rtype.kthbjournal"></a>&nbsp;<span ng-if="$ctrl.kthbjournal_enabled">({{$ctrl.kthbjournal_nr}})</span>
 						</li>
-						<li ng-if="!$ctrl.books_enabled" translate="facets.facet.facet_rtype.books"></li>&nbsp;|&nbsp;
-						<li ng-if="$ctrl.journals_enabled">
-							<a href="{{$ctrl.absUrl + $ctrl.journals}}" translate="facets.facet.facet_rtype.journals"></a>&nbsp;<span ng-if="$ctrl.journals_enabled">({{$ctrl.journals_nr}})</span>
-							</li>
-						<li ng-if="!$ctrl.journals_enabled" translate="facets.facet.facet_rtype.journals"></li>&nbsp;|&nbsp;
-						<li ng-if="$ctrl.bibldbfasett_enabled">
-							<a href="{{$ctrl.absUrl + $ctrl.bibldbfasett}}" translate="facets.facet.facet_rtype.bibldbfasett"></a>&nbsp;<span ng-if="$ctrl.bibldbfasett_enabled">({{$ctrl.bibldbfasett_nr}})</span>
-						</li>
-						<li ng-if="!$ctrl.bibldbfasett_enabled" translate="facets.facet.facet_rtype.bibldbfasett"></li>&nbsp;|&nbsp;
-						<li ng-if="$ctrl.articles_enabled">
-							<a href="{{$ctrl.absUrl + $ctrl.articles}}" translate="facets.facet.facet_rtype.articles"></a>&nbsp;<span ng-if="$ctrl.articles_enabled">({{$ctrl.articles_nr}})</span>
-						</li>
-						<li ng-if="!$ctrl.articles_enabled" translate="facets.facet.facet_rtype.articles"></li>
-					</ul>
-				</div>
+					<li ng-if="!$ctrl.kthbjournal_enabled" translate="facets.facet.facet_rtype.kthbjournal"></li>&nbsp;|&nbsp;
+					<li ng-if="$ctrl.bibldbfasett_enabled">
+						<a href="{{$ctrl.absUrl + $ctrl.bibldbfasett}}" translate="facets.facet.facet_rtype.bibldbfasett"></a>&nbsp;<span ng-if="$ctrl.bibldbfasett_enabled">({{$ctrl.bibldbfasett_nr}})</span>
+					</li>
+					<li ng-if="!$ctrl.bibldbfasett_enabled" translate="facets.facet.facet_rtype.bibldbfasett"></li>&nbsp;|&nbsp;
+					<li ng-if="$ctrl.articles_enabled">
+						<a href="{{$ctrl.absUrl + $ctrl.articles}}" translate="facets.facet.facet_rtype.articles"></a>&nbsp;<span ng-if="$ctrl.articles_enabled">({{$ctrl.articles_nr}})</span>
+					</li>
+					<li ng-if="!$ctrl.articles_enabled" translate="facets.facet.facet_rtype.articles"></li>
+				</ul>
 			</div>
-			<div tabindex="-1" ng-if="$ctrl.parentCtrl.searchResults.length == 0 && $ctrl.screenIsSmall" class="margin-medium">
-				<md-checkbox ng-model="$ctrl.pcAvailability" ng-change="$ctrl.expandsearchoutsidelibrary();" aria-label="{{\'expandresults\' | translate}}">
-					<span translate="expandresults"></span>
-				</md-checkbox>
-			</div>`					
+		</div>
+		<div tabindex="-1" ng-if="$ctrl.parentCtrl.searchResults.length == 0 && $ctrl.screenIsSmall" class="margin-medium">
+			<md-checkbox ng-model="$ctrl.pcAvailability" ng-change="$ctrl.expandsearchoutsidelibrary();" aria-label="{{\'expandresults\' | translate}}">
+				<span translate="expandresults"></span>
+			</md-checkbox>
+		</div>`					
+});
+
+app.controller('prmSearchResultListAfterController', function ($scope,$location,$rootScope,kth_currenturl,kth_loginservice,$timeout,$mdMedia) {
+	
+	var vm = this;
+
+	/**********************************
+	
+	för att visa "utöka" vid 0 träffar
+	som förslag på små skärmar
+	
+	***********************************/
+	//exempel "reactive oxygen species as agents of fatigue"
+	vm.searchObject = $location.search();
+	if(typeof(vm.searchObject.pcAvailability) == 'undefined') {
+		vm.pcAvailability = false;
+	} else {
+		vm.searchObject.pcAvailability == 'true' ? vm.pcAvailability=true: vm.pcAvailability=false;
+	}
+	vm.expandsearchoutsidelibrary = expandsearchoutsidelibrary;
+	
+	//Kolla om skärmen är liten.
+	$scope.$watch(function() { return $mdMedia('max-width: 960px'); }, function(small) {
+		vm.screenIsSmall = small;
+	});
+	
+	function expandsearchoutsidelibrary() {
+		let mode = vm.pcAvailability ? 'true': 'false';
+		//"$location.search" ändrar parametrar i URL:en
+		$location.search('pcAvailability', mode);
+	}
+	/*********************************************
+	
+	Egen topfacettmeny
+
+	TODO:
+	ny fasett: kthbjournal (byt ut "journals")
+	extra villkor top level: "Online resources"
+	
+	*********************************************/
+	vm.absUrl = $location.absUrl();
+	vm.showfacets = false;
+	$scope.$on('urldataAdded', function(event, data) {
+		$scope.$watch(function() { return vm.parentCtrl.facetService.results; }, function(facetServiceresults) {
+			vm.physical_item_enabled = false;
+			vm.online_resources_enabled = false;
+			vm.online_resources2_enabled = false;
+			vm.books_enabled = false;
+			vm.journals_enabled = false;
+			vm.kthbjournal_enabled = false;
+			vm.bibldbfasett_enabled = false;
+			vm.articles_enabled = false;
+			vm.physical_item_nr = 0;
+			vm.online_resources_nr = 0;
+			vm.online_resources2_nr = 0;
+			vm.books_nr = 0;
+			vm.journals_nr = 0;
+			vm.kthbjournal_nr = 0;
+			vm.bibldbfasett_nr = 0;
+			vm.articles_nr = 0;
+			vm.isfavorites = vm.parentCtrl.isFavorites;
+			//gå igenom alla facetter
+			//hittas en facett här så är den alltså aktiv och möjlig att begränsa resultatet med
+			console.log(facetServiceresults)
+			facetServiceresults.forEach( 
+				function (item, index) {
+					if (item.name=='tlevel') {
+						item.values.forEach( 
+							function (value,valueindex) {
+								if (value.value == 'physical_item') {
+									vm.physical_item_enabled = true;
+									vm.physical_item_nr = value.count.toLocaleString();
+								}
+								if (value.value == 'online_resources') {
+									vm.online_resources_enabled = true;
+									vm.online_resources_nr = value.count.toLocaleString();
+								}
+								if (value.value == 'Online resources') {
+									vm.online_resources2_enabled = true;
+									vm.online_resources2_nr = value.count.toLocaleString();
+								}
+								/*
+								if (value.value == 'peer_reviewed') {
+									vm.articles_enabled = true;
+									vm.articles_nr = value.count.toLocaleString();
+								}
+								*/
+							}
+						)
+					}
+					if (item.name=='rtype') {
+						item.values.forEach( 
+							function (value,valueindex) {
+								if (value.value == 'books') {
+									vm.books_enabled = true;
+									vm.books_nr = value.count.toLocaleString();
+								}
+								if (value.value == 'journals') {
+									vm.journals_enabled = true;
+									vm.journals_nr = value.count.toLocaleString();
+								}
+								if (value.value == 'kthbjournal') {
+									vm.kthbjournal_enabled = true;
+									vm.kthbjournal_nr = value.count.toLocaleString();
+								}
+								if (value.value == 'bibldbfasett') {
+									vm.bibldbfasett_enabled = true;
+									vm.bibldbfasett_nr = value.count.toLocaleString();
+								}
+								if (value.value == 'articles') {
+									vm.articles_enabled = true;
+									vm.articles_nr = value.count.toLocaleString();
+								}
+							}
+						)
+					}
+					
+				}
+			);
+			vm.physical_item = "";
+			vm.online_resources = "";
+			vm.online_resources2 = "";
+			vm.books = "";
+			vm.journals = "";
+			vm.kthbjournal = "";
+			vm.bibldbfasett = "";
+			vm.articles = "";
+
+			if (vm.absUrl.indexOf("facet=tlevel,include,physical_item")=== -1) {
+				vm.physical_item = "&facet=tlevel,include,physical_item";
+			}
+			if (vm.absUrl.indexOf("facet=tlevel,include,online_resources")=== -1) {
+				vm.online_resources = "&facet=tlevel,include,online_resources";
+			}
+			if (vm.absUrl.indexOf("facet=tlevel,include,Online resources")=== -1) {
+				vm.online_resources2 = "&facet=tlevel,include,Online resources";
+			}
+			/*
+			if (vm.absUrl.indexOf("facet=tlevel,include,peer_reviewed")=== -1) {
+				vm.articles = "&facet=tlevel,include,peer_reviewed";
+			}
+			*/
+			if (vm.absUrl.indexOf("facet=rtype,include,books")=== -1) {
+				vm.books = "&facet=rtype,include,books";
+			}
+			if (vm.absUrl.indexOf("facet=rtype,include,journals")=== -1) {
+				vm.journals = "&facet=rtype,include,journals";
+			}
+			if (vm.absUrl.indexOf("facet=rtype,include,kthbjournal")=== -1) {
+				vm.kthbjournal = "&facet=rtype,include,kthbjournal";
+			}
+			if (vm.absUrl.indexOf("facet=rtype,include,bibldbfasett")=== -1) {
+				vm.bibldbfasett = "&facet=rtype,include,bibldbfasett";
+			}
+			if (vm.absUrl.indexOf("facet=rtype,include,articles")=== -1) {
+				vm.articles = "&facet=rtype,include,articles";
+			}
+			vm.showfacets = true;
+		}); //slut watch
 	});
 
-	app.controller('prmSearchResultListAfterController', function ($scope,$location,$rootScope,kth_currenturl,kth_loginservice,$timeout,$mdMedia) {
-		
-		var vm = this;
-
-		/**********************************
-		
-		för att visa "utöka" vid 0 träffar
-		som förslag på små skärmar
-		
-		***********************************/
-		//exempel "reactive oxygen species as agents of fatigue"
-		vm.searchObject = $location.search();
-		if(typeof(vm.searchObject.pcAvailability) == 'undefined') {
-			vm.pcAvailability = false;
-		} else {
-			vm.searchObject.pcAvailability == 'true' ? vm.pcAvailability=true: vm.pcAvailability=false;
-		}
-		vm.expandsearchoutsidelibrary = expandsearchoutsidelibrary;
-		
-		//Kolla om skärmen är liten.
-		$scope.$watch(function() { return $mdMedia('max-width: 960px'); }, function(small) {
-			vm.screenIsSmall = small;
-		});
-		
-		function expandsearchoutsidelibrary() {
-			let mode = vm.pcAvailability ? 'true': 'false';
-			//"$location.search" ändrar parametrar i URL:en
-			$location.search('pcAvailability', mode);
-		}
-		/*********************************************
-		
-		Egen topfacettmeny
-		
-		*********************************************/
-		vm.absUrl = $location.absUrl();
-		vm.showfacets = false;
-		$scope.$on('urldataAdded', function(event, data) {
-			$scope.$watch(function() { return vm.parentCtrl.facetService.results; }, function(facetServiceresults) {
-				vm.physical_item_enabled = false;
-				vm.online_resources_enabled = false;
-				vm.books_enabled = false;
-				vm.journals_enabled = false;
-				vm.bibldbfasett_enabled = false;
-				vm.articles_enabled = false;
-				vm.physical_item_nr = 0;
-				vm.online_resources_nr = 0;
-				vm.books_nr = 0;
-				vm.journals_nr = 0;
-				vm.bibldbfasett_nr = 0;
-				vm.articles_nr = 0;
-				vm.isfavorites = vm.parentCtrl.isFavorites;
-				//gå igenom alla facetter
-				//hittas en facett här så är den alltså aktiv och möjlig att begränsa resultatet med
-				facetServiceresults.forEach( 
-					function (item, index) {
-						if (item.name=='tlevel') {
-							item.values.forEach( 
-								function (value,valueindex) {
-									if (value.value == 'physical_item') {
-										vm.physical_item_enabled = true;
-										vm.physical_item_nr = value.count.toLocaleString();
-									}
-									if (value.value == 'online_resources') {
-										vm.online_resources_enabled = true;
-										vm.online_resources_nr = value.count.toLocaleString();
-									}
-									/*
-									if (value.value == 'peer_reviewed') {
-										vm.articles_enabled = true;
-										vm.articles_nr = value.count.toLocaleString();
-									}
-									*/
-								}
-							)
-						}
-						if (item.name=='rtype') {
-							item.values.forEach( 
-								function (value,valueindex) {
-									if (value.value == 'books') {
-										vm.books_enabled = true;
-										vm.books_nr = value.count.toLocaleString();
-									}
-									if (value.value == 'journals') {
-										vm.journals_enabled = true;
-										vm.journals_nr = value.count.toLocaleString();
-									}
-									if (value.value == 'bibldbfasett') {
-										vm.bibldbfasett_enabled = true;
-										vm.bibldbfasett_nr = value.count.toLocaleString();
-									}
-									if (value.value == 'articles') {
-										vm.articles_enabled = true;
-										vm.articles_nr = value.count.toLocaleString();
-									}
-								}
-							)
-						}
-						
-					}
-				);
-				vm.physical_item = "";
-				vm.online_resources = "";
-				vm.books = "";
-				vm.journals = "";
-				vm.bibldbfasett = "";
-				vm.articles = "";
-
-				if (vm.absUrl.indexOf("facet=tlevel,include,physical_item")=== -1) {
-					vm.physical_item = "&facet=tlevel,include,physical_item";
-				}
-				if (vm.absUrl.indexOf("facet=tlevel,include,online_resources")=== -1) {
-					vm.online_resources = "&facet=tlevel,include,online_resources";
-				}
-				/*
-				if (vm.absUrl.indexOf("facet=tlevel,include,peer_reviewed")=== -1) {
-					vm.articles = "&facet=tlevel,include,peer_reviewed";
-				}
-				*/
-				if (vm.absUrl.indexOf("facet=rtype,include,books")=== -1) {
-					vm.books = "&facet=rtype,include,books";
-				}
-				if (vm.absUrl.indexOf("facet=rtype,include,journals")=== -1) {
-					vm.journals = "&facet=rtype,include,journals";
-				}
-				if (vm.absUrl.indexOf("facet=rtype,include,bibldbfasett")=== -1) {
-					vm.bibldbfasett = "&facet=rtype,include,bibldbfasett";
-				}
-				if (vm.absUrl.indexOf("facet=rtype,include,articles")=== -1) {
-					vm.articles = "&facet=rtype,include,articles";
-				}
-				vm.showfacets = true;
-			}); //slut watch
-		});
-	
-	});	
+});	
 	
 	/*****************************************
 	 
@@ -2406,7 +2442,7 @@ console.log(kth_vid);
 		}
 	}
 	w.$kundo_chat.widget_styles = {
-		background_color: "#d85497",
+		background_color: "#d02f80",
 		text_color: "#ffffff"
 	};
 	

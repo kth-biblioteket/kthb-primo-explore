@@ -999,20 +999,31 @@ console.log(kth_vid);
 					<ul id="facettmenu">
 						<li ng-if="$ctrl.physical_item_enabled">
 							<a href="{{$ctrl.absUrl + $ctrl.physical_item}}" translate="facets.facet.tlevel.physical_item"></a>&nbsp;<span ng-if="$ctrl.physical_item_enabled">({{$ctrl.physical_item_nr}})</span>
-							</li>
+						</li>
 						<li ng-if="!$ctrl.physical_item_enabled" translate="facets.facet.tlevel.physical_item"></li>&nbsp;|&nbsp;
+
 						<li ng-if="$ctrl.online_resources_enabled">
 							<a href="{{$ctrl.absUrl + $ctrl.online_resources}}" translate="facets.facet.tlevel.online_resources"></a>&nbsp;<span ng-if="$ctrl.online_resources_enabled">({{$ctrl.online_resources_nr}})</span>
 						</li>
-						<li ng-if="!$ctrl.online_resources_enabled" translate="facets.facet.tlevel.online_resources"></li>&nbsp;|&nbsp;
+						<li ng-if="$ctrl.online_resources2_enabled">
+							<a href="{{$ctrl.absUrl + $ctrl.online_resources2}}" translate="facets.facet.tlevel.online_resources"></a>&nbsp;<span ng-if="$ctrl.online_resources2_enabled">({{$ctrl.online_resources2_nr}})</span>
+						</li>
+						<li ng-if="!$ctrl.online_resources_enabled && !$ctrl.online_resources2_enabled" translate="facets.facet.tlevel.online_resources"></li>&nbsp;|&nbsp;
+
 						<li ng-if="$ctrl.books_enabled">
 							<a ng-if="$ctrl.books_enabled" href="{{$ctrl.absUrl + $ctrl.books}}" translate="facets.facet.facet_rtype.books"></a>&nbsp;<span ng-if="$ctrl.books_enabled">({{$ctrl.books_nr}})</span>
 						</li>
 						<li ng-if="!$ctrl.books_enabled" translate="facets.facet.facet_rtype.books"></li>&nbsp;|&nbsp;
+						<!--
 						<li ng-if="$ctrl.journals_enabled">
 							<a href="{{$ctrl.absUrl + $ctrl.journals}}" translate="facets.facet.facet_rtype.journals"></a>&nbsp;<span ng-if="$ctrl.journals_enabled">({{$ctrl.journals_nr}})</span>
 							</li>
 						<li ng-if="!$ctrl.journals_enabled" translate="facets.facet.facet_rtype.journals"></li>&nbsp;|&nbsp;
+						-->
+						<li ng-if="$ctrl.kthbjournal_enabled">
+							<a href="{{$ctrl.absUrl + $ctrl.kthbjournal}}" translate="facets.facet.facet_rtype.kthbjournal"></a>&nbsp;<span ng-if="$ctrl.kthbjournal_enabled">({{$ctrl.kthbjournal_nr}})</span>
+							</li>
+						<li ng-if="!$ctrl.kthbjournal_enabled" translate="facets.facet.facet_rtype.kthbjournal"></li>&nbsp;|&nbsp;
 						<li ng-if="$ctrl.bibldbfasett_enabled">
 							<a href="{{$ctrl.absUrl + $ctrl.bibldbfasett}}" translate="facets.facet.facet_rtype.bibldbfasett"></a>&nbsp;<span ng-if="$ctrl.bibldbfasett_enabled">({{$ctrl.bibldbfasett_nr}})</span>
 						</li>
@@ -1063,6 +1074,10 @@ console.log(kth_vid);
 		/*********************************************
 		
 		Egen topfacettmeny
+
+		TODO:
+		ny fasett: kthbjournal (byt ut "journals")
+		extra villkor top level: "Online resources"
 		
 		*********************************************/
 		vm.absUrl = $location.absUrl();
@@ -1071,19 +1086,24 @@ console.log(kth_vid);
 			$scope.$watch(function() { return vm.parentCtrl.facetService.results; }, function(facetServiceresults) {
 				vm.physical_item_enabled = false;
 				vm.online_resources_enabled = false;
+				vm.online_resources2_enabled = false;
 				vm.books_enabled = false;
 				vm.journals_enabled = false;
+				vm.kthbjournal_enabled = false;
 				vm.bibldbfasett_enabled = false;
 				vm.articles_enabled = false;
 				vm.physical_item_nr = 0;
 				vm.online_resources_nr = 0;
+				vm.online_resources2_nr = 0;
 				vm.books_nr = 0;
 				vm.journals_nr = 0;
+				vm.kthbjournal_nr = 0;
 				vm.bibldbfasett_nr = 0;
 				vm.articles_nr = 0;
 				vm.isfavorites = vm.parentCtrl.isFavorites;
 				//gå igenom alla facetter
 				//hittas en facett här så är den alltså aktiv och möjlig att begränsa resultatet med
+				console.log(facetServiceresults)
 				facetServiceresults.forEach( 
 					function (item, index) {
 						if (item.name=='tlevel') {
@@ -1096,6 +1116,10 @@ console.log(kth_vid);
 									if (value.value == 'online_resources') {
 										vm.online_resources_enabled = true;
 										vm.online_resources_nr = value.count.toLocaleString();
+									}
+									if (value.value == 'Online resources') {
+										vm.online_resources2_enabled = true;
+										vm.online_resources2_nr = value.count.toLocaleString();
 									}
 									/*
 									if (value.value == 'peer_reviewed') {
@@ -1117,6 +1141,10 @@ console.log(kth_vid);
 										vm.journals_enabled = true;
 										vm.journals_nr = value.count.toLocaleString();
 									}
+									if (value.value == 'kthbjournal') {
+										vm.kthbjournal_enabled = true;
+										vm.kthbjournal_nr = value.count.toLocaleString();
+									}
 									if (value.value == 'bibldbfasett') {
 										vm.bibldbfasett_enabled = true;
 										vm.bibldbfasett_nr = value.count.toLocaleString();
@@ -1133,8 +1161,10 @@ console.log(kth_vid);
 				);
 				vm.physical_item = "";
 				vm.online_resources = "";
+				vm.online_resources2 = "";
 				vm.books = "";
 				vm.journals = "";
+				vm.kthbjournal = "";
 				vm.bibldbfasett = "";
 				vm.articles = "";
 
@@ -1143,6 +1173,9 @@ console.log(kth_vid);
 				}
 				if (vm.absUrl.indexOf("facet=tlevel,include,online_resources")=== -1) {
 					vm.online_resources = "&facet=tlevel,include,online_resources";
+				}
+				if (vm.absUrl.indexOf("facet=tlevel,include,Online resources")=== -1) {
+					vm.online_resources2 = "&facet=tlevel,include,Online resources";
 				}
 				/*
 				if (vm.absUrl.indexOf("facet=tlevel,include,peer_reviewed")=== -1) {
@@ -1154,6 +1187,9 @@ console.log(kth_vid);
 				}
 				if (vm.absUrl.indexOf("facet=rtype,include,journals")=== -1) {
 					vm.journals = "&facet=rtype,include,journals";
+				}
+				if (vm.absUrl.indexOf("facet=rtype,include,kthbjournal")=== -1) {
+					vm.kthbjournal = "&facet=rtype,include,kthbjournal";
 				}
 				if (vm.absUrl.indexOf("facet=rtype,include,bibldbfasett")=== -1) {
 					vm.bibldbfasett = "&facet=rtype,include,bibldbfasett";
@@ -1872,7 +1908,7 @@ console.log(kth_vid);
 		}
 	}
 	w.$kundo_chat.widget_styles = {
-		background_color: "#d85497",
+		background_color: "#d02f80",
 		text_color: "#ffffff"
 	};
 	
