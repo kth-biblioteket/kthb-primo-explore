@@ -56,6 +56,9 @@ prm-static md-card-title {
 prm-static md-card-content {
 	padding: 0 10px 10px 0 !important;
 }
+md-card-title-image img {
+	width: 100%
+}
 
 /*****************************************************
 
