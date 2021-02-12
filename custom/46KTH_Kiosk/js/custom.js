@@ -1977,7 +1977,7 @@ Kioskanpassningar inlagda med "//Kiosk"
 		}
 	}
 	w.$kundo_chat.widget_styles = {
-		background_color: "#d85497",
+		background_color: "#d02f80",
 		text_color: "#ffffff"
 	};
 	
