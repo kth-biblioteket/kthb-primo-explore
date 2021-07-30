@@ -1898,12 +1898,12 @@ console.log(kth_vid);
 
 	var lang = getUrlVars()["lang"];
 	w.$kundo_chat.custom_texts = {
-		START_TEXT: "Send a message",
+		START_TEXT: "Chat with us",
 	};
 	if(typeof(lang) !== 'undefined') {
 		if (lang.indexOf('sv') != -1) {
 			w.$kundo_chat.custom_texts = {
-				START_TEXT: "Skicka meddelande",
+				START_TEXT: "Chatta med oss",
 			};
 		}
 	}
