@@ -56,6 +56,9 @@ prm-static md-card-title {
 prm-static md-card-content {
 	padding: 0 10px 10px 0 !important;
 }
+md-card-title-image img {
+	width: 100%
+}
 
 /*****************************************************
 
@@ -990,9 +993,11 @@ prm-brief-result-container .peer-reviewed-mark
 } 
 
 /* dölj OA indikationen helt tills vidare, vår egen via unpaywall är just nu bättre */
+/*
 .open-access-mark {
 	display: none;
 }
+*/
 
 /* färg på knappen för att hämta fler träffar */
 button.button-confirm.button-large.md-button.md-primoExplore-theme.md-ink-ripple {

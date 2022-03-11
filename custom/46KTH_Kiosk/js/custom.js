@@ -1656,6 +1656,7 @@ Kioskanpassningar inlagda med "//Kiosk"
 			});
 		}
 
+		/*
 		//Bevaka (watch) eftersom värden inte alltid hunnit sättas.
 		//träfflista
 		if (typeof(vm.parentCtrl.result) != "undefined") {
@@ -1839,6 +1840,7 @@ Kioskanpassningar inlagda med "//Kiosk"
 				}
 			});
 		}
+		*/
 	});
 	
 	/**********************************************************
