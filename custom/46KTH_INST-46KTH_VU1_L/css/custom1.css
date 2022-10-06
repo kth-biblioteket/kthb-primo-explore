@@ -633,8 +633,7 @@ prm-search-result-list .search-result-tool-bar-mobile {
 }
 
 /* Kiosk, visa inte*/
-body.kiosk prm-personalize-results-button-after,
-body.kiosk prm-search-result-tool-bar
+body.kiosk prm-personalize-results-button-after
 {
 	display: none;
 }

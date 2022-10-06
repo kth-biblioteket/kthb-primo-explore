@@ -1,4 +1,4 @@
-var kth_vid = "46KTH_INST-46KTH_VU1_B"
+var kth_vid = "46KTH_INST:46KTH_VU1_B"
 console.log(kth_vid);
 
 (function () {

@@ -1,4 +1,4 @@
-var kth_vid = "46KTH_INST-46KTH_VU1_Kiosk"
+var kth_vid = "46KTH_INST:46KTH_VU1_Kiosk"
 console.log(kth_vid);
 
 (function () {
@@ -141,12 +141,12 @@ console.log(kth_vid);
 		$scope.$on('IdleTimeout', function() {
 			vm.absUrl = $location.absUrl();
 			//är det redan tomma söksidan?
-			if (vm.absUrl.indexOf("primo-explore/search?sortby=rank&vid=" + kth_vid + "&lang=en_US")!== -1) {
+			if (vm.absUrl.indexOf("discovery/search?sortby=rank&vid=" + kth_vid + "&lang=en")!== -1) {
 				document.querySelector('button[aria-label="Keep me alive"]').click();
 			} else {
 				//reset personalization?
 				//vm.primoExploreCtrl.userSessionManagerService.personalizationDialogService.resetPersonalization();
-				$window.location.assign('/primo-explore/search?vid=' + kth_vid);
+				$window.location.assign('/discovery/search?vid=' + kth_vid);
 			}
 		});
 		//Kiosk sätt kiosk class på body
@@ -384,10 +384,10 @@ console.log(kth_vid);
 
 		//Kiosk gå till primo i st f kth, lägg till "sökdator" i rubriken
 		$scope.$watch(function() { return $translate.use(); }, function(language) {
-			vm.parentCtrl.kthb_link = "/primo-explore/search?vid=" + kth_vid;
+			vm.parentCtrl.kthb_link = "/discovery/search?vid=" + kth_vid;
 			vm.parentCtrl.kthb_kioskheader = "KTH Library - Search Computer";
 			if(language == 'sv_SE') {
-				vm.parentCtrl.kthb_link = "/primo-explore/search?vid=" + kth_vid + "&lang=sv_SE";
+				vm.parentCtrl.kthb_link = "/discovery/search?vid=" + kth_vid + "&lang=sv";
 				vm.parentCtrl.kthb_kioskheader = "KTH Biblioteket - Sökdator";
 			}
 		});
