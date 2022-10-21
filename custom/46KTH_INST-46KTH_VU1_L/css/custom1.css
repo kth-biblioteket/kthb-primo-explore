@@ -1243,12 +1243,44 @@ prm-alma-viewit prm-alma-viewit-items .in-element-dialog-context prm-icon[icon-d
 	color:#1954a6
 }
 
-/* request button */
+/* request buttons */
 
-prm-request-services .md-button.button-as-link {
+prm-request-services .md-button.button-as-link,
+prm-service-button .md-button {
 	border: 1px solid #53738c;
     padding: 12px;
     border-radius: 5px
+} 
+
+alma-howovp .md-button.neutralized-button a {
+	color: inherit;
+} 
+alma-howovp .md-button.neutralized-button a:hover {
+	box-shadow: none;
+} 
+
+alma-howovp .md-button.neutralized-button {
+	border: 1px solid #53738c;
+    border-radius: 5px;
+	width: auto;
+	color: #53738c
+}
+
+alma-howovp .md-button.neutralized-button:hover {
+    background-color: #53738c;
+	color: white;
+}
+
+alma-howovp prm-icon {
+	display:none; 
+}
+
+alma-howovp .md-button.neutralized-button [ng-if*="service.publicNote.length"] {
+	display: none;
+}
+
+prm-request-services .md-button.button-as-link prm-icon {
+	display: none;
 }
 
 /*************
