@@ -250,68 +250,73 @@ console.log(kth_vid);
 						<!--prm-icon class="rotate-20" icon-type="svg" svg-icon-set="primo-ui" icon-definition="earth"></prm-icon-->
 						<div id="kth_langbutton" ng-if="$ctrl.lang=='sv'" ng-class="$ctrl.getClass()">EN</div>
 						<div id="kth_langbutton" ng-if="$ctrl.lang=='en'" ng-class="$ctrl.getClass()">SV</div>
-					</button>`,
-		bindings : { 'parentCtrl': '<' }
+					</button>`
 		
 	});
 
 	app.controller('prmSearchBookmarkFilterAfterController', function ($translate, $rootScope) {
 		var vm = this;
 
-		vm.lang = $translate.use();
-		var otherLanguage = $translate.use() === 'sv' ? 'en' : 'sv';
-		vm.switchLang = function () {
-			if (!$rootScope.languageSelectionCtrl) {
-			return false;
-			}
-			return $rootScope.languageSelectionCtrl.changeLanguage(otherLanguage);
-		};
-		vm.getClass = function () {
-			return $translate.use() === 'sv' ? 'lang-en' : 'lang-se';
-		};
-
-     	 var swedish = $translate.use() === 'sv' ? true : false;
-
-		angular.element(document).ready(function() {
-			var langIcon = document.querySelector('#lang-icon')
-			var langLabel = swedish ? 'Change language to English' : 'Byt språk till svenska'
-			var showTooltip = function(e) {
-				var position = e.target.getBoundingClientRect();
-				var tooltip = document.createElement('md-tooltip');
-				tooltip.className = 'kthb-tooltip md-panel md-tooltip md-primoExplore-theme md-origin-bottom';
-				tooltip.setAttribute('role', 'tooltip');
-				tooltip.innerHTML = '<span>' + e.target.getAttribute('aria-label') + '</span>';
-				tooltip.style.top = position.top + e.target.offsetHeight + 0 + 'px';
-				document.body.appendChild(tooltip);
-				setTimeout(function() {
-					tooltip.classList.add('md-panel-is-showing');
-					tooltip.style.left = position.left - (tooltip.offsetWidth - e.target.offsetWidth) / 2 +  'px';
-					var xxx = "xxx"
-				}, 500);
-			}
-			var hideTooltip = function(e) {
-				var tp = document.querySelectorAll('.kthb-tooltip');
-				if (tp.length) {
-				Array.prototype.forEach.call(tp, function(el) {
-					el.parentElement.removeChild(el);
-				})
+		vm.$onInit = function () { 
+			vm.lang = $translate.use();
+			var otherLanguage = $translate.use() === 'sv' ? 'en' : 'sv';
+			vm.switchLang = function () {
+				var url = document.location.href.replace('lang=' + vm.lang, 'lang=' + otherLanguage);
+					document.location = url;
+				/*
+				if (!$rootScope.languageSelectionCtrl) {
+				return false;
 				}
-			}
-			var setListeners = function(el) {
-				el.addEventListener('mouseenter', showTooltip, false);
-				el.addEventListener('focus', showTooltip, false);
-				el.addEventListener('mouseleave', hideTooltip, false);
-				el.addEventListener('focusout', hideTooltip, false);
-				el.addEventListener('click', hideTooltip, false);
+				return $rootScope.languageSelectionCtrl.changeLanguage(otherLanguage);
+				*/
 			};
-			if (langIcon) {
-				langIcon.setAttribute('aria-label', langLabel);
-				langIcon.setAttribute('lang', $translate.use() === 'sv' ? 'en' : 'sv');
-				//var langButton = document.querySelector('#lang-icon') 
-				//langButton.innerHTML = ""
-				setListeners(langIcon);
-			}
-		});
+			vm.getClass = function () {
+				return $translate.use() === 'sv' ? 'lang-en' : 'lang-se';
+			};
+
+			var swedish = $translate.use() === 'sv' ? true : false;
+
+			angular.element(document).ready(function() {
+				var langIcon = document.querySelector('#lang-icon')
+				var langLabel = swedish ? 'Change language to English' : 'Byt språk till svenska'
+				var showTooltip = function(e) {
+					var position = e.target.getBoundingClientRect();
+					var tooltip = document.createElement('md-tooltip');
+					tooltip.className = 'kthb-tooltip md-panel md-tooltip md-primoExplore-theme md-origin-bottom';
+					tooltip.setAttribute('role', 'tooltip');
+					tooltip.innerHTML = '<span>' + e.target.getAttribute('aria-label') + '</span>';
+					tooltip.style.top = position.top + e.target.offsetHeight + 0 + 'px';
+					document.body.appendChild(tooltip);
+					setTimeout(function() {
+						tooltip.classList.add('md-panel-is-showing');
+						tooltip.style.left = position.left - (tooltip.offsetWidth - e.target.offsetWidth) / 2 +  'px';
+						var xxx = "xxx"
+					}, 500);
+				}
+				var hideTooltip = function(e) {
+					var tp = document.querySelectorAll('.kthb-tooltip');
+					if (tp.length) {
+					Array.prototype.forEach.call(tp, function(el) {
+						el.parentElement.removeChild(el);
+					})
+					}
+				}
+				var setListeners = function(el) {
+					el.addEventListener('mouseenter', showTooltip, false);
+					el.addEventListener('focus', showTooltip, false);
+					el.addEventListener('mouseleave', hideTooltip, false);
+					el.addEventListener('focusout', hideTooltip, false);
+					el.addEventListener('click', hideTooltip, false);
+				};
+				if (langIcon) {
+					langIcon.setAttribute('aria-label', langLabel);
+					langIcon.setAttribute('lang', $translate.use() === 'sv' ? 'en' : 'sv');
+					//var langButton = document.querySelector('#lang-icon') 
+					//langButton.innerHTML = ""
+					setListeners(langIcon);
+				}
+			});
+		}
 
 	});
 
@@ -330,6 +335,7 @@ console.log(kth_vid);
 
 	app.controller('IconAfterController', [function() {
 		var vm = this;
+		vm.$onInit = function () { 
 		// Byt ut pin ikkonen till hjärta.
 		var icon = vm.parentCtrl.iconDefinition;
 		if (icon === 'prm_pin' || icon === 'prm_unpin') {
@@ -358,6 +364,9 @@ console.log(kth_vid);
 			element.innerHTML = '<md-icon md-svg-icon="social:ic_person_24px" alt="" class="md-primoExplore-theme" aria-hidden="true">' + icons['ic_person_24px'] + '</md-icon>';
 			
 		  }
+		}
+
+
 	}]);
 
 	/*****************************************
@@ -381,16 +390,17 @@ console.log(kth_vid);
 	app.controller('prmLogoAfterController',function ($scope, $translate,$timeout,$location) { 
 		var vm = this;
 		vm.kth_vid = kth_vid;
-
-		//Kiosk gå till primo i st f kth, lägg till "sökdator" i rubriken
-		$scope.$watch(function() { return $translate.use(); }, function(language) {
-			vm.parentCtrl.kthb_link = "/discovery/search?vid=" + kth_vid;
-			vm.parentCtrl.kthb_kioskheader = "KTH Library - Search Computer";
-			if(language == 'sv_SE') {
-				vm.parentCtrl.kthb_link = "/discovery/search?vid=" + kth_vid + "&lang=sv";
-				vm.parentCtrl.kthb_kioskheader = "KTH Biblioteket - Sökdator";
-			}
-		});
+		vm.$onInit = function () { 
+			//Kiosk gå till primo i st f kth, lägg till "sökdator" i rubriken
+			$scope.$watch(function() { return $translate.use(); }, function(language) {
+				vm.parentCtrl.kthb_link = "/discovery/search?vid=" + kth_vid;
+				vm.parentCtrl.kthb_kioskheader = "KTH Library - Search Computer";
+				if(language == 'sv_SE') {
+					vm.parentCtrl.kthb_link = "/discovery/search?vid=" + kth_vid + "&lang=sv";
+					vm.parentCtrl.kthb_kioskheader = "KTH Biblioteket - Sökdator";
+				}
+			});
+		}
 	});
 	
 	/*****************************************
@@ -567,8 +577,10 @@ console.log(kth_vid);
 
 	app.controller('prmSearchResultFrbrLineAfterController', function ($scope,$location,$timeout,$element) {
 		var vm = this;
-		if(vm.parentCtrl.result.context == "PC") {
-			$element[0].parentElement.style.visibility = "hidden"
+		vm.$onInit = function () { 
+			if(vm.parentCtrl.result.context == "PC") {
+				$element[0].parentElement.style.visibility = "hidden"
+			}
 		}
 	});
 
@@ -645,12 +657,6 @@ console.log(kth_vid);
 		vm.almetricsscore = 0;
 
 		vm.show_KTH_metrics = false
-		
-		if(vm.parentCtrl.item.pnx.addata.issn) {
-			vm.issn = vm.parentCtrl.item.pnx.addata.issn[0] || '';
-		} else if (vm.parentCtrl.item.pnx.addata.eissn) {
-			vm.issn = vm.parentCtrl.item.pnx.addata.eissn[0] || '';
-		}
 
 		function waitForElm(selector) {
 			return new Promise(resolve => {
@@ -673,6 +679,11 @@ console.log(kth_vid);
 		}
 
         vm.$onInit = function () { 
+			if(vm.parentCtrl.item.pnx.addata.issn) {
+				vm.issn = vm.parentCtrl.item.pnx.addata.issn[0] || '';
+			} else if (vm.parentCtrl.item.pnx.addata.eissn) {
+				vm.issn = vm.parentCtrl.item.pnx.addata.eissn[0] || '';
+			}
             vm.parentElement = this.$element.parent()[0];
 			try {
 				vm.doi = vm.parentCtrl.item.pnx.addata.doi[0] || '';
@@ -762,9 +773,6 @@ console.log(kth_vid);
 
 	app.controller('prmAlmaViewitItemsAfterController', function ($scope, $http) {
 		var vm = this;
-		console.log(vm.parentCtrl.getServices())
-
-		
 
 		$scope.$watch(function() { 
 			return vm.parentCtrl.getServices(); 
@@ -798,12 +806,12 @@ console.log(kth_vid);
 			return vm.parentCtrl.item.delivery.electronicServices; 
 			}, function(electronicServices) {
 				try {
-					electronicServices.forEach(function(service) {
-						if (service.packageName.indexOf('Contact the KTH Library') === -1 && service.packageName.indexOf('Kontakta') === -1) {
+					electronicServices.forEach(function(i) {
+						if (i.packageName.indexOf('Contact the KTH Library') === -1 && i.packageName.indexOf('Kontakta') === -1) {
 							//getlicence(i.packageName)
 							//Kiosk
-							service.packageName = 'No access to online material from this search computer';
-							service.serviceUrl = '';
+							i.packageName = 'No access to online material from this search computer';
+							i.serviceUrl = '';
 						}
 					});
 				  } catch(e) {
@@ -960,43 +968,44 @@ console.log(kth_vid);
 	app.controller('prmOpacAfterController', function ($scope, $http, $translate) {
 		var vm = this;
 
-		vm.lang = $translate.use();
-		console.log(vm.lang)
-		vm.kthb_holdings = {
-			"holdings":[],
-			"apidata":[{
-				"holdId": {},
-				"records": []
-			}]
-		}
+		vm.$onInit = function () {
+			vm.lang = $translate.use();
+			console.log(vm.lang)
+			vm.kthb_holdings = {
+				"holdings":[],
+				"apidata":[{
+					"holdId": {},
+					"records": []
+				}]
+			}
+			vm.kthb_holdings.holdings = vm.parentCtrl.item.delivery.holding
+			console.log(vm.kthb_holdings)
+			if (vm.kthb_holdings.holdings) {
+				vm.kthb_holdings.holdings.length > 0 ? vm.show=true : vm.show=false
 
-		vm.kthb_holdings.holdings = vm.parentCtrl.item.delivery.holding
-		console.log(vm.kthb_holdings)
-		if (vm.kthb_holdings.holdings) {
-			vm.kthb_holdings.holdings.length > 0 ? vm.show=true : vm.show=false
+				for(var i = 0;i < vm.kthb_holdings.holdings.length;i++) {
+					var method = 'GET';
+					var url = 'https://apps.lib.kth.se/alma/primo/almagetpolicy.php?mmsid=&holdingsid=' + vm.kthb_holdings.holdings[i].holdId + '&lang=sv&ssandbox=true';
+					$http({
+						method: method, 
+						url: url, 
+						headers: {'Content-Type': 'application/json'}
+					})
+					.then(function(response) {
+						var apidata = {
+							"holdId": response.data.holdingId,
+							"records": response.data.records,
+							"holding_info": response.data.holding_info
+						}
+						if(apidata.loan_status == "onloan") {
+							apidata.due_date = "Utlånad";
+						} else {
+							apidata.due_date = "På plats"
+						}
+						vm.kthb_holdings.apidata[response.data.holdingId] = apidata
+					});
 
-			for(var i = 0;i < vm.kthb_holdings.holdings.length;i++) {
-				var method = 'GET';
-				var url = 'https://apps.lib.kth.se/alma/primo/almagetpolicy.php?mmsid=&holdingsid=' + vm.kthb_holdings.holdings[i].holdId + '&lang=sv&ssandbox=true';
-				$http({
-					method: method, 
-					url: url, 
-					headers: {'Content-Type': 'application/json'}
-				})
-				.then(function(response) {
-					var apidata = {
-						"holdId": response.data.holdingId,
-						"records": response.data.records,
-						"holding_info": response.data.holding_info
-					}
-					if(apidata.loan_status == "onloan") {
-						apidata.due_date = "Utlånad";
-					} else {
-						apidata.due_date = "På plats"
-					}
-					vm.kthb_holdings.apidata[response.data.holdingId] = apidata
-				});
-				
+				}
 			}
 		}
     });
@@ -1100,14 +1109,13 @@ console.log(kth_vid);
 
 		vm.show_KTH_metrics = false
 		
-		if(vm.parentCtrl.item.pnx.addata.issn) {
-			vm.issn = vm.parentCtrl.item.pnx.addata.issn[0] || '';
-		} else if (vm.parentCtrl.item.pnx.addata.eissn) {
-			vm.issn = vm.parentCtrl.item.pnx.addata.eissn[0] || '';
-		}
-
 		vm.$onInit = function () { 
-            //vm.parentElement = this.$element.parent()[0];
+			if(vm.parentCtrl.item.pnx.addata.issn) {
+				vm.issn = vm.parentCtrl.item.pnx.addata.issn[0] || '';
+			} else if (vm.parentCtrl.item.pnx.addata.eissn) {
+				vm.issn = vm.parentCtrl.item.pnx.addata.eissn[0] || '';
+			}	
+			//vm.parentElement = this.$element.parent()[0];
 			try {
 				vm.doi = vm.parentCtrl.item.pnx.addata.doi[0] || '';
 			} catch (e) {
@@ -1240,26 +1248,28 @@ console.log(kth_vid);
 
 		var vm = this;
 
-		vm.kthb_holdings = {
-			"holdings":[],
-			"apidata":[{
-				"holdId": {},
-				"records": []
-			}]
-		}
+		vm.$onInit = function () { 
+			vm.kthb_holdings = {
+				"holdings":[],
+				"apidata":[{
+					"holdId": {},
+					"records": []
+				}]
+			}
 
-		vm.kthb_holdings.holdings = vm.parentCtrl.result.delivery.holding
+			vm.kthb_holdings.holdings = vm.parentCtrl.result.delivery.holding
 
-		vm.onlinelinkwatch = vm.parentCtrl.directLinkService.getDirectLinkURL(vm.parentCtrl.result)
-		
-		$scope.$watch(function() { 
-			return vm.onlinelinkwatch.$$state.value; 
-		}, function(onlinelink) {
-			vm.onlinelink = onlinelink;
-		});
+			vm.onlinelinkwatch = vm.parentCtrl.directLinkService.getDirectLinkURL(vm.parentCtrl.result)
+			
+			$scope.$watch(function() { 
+				return vm.onlinelinkwatch.$$state.value; 
+			}, function(onlinelink) {
+				vm.onlinelink = onlinelink;
+			});
 
-		if (vm.kthb_holdings.holdings) {
-			vm.kthb_holdings.holdings.length > 0 ? vm.show=true : vm.show=false
+			if (vm.kthb_holdings.holdings) {
+				vm.kthb_holdings.holdings.length > 0 ? vm.show=true : vm.show=false
+			}
 		}
 		
 	});
@@ -1312,6 +1322,8 @@ console.log(kth_vid);
 	/*******************
 	
 	Matomo Analytics
+
+	ENDAST FÖR PRODUKTIONSVYER! (VU1_L och Kiosk)
 	
 	********************/
 	
@@ -1325,6 +1337,10 @@ console.log(kth_vid);
 		var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
 		g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
 	})();
+
+
+
+	
 
 })();
 

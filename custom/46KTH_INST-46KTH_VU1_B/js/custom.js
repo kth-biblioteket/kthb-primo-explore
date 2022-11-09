@@ -234,68 +234,73 @@ console.log(kth_vid);
 						<!--prm-icon class="rotate-20" icon-type="svg" svg-icon-set="primo-ui" icon-definition="earth"></prm-icon-->
 						<div id="kth_langbutton" ng-if="$ctrl.lang=='sv'" ng-class="$ctrl.getClass()">EN</div>
 						<div id="kth_langbutton" ng-if="$ctrl.lang=='en'" ng-class="$ctrl.getClass()">SV</div>
-					</button>`,
-		bindings : { 'parentCtrl': '<' }
+					</button>`
 		
 	});
 
 	app.controller('prmSearchBookmarkFilterAfterController', function ($translate, $rootScope) {
 		var vm = this;
 
-		vm.lang = $translate.use();
-		var otherLanguage = $translate.use() === 'sv' ? 'en' : 'sv';
-		vm.switchLang = function () {
-			if (!$rootScope.languageSelectionCtrl) {
-			return false;
-			}
-			return $rootScope.languageSelectionCtrl.changeLanguage(otherLanguage);
-		};
-		vm.getClass = function () {
-			return $translate.use() === 'sv' ? 'lang-en' : 'lang-se';
-		};
-
-     	 var swedish = $translate.use() === 'sv' ? true : false;
-
-		angular.element(document).ready(function() {
-			var langIcon = document.querySelector('#lang-icon')
-			var langLabel = swedish ? 'Change language to English' : 'Byt språk till svenska'
-			var showTooltip = function(e) {
-				var position = e.target.getBoundingClientRect();
-				var tooltip = document.createElement('md-tooltip');
-				tooltip.className = 'kthb-tooltip md-panel md-tooltip md-primoExplore-theme md-origin-bottom';
-				tooltip.setAttribute('role', 'tooltip');
-				tooltip.innerHTML = '<span>' + e.target.getAttribute('aria-label') + '</span>';
-				tooltip.style.top = position.top + e.target.offsetHeight + 0 + 'px';
-				document.body.appendChild(tooltip);
-				setTimeout(function() {
-					tooltip.classList.add('md-panel-is-showing');
-					tooltip.style.left = position.left - (tooltip.offsetWidth - e.target.offsetWidth) / 2 +  'px';
-					var xxx = "xxx"
-				}, 500);
-			}
-			var hideTooltip = function(e) {
-				var tp = document.querySelectorAll('.kthb-tooltip');
-				if (tp.length) {
-				Array.prototype.forEach.call(tp, function(el) {
-					el.parentElement.removeChild(el);
-				})
+		vm.$onInit = function () { 
+			vm.lang = $translate.use();
+			var otherLanguage = $translate.use() === 'sv' ? 'en' : 'sv';
+			vm.switchLang = function () {
+				var url = document.location.href.replace('lang=' + vm.lang, 'lang=' + otherLanguage);
+					document.location = url;
+				/*
+				if (!$rootScope.languageSelectionCtrl) {
+				return false;
 				}
-			}
-			var setListeners = function(el) {
-				el.addEventListener('mouseenter', showTooltip, false);
-				el.addEventListener('focus', showTooltip, false);
-				el.addEventListener('mouseleave', hideTooltip, false);
-				el.addEventListener('focusout', hideTooltip, false);
-				el.addEventListener('click', hideTooltip, false);
+				return $rootScope.languageSelectionCtrl.changeLanguage(otherLanguage);
+				*/
 			};
-			if (langIcon) {
-				langIcon.setAttribute('aria-label', langLabel);
-				langIcon.setAttribute('lang', $translate.use() === 'sv' ? 'en' : 'sv');
-				//var langButton = document.querySelector('#lang-icon') 
-				//langButton.innerHTML = ""
-				setListeners(langIcon);
-			}
-		});
+			vm.getClass = function () {
+				return $translate.use() === 'sv' ? 'lang-en' : 'lang-se';
+			};
+
+			var swedish = $translate.use() === 'sv' ? true : false;
+
+			angular.element(document).ready(function() {
+				var langIcon = document.querySelector('#lang-icon')
+				var langLabel = swedish ? 'Change language to English' : 'Byt språk till svenska'
+				var showTooltip = function(e) {
+					var position = e.target.getBoundingClientRect();
+					var tooltip = document.createElement('md-tooltip');
+					tooltip.className = 'kthb-tooltip md-panel md-tooltip md-primoExplore-theme md-origin-bottom';
+					tooltip.setAttribute('role', 'tooltip');
+					tooltip.innerHTML = '<span>' + e.target.getAttribute('aria-label') + '</span>';
+					tooltip.style.top = position.top + e.target.offsetHeight + 0 + 'px';
+					document.body.appendChild(tooltip);
+					setTimeout(function() {
+						tooltip.classList.add('md-panel-is-showing');
+						tooltip.style.left = position.left - (tooltip.offsetWidth - e.target.offsetWidth) / 2 +  'px';
+						var xxx = "xxx"
+					}, 500);
+				}
+				var hideTooltip = function(e) {
+					var tp = document.querySelectorAll('.kthb-tooltip');
+					if (tp.length) {
+					Array.prototype.forEach.call(tp, function(el) {
+						el.parentElement.removeChild(el);
+					})
+					}
+				}
+				var setListeners = function(el) {
+					el.addEventListener('mouseenter', showTooltip, false);
+					el.addEventListener('focus', showTooltip, false);
+					el.addEventListener('mouseleave', hideTooltip, false);
+					el.addEventListener('focusout', hideTooltip, false);
+					el.addEventListener('click', hideTooltip, false);
+				};
+				if (langIcon) {
+					langIcon.setAttribute('aria-label', langLabel);
+					langIcon.setAttribute('lang', $translate.use() === 'sv' ? 'en' : 'sv');
+					//var langButton = document.querySelector('#lang-icon') 
+					//langButton.innerHTML = ""
+					setListeners(langIcon);
+				}
+			});
+		}
 
 	});
 
@@ -314,34 +319,38 @@ console.log(kth_vid);
 
 	app.controller('IconAfterController', [function() {
 		var vm = this;
-		// Byt ut pin ikkonen till hjärta.
-		var icon = vm.parentCtrl.iconDefinition;
-		if (icon === 'prm_pin' || icon === 'prm_unpin') {
-		  var icons = {
-			'prm_pin': '<svg width="100%" height="100%" viewBox="0 0 24 24" y="1056" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"></path></svg>',
-			'prm_unpin': '<svg width="100%" height="100%" viewBox="0 0 24 24" y="1032" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>'
-		  };
-		  var element = vm.parentCtrl.$element[0];
-		  element.innerHTML = '<md-icon md-svg-icon="primo-ui:' + icon + '" alt="" class="heart md-primoExplore-theme" aria-hidden="true">' + icons[icon] + '</md-icon>';
-		}
-		//Byt ut open actions more-ikkonen till "share"
-		if (icon === 'ic_more_horiz_24px') {
+		vm.$onInit = function () { 
+			// Byt ut pin ikkonen till hjärta.
+			var icon = vm.parentCtrl.iconDefinition;
+			if (icon === 'prm_pin' || icon === 'prm_unpin') {
 			var icons = {
-			  'ic_share_24px': '<svg width="100%" height="100%" viewBox="0 0 24 24" id="ic_share_24px" x="120" y="72" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"></path></svg>'
+				'prm_pin': '<svg width="100%" height="100%" viewBox="0 0 24 24" y="1056" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"></path></svg>',
+				'prm_unpin': '<svg width="100%" height="100%" viewBox="0 0 24 24" y="1032" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>'
 			};
 			var element = vm.parentCtrl.$element[0];
-			element.innerHTML = '<md-icon md-svg-icon="social:ic_share_24px" alt="" class="md-primoExplore-theme" aria-hidden="true">' + icons['ic_share_24px'] + '</md-icon>';
-		  }
+			element.innerHTML = '<md-icon md-svg-icon="primo-ui:' + icon + '" alt="" class="heart md-primoExplore-theme" aria-hidden="true">' + icons[icon] + '</md-icon>';
+			}
+			//Byt ut open actions more-ikkonen till "share"
+			if (icon === 'ic_more_horiz_24px') {
+				var icons = {
+				'ic_share_24px': '<svg width="100%" height="100%" viewBox="0 0 24 24" id="ic_share_24px" x="120" y="72" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"></path></svg>'
+				};
+				var element = vm.parentCtrl.$element[0];
+				element.innerHTML = '<md-icon md-svg-icon="social:ic_share_24px" alt="" class="md-primoExplore-theme" aria-hidden="true">' + icons['ic_share_24px'] + '</md-icon>';
+			}
 
-		//Byt ut my account-ikkonen till person
-		if (icon === 'account-card-details') {
-			var icons = {
-			  'ic_person_24px': '<svg width="100%" height="100%" viewBox="0 0 24 24" id="ic_person_24px" x="96" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>'
-			};
-			var element = vm.parentCtrl.$element[0];
-			element.innerHTML = '<md-icon md-svg-icon="social:ic_person_24px" alt="" class="md-primoExplore-theme" aria-hidden="true">' + icons['ic_person_24px'] + '</md-icon>';
-			
-		  }
+			//Byt ut my account-ikkonen till person
+			if (icon === 'account-card-details') {
+				var icons = {
+				'ic_person_24px': '<svg width="100%" height="100%" viewBox="0 0 24 24" id="ic_person_24px" x="96" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>'
+				};
+				var element = vm.parentCtrl.$element[0];
+				element.innerHTML = '<md-icon md-svg-icon="social:ic_person_24px" alt="" class="md-primoExplore-theme" aria-hidden="true">' + icons['ic_person_24px'] + '</md-icon>';
+				
+			}
+		}
+
+		
 	}]);
 
 	/*****************************************
@@ -365,11 +374,12 @@ console.log(kth_vid);
 	app.controller('prmLogoAfterController',function ($scope, $translate,$timeout,$location) { 
 		var vm = this;
 		vm.kth_vid = kth_vid;
-
-		//Se till att länken anpassas till valt språk
-		vm.parentCtrl.kthb_link = "https://www.kth.se/en/biblioteket";
-		if($translate.use() == 'sv') {
-			vm.parentCtrl.kthb_link = "https://www.kth.se/biblioteket";
+		vm.$onInit = function () { 
+			//Se till att länken anpassas till valt språk
+			vm.parentCtrl.kthb_link = "https://www.kth.se/en/biblioteket";
+			if($translate.use() == 'sv') {
+				vm.parentCtrl.kthb_link = "https://www.kth.se/biblioteket";
+			}
 		}
 	});
 	
@@ -516,8 +526,10 @@ console.log(kth_vid);
 
 	app.controller('prmSearchResultFrbrLineAfterController', function ($scope,$location,$timeout,$element) {
 		var vm = this;
-		if(vm.parentCtrl.result.context == "PC") {
-			$element[0].parentElement.style.visibility = "hidden"
+		vm.$onInit = function () { 
+			if(vm.parentCtrl.result.context == "PC") {
+				$element[0].parentElement.style.visibility = "hidden"
+			}
 		}
 	});
 
@@ -592,12 +604,6 @@ console.log(kth_vid);
 		vm.almetricsscore = 0;
 
 		vm.show_KTH_metrics = false
-		
-		if(vm.parentCtrl.item.pnx.addata.issn) {
-			vm.issn = vm.parentCtrl.item.pnx.addata.issn[0] || '';
-		} else if (vm.parentCtrl.item.pnx.addata.eissn) {
-			vm.issn = vm.parentCtrl.item.pnx.addata.eissn[0] || '';
-		}
 
 		function waitForElm(selector) {
 			return new Promise(resolve => {
@@ -620,6 +626,11 @@ console.log(kth_vid);
 		}
 
         vm.$onInit = function () { 
+			if(vm.parentCtrl.item.pnx.addata.issn) {
+				vm.issn = vm.parentCtrl.item.pnx.addata.issn[0] || '';
+			} else if (vm.parentCtrl.item.pnx.addata.eissn) {
+				vm.issn = vm.parentCtrl.item.pnx.addata.eissn[0] || '';
+			}
             vm.parentElement = this.$element.parent()[0];
 			try {
 				vm.doi = vm.parentCtrl.item.pnx.addata.doi[0] || '';
@@ -692,9 +703,6 @@ console.log(kth_vid);
 
 	app.controller('prmAlmaViewitItemsAfterController', function ($scope, $http) {
 		var vm = this;
-		console.log(vm.parentCtrl.getServices())
-
-		
 
 		$scope.$watch(function() { 
 			return vm.parentCtrl.getServices(); 
@@ -888,43 +896,44 @@ console.log(kth_vid);
 	app.controller('prmOpacAfterController', function ($scope, $http, $translate) {
 		var vm = this;
 
-		vm.lang = $translate.use();
-		console.log(vm.lang)
-		vm.kthb_holdings = {
-			"holdings":[],
-			"apidata":[{
-				"holdId": {},
-				"records": []
-			}]
-		}
+		vm.$onInit = function () {
+			vm.lang = $translate.use();
+			console.log(vm.lang)
+			vm.kthb_holdings = {
+				"holdings":[],
+				"apidata":[{
+					"holdId": {},
+					"records": []
+				}]
+			}
+			vm.kthb_holdings.holdings = vm.parentCtrl.item.delivery.holding
+			console.log(vm.kthb_holdings)
+			if (vm.kthb_holdings.holdings) {
+				vm.kthb_holdings.holdings.length > 0 ? vm.show=true : vm.show=false
 
-		vm.kthb_holdings.holdings = vm.parentCtrl.item.delivery.holding
-		console.log(vm.kthb_holdings)
-		if (vm.kthb_holdings.holdings) {
-			vm.kthb_holdings.holdings.length > 0 ? vm.show=true : vm.show=false
-
-			for(var i = 0;i < vm.kthb_holdings.holdings.length;i++) {
-				var method = 'GET';
-				var url = 'https://apps.lib.kth.se/alma/primo/almagetpolicy.php?mmsid=&holdingsid=' + vm.kthb_holdings.holdings[i].holdId + '&lang=sv&ssandbox=true';
-				$http({
-					method: method, 
-					url: url, 
-					headers: {'Content-Type': 'application/json'}
-				})
-				.then(function(response) {
-					var apidata = {
-						"holdId": response.data.holdingId,
-						"records": response.data.records,
-						"holding_info": response.data.holding_info
-					}
-					if(apidata.loan_status == "onloan") {
-						apidata.due_date = "Utlånad";
-					} else {
-						apidata.due_date = "På plats"
-					}
-					vm.kthb_holdings.apidata[response.data.holdingId] = apidata
-				});
-				
+				for(var i = 0;i < vm.kthb_holdings.holdings.length;i++) {
+					var method = 'GET';
+					var url = 'https://apps.lib.kth.se/alma/primo/almagetpolicy.php?mmsid=&holdingsid=' + vm.kthb_holdings.holdings[i].holdId + '&lang=sv&ssandbox=true';
+					$http({
+						method: method, 
+						url: url, 
+						headers: {'Content-Type': 'application/json'}
+					})
+					.then(function(response) {
+						var apidata = {
+							"holdId": response.data.holdingId,
+							"records": response.data.records,
+							"holding_info": response.data.holding_info
+						}
+						if(apidata.loan_status == "onloan") {
+							apidata.due_date = "Utlånad";
+						} else {
+							apidata.due_date = "På plats"
+						}
+						vm.kthb_holdings.apidata[response.data.holdingId] = apidata
+					});
+					
+				}
 			}
 		}
     });
@@ -1027,14 +1036,13 @@ console.log(kth_vid);
 		vm.showcitations = false
 
 		vm.show_KTH_metrics = false
-		
-		if(vm.parentCtrl.item.pnx.addata.issn) {
-			vm.issn = vm.parentCtrl.item.pnx.addata.issn[0] || '';
-		} else if (vm.parentCtrl.item.pnx.addata.eissn) {
-			vm.issn = vm.parentCtrl.item.pnx.addata.eissn[0] || '';
-		}
 
 		vm.$onInit = function () { 
+			if(vm.parentCtrl.item.pnx.addata.issn) {
+				vm.issn = vm.parentCtrl.item.pnx.addata.issn[0] || '';
+			} else if (vm.parentCtrl.item.pnx.addata.eissn) {
+				vm.issn = vm.parentCtrl.item.pnx.addata.eissn[0] || '';
+			}
             //vm.parentElement = this.$element.parent()[0];
 			try {
 				vm.doi = vm.parentCtrl.item.pnx.addata.doi[0] || '';
@@ -1173,26 +1181,28 @@ console.log(kth_vid);
 
 		var vm = this;
 
-		vm.kthb_holdings = {
-			"holdings":[],
-			"apidata":[{
-				"holdId": {},
-				"records": []
-			}]
-		}
+		vm.$onInit = function () { 
+			vm.kthb_holdings = {
+				"holdings":[],
+				"apidata":[{
+					"holdId": {},
+					"records": []
+				}]
+			}
 
-		vm.kthb_holdings.holdings = vm.parentCtrl.result.delivery.holding
+			vm.kthb_holdings.holdings = vm.parentCtrl.result.delivery.holding
 
-		vm.onlinelinkwatch = vm.parentCtrl.directLinkService.getDirectLinkURL(vm.parentCtrl.result)
-		
-		$scope.$watch(function() { 
-			return vm.onlinelinkwatch.$$state.value; 
-		}, function(onlinelink) {
-			vm.onlinelink = onlinelink;
-		});
+			vm.onlinelinkwatch = vm.parentCtrl.directLinkService.getDirectLinkURL(vm.parentCtrl.result)
+			
+			$scope.$watch(function() { 
+				return vm.onlinelinkwatch.$$state.value; 
+			}, function(onlinelink) {
+				vm.onlinelink = onlinelink;
+			});
 
-		if (vm.kthb_holdings.holdings) {
-			vm.kthb_holdings.holdings.length > 0 ? vm.show=true : vm.show=false
+			if (vm.kthb_holdings.holdings) {
+				vm.kthb_holdings.holdings.length > 0 ? vm.show=true : vm.show=false
+			}
 		}
 		
 	});

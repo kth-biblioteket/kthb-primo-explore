@@ -323,7 +323,7 @@ prm-main-menu .md-button.button-over-dark:not(.disable-hover) {
 	color:#000000;
 }
 
-prm-topbar .md-button:not(.disable-hover) {
+prm-topbar .md-button:not(.disable-hover):not(.close-btn-favorits-warning-message) {
 	color:#000000;
 }
 prm-search-bookmark-filter prm-icon md-icon.md-primoExplore-theme {
@@ -351,7 +351,7 @@ button#lang-icon {
 }
 
 .md-button.button-over-dark:not(.disable-hover):hover:not([disabled]):hover:not([disabled]),
-prm-topbar .md-button:not(.disable-hover):hover:not([disabled]):hover:not([disabled]) {
+prm-topbar .md-button:not(.disable-hover):hover:not([disabled]):hover:not([disabled]):not(.close-btn-favorits-warning-message) {
 	color: white;
 	background-color: #1954a6;
 }
