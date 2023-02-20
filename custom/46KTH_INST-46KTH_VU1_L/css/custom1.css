@@ -363,7 +363,7 @@ Sidhuvudet, logga + egen meny
 ******************************************************/
 
 prm-topbar {
-	height: 85px;
+	height: unset;
 	background-color: white
 }
 
@@ -406,6 +406,7 @@ body.kiosk prm-logo-after {
 prm-topbar .top-nav-bar {
 	background-color: #1954a6;
 	background-color: white;
+	height: 85px;
 }
 
 /* se till att logga plus text tar upp flexutrymme och att loggan hamnar centrerat i höjd */
@@ -419,6 +420,7 @@ prm-topbar prm-logo {
 		display: none;
 	}
 }
+
 @media (max-width: 959px) {
 	prm-logo-after { 
 		font-size: 1em;
@@ -447,7 +449,7 @@ prm-logo a, prm-logo prm-logo-after a {
 }
 
 /* anpassningar till mindre skärmar */
-@media (max-width: 959px) and (min-width: 200px) {
+@media (max-width: 1025px) and (min-width: 200px) {
 	.user-button.sign-in-btn-ctm.md-button.md-primoExplore-theme.md-ink-ripple {
 		display: none;
 	}
@@ -463,6 +465,13 @@ prm-logo a, prm-logo prm-logo-after a {
 
 prm-explore-main .header .transparent-top-bar:before {
 	background-color: #ffffff;
+}
+
+/* anpassningar till mindre skärmar */
+@media (max-width: 599px) {
+	#searchHistory {
+		display: none;
+	}
 }
 
 /*****************************************************
@@ -533,10 +542,9 @@ Alert bar
 
 .kth_alertbarwrapper .bar {
 	padding: 0.5em 0 ;
+	border-radius: 0px;
 }
-.kth_alertbarwrapper div {
-	background-color: #fff8c4; /*ex libris gul*/
-}
+
 .kth_alertbarwrapper {
 	display: flex;
 }
@@ -810,6 +818,10 @@ body.kiosk prm-view-online>div {
 	display: none;
 }
 
+body.kiosk prm-alma-viewit-items {
+	display: none;
+}
+
 /*******************
  * CUSTOM HOLDINGS *
  ******************/
@@ -1042,8 +1054,8 @@ prm-service-header>div.layout-align-center-center {
 	align-content: stretch;
 }
 
-/* Ny rad för tillgänglig, placering, hylla
-	Plus labels etc
+/* Gör ny rad för tillgänglig, placering, hylla
+   Skriv in labels etc
 */
 prm-location-items .tab-content-header .md-title {
     font-weight: bold;
@@ -1054,8 +1066,14 @@ prm-location-items p span {
     font-size: 16px;
 }
 
+/* Dölj kolon, semikolon s*/
 prm-location-items p span:nth-of-type(2), prm-location-items p span:nth-of-type(4) {
     display: none;
+}
+
+/* Visa tidskriftsdetaljer */
+prm-location-items md-list-item p span:nth-of-type(2), prm-location-items md-list-item p span:nth-of-type(4) {
+    display: block;
 }
 
 html[lang="sv"] prm-location-items p span:nth-of-type(3):before {
@@ -1227,6 +1245,24 @@ a.item-title:after {
 	white-space: -pre-wrap;      /* Opera 4-6 */
 	white-space: -o-pre-wrap;    /* Opera 7 */
 	word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+/* Licensrubrik */
+p.ng-scope.license span:nth-of-type(1) {
+    font-size: 20px;
+}
+/*Dölj "licence terms , förutsätter att en "<br>" ligger inlagt överst på varje licensvillkor i Alma */
+p.ng-scope.license span:nth-of-type(2) {
+    display: none;
+}
+
+/* språkanpassning förutsätter att varje villkorsrad är inom en div med klassen "lic_sv" resp "lic_en" */
+html[lang="en"] .lic_sv {
+    display: none;
+}
+
+html[lang="sv"] .lic_en {
+    display: none;
 }
 
 prm-alma-viewit prm-alma-viewit-items .in-element-dialog-context .md-button:hover:not([disabled]), prm-alma-viewit prm-alma-viewit-items .in-element-dialog-context .md-button:focus:not([disabled]) {

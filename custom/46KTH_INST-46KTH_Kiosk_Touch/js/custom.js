@@ -155,53 +155,15 @@ console.log(kth_vid);
 
 		vm.$onInit = function () {
 			var lang = $translate.use()
-
-			/***
-			 * Egen chattkonfig/knapp
-			 */
-
-			var chat_kth_kundo = document.getElementById("chat_kth_kundo")
-			if(chat_kth_kundo) {
-				chat_kth_kundo.remove()
-			}
-
-				var startchatt_text = "Chat with us"
-				if(typeof(lang) !== 'undefined') {
-					if (lang.indexOf('sv') != -1) {
-						lang = 'sv'
-						startchatt_text = "Chatta med oss"
-					} else {
-						lang = 'en'
-					}
-				} else {
-					lang = 'en'
-				}
-				let chathtml = `
-						<div style="position: fixed;right: 16px;bottom: 16px;z-index: 10000;border-radius: 40px">
-							<button class="kundo-chat-widget__start-button kundo-chat-widget__start-button--with-transition" aria-label="chatt" class="button-with-icon zero-margin" onclick="startChat('${lang}')">
-								<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" class="kundo-chat-widget__start-button-icon"><path d="M5.195 11.895h-.043c.017.911.227 1.808.616 2.634a6.156 6.156 0 0 1-3.5 1.32c-.124 0-.364-.116-.364-.238a.438.438 0 0 1 .123-.36 4.932 4.932 0 0 0 1.233-2.635A6.02 6.02 0 0 1 0 7.466C0 3.871 3.506 1 7.974 1c4.227 0 7.61 2.634 7.974 5.988a7.897 7.897 0 0 0-3.747-.959c-3.863 0-7.006 2.634-7.006 5.866zM12.2 7.221c3.26 0 5.799 2.157 5.799 4.668a4.549 4.549 0 0 1-2.416 3.832c.069.712.365 1.384.845 1.918.123.123.123.123 0 .239 0 .122-.124.122-.24.122a4.617 4.617 0 0 1-3.143-1.558c-.364 0-.617.122-.968.122-3.26 0-5.799-2.157-5.799-4.669.124-2.633 2.656-4.668 5.916-4.668l.006-.006z" fill-rule="nonzero" fill="currentColor"></path></svg>
-								<span id="chat_start_text">${startchatt_text}</span>
-							</button>
-						</div>
-					`
-				var s = document.createElement('div');
-				s.id = "chat_kth_kundo";
-				let primoexploreelement = document.querySelector("body");
-				primoexploreelement.appendChild(s).innerHTML=chathtml;
-
-				let onlineFlows = {}
-				document.addEventListener("kundo-chat:flow-available", function(event) {
-					onlineFlows[event.detail.flow] = true
-				})
-				document.addEventListener("kundo-chat:flow-unavailable", function(event) {
-					onlineFlows[event.detail.flow] = false
-				})
 	
 		}
 		
 		angular.element(document).ready(function() {
 			
-			
+			var links = document.getElementsByTagName("a");
+			for (var i = 0, l = links.length; i < l; i++) {
+				links[i].target = "_self";
+			}
 			
 		})
 
@@ -574,53 +536,10 @@ console.log(kth_vid);
 	
 	*************************************************/
 	
-	app.component('1prmFullViewAfter', {
+	app.component('prmFullViewAfter', {
 			bindings: {parentCtrl: '<'},
 			controller: 'FullViewAfterController',
-			template:
-			`
-			<div class="full-view-section" id="kth_metrics">
-				<div ng-if="$ctrl.show_KTH_metrics">
-					<div class="section-head">
-						<div>
-							<div style="flex-direction: column;align-items: stretch;align-content: stretch;" layout="row" layout-align="center center" class="layout-align-center-center layout-row">
-								<h4 class="section-title md-title light-text">KTH Metrics</h4>
-								<md-divider flex="" class="md-primoExplore-theme flex"></md-divider>
-							</div>
-						</div>
-					</div>
-					<div class="section-body ">
-						<div>
-							<div>
-								<div ng-if="$ctrl.doi || $ctrl.issn" class="loc-altemtrics margin-bottom-medium">
-									<div ng-if="$ctrl.issn">
-									<!--Kiosk ingen länk-->
-										<span translate="nui.kth_JCR"></span>JCR
-									</div>
-									<div id="kth_altmetrics">
-										<div ng-if="$ctrl.altmetricsisLoading" layout="column" layout-align="center">
-											<div layout="row" layout-align="center">
-												<md-progress-circular md-diameter="20px" style="stroke:#106cc8" md-mode="indeterminate"></md-progress-circular>
-											</div>
-										</div>
-										<div class="" ng-if="$ctrl.doi">
-											<div class="section-body layout-align-start-stretch layout-row" layout="row" layout-align="">
-												<div class="spaced-rows layout-column" layout="column">
-													<div ng-if="$ctrl.almetricsscore > 0">
-													<!--Kiosk ingen länk-->
-														<span translate="nui.kth_altmetrics1">Attention score</span> <span class="wostimesCited">{{$ctrl.almetricsscore}}</span> <span translate="nui.kth_altmetrics2">in</span><span translate="nui.kth_altmetrics3">Altmetrics</span>&trade;
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			`
+			template:``
 	});
 	
 	app.controller('FullViewAfterController', function ($window, $document, $element, angularLoad, $http, kth_loginservice, $scope, $timeout) {
@@ -662,45 +581,12 @@ console.log(kth_vid);
 		}
 
         vm.$onInit = function () { 
-			if(vm.parentCtrl.item.pnx.addata.issn) {
-				vm.issn = vm.parentCtrl.item.pnx.addata.issn[0] || '';
-			} else if (vm.parentCtrl.item.pnx.addata.eissn) {
-				vm.issn = vm.parentCtrl.item.pnx.addata.eissn[0] || '';
-			}
-            vm.parentElement = this.$element.parent()[0];
-			try {
-				vm.doi = vm.parentCtrl.item.pnx.addata.doi[0] || '';
-			} catch (e) {
-				return;
-			}
-
-			var unbindWatcher2 = $scope.$watch(function () {
-				return vm.parentElement.querySelector('.full-view-inner-container');
-			}, function (newVal, oldVal) {
-				if (newVal) {
-					newVal.appendChild(vm.parentElement.querySelector('prm-full-view-after .full-view-section'))
-					vm.show_KTH_metrics = true
-					unbindWatcher2()
+			angular.element(document).ready(function() {
+				var links = document.getElementsByTagName("a");
+				for (var i = 0, l = links.length; i < l; i++) {
+					links[i].target = "_self";
 				}
-			});
-			
-			if (vm.doi) {
-				vm.altmetricsisLoading = true;
-				vm.altmetricsdata = "";
-				console.log("vm.doi: " + vm.doi)
-				$http.get('https://api.altmetric.com/v1/doi/' + vm.doi).then(function (response) {
-					try {
-						vm.almetricsscore = response.data.score;
-						vm.almetricsdetails_url = response.data.details_url;
-						vm.altmetricsisLoading = false;
-					} catch (e) {
-						return;
-					}
-				}).catch(function (e) {
-					vm.altmetricsisLoading = false;
-					return;
-				});
-			}	
+			})
 		};
     });
 
@@ -712,11 +598,13 @@ console.log(kth_vid);
 	 app.component('prmViewOnlineAfter', {
 		bindings: {parentCtrl: '<'},
 		controller: 'prmViewOnlineAfterController',
-		template: `<span translate="nui.kth_noaccesstext">No access to online material from this search computer</span>`
+		template: `<span ng-if="$ctrl.lang == 'en'">No access to online material from this search computer</span>
+				<span ng-if="$ctrl.lang == 'sv'">Ingen access till online material från den här sökdatorn</span>`
 	});
 
-	app.controller('prmViewOnlineAfterController', function () {
+	app.controller('prmViewOnlineAfterController', function ($translate) {
 		var vm = this;
+		vm.lang = $translate.use();
 	});
 
 
@@ -729,43 +617,14 @@ console.log(kth_vid);
 	 *
 	 ******************************************/
 	 
-	 app.component('1prmAlmaViewitItemsAfter', {
+	 app.component('prmAlmaViewitItemsAfter', {
 		bindings: {parentCtrl: '<'},
 		controller: 'prmAlmaViewitItemsAfterController',
-		template: `
-		<md-list-item ng-repeat="item in $ctrl.parentCtrl.getServices() track by $index">
-		<md-button ng-if="item.licenceExist===\'true\'" class="button-link"
-                        prm-aria-label="{{\'nui.aria.almaViewitItems.license\' | translate}}"
-                        (click)="$ctrl.parentCtrl.getLicense(item,$event)" aria-label="license">S</md-button>
-			<p (click)="$ctrl.disableClick($event)" ng-if="item.toggleLicense" class="ng-scope license" style="padding: 1em 1.5em">
-				<span class="ng-binding ng-scope" ng-repeat="line in item.licence track by $index" ng-bind-html="line+\'<br/>\'"></span>
-			</p>
-		</md-list-item>`
-
-		/*
-		<md-list-item ng-repeat="item in $ctrl.parentCtrl.getServices() track by $index"
-		
-			<p (click)="$ctrl.disableClick($event)" ng-if="item.toggleLicense" class="ng-scope license"
-				style="padding: 1em 1.5em"><span class="ng-binding ng-scope"
-					ng-repeat="line in item.licence track by $index" ng-bind-html="line+\'<br/>\'"></span>
-			</p>
-		</md-list-item>
-		*/
-					
+		template: ``
 	});
 
 	app.controller('prmAlmaViewitItemsAfterController', function ($scope, $http) {
-		var vm = this;
-
-		$scope.$watch(function() { 
-			return vm.parentCtrl.getServices(); 
-			}, function(item) {
-				try {
-					console.log(item)
-				  } catch(e) {
-					  console.log(e)
-				  }
-		});
+		
 	})
 	
 	/*****************************************
@@ -777,74 +636,22 @@ console.log(kth_vid);
 	*****************************************/
 	app.component('prmAlmaViewitAfter', {
 		bindings: {parentCtrl: '<'},
-		controller: 'prmAlmaViewitAfterController'
+		controller: 'prmAlmaViewitAfterController',
+		template: `No access to online material from this search computer`
 					
 	});
 
 	app.controller('prmAlmaViewitAfterController', function ($scope, $http) {
 		var vm = this;
+		
+		vm.$onInit = function () { 
+		};
 
-		//Lägg till "Full text - "på alla knappar som leder till leverantörer
 		$scope.$watch(function() { 
-			return vm.parentCtrl.item.delivery.electronicServices; 
+			return vm.parentCtrl.item; 
 			}, function(electronicServices) {
-				try {
-					electronicServices.forEach(function(i) {
-						if (i.packageName.indexOf('Contact the KTH Library') === -1 && i.packageName.indexOf('Kontakta') === -1) {
-							//getlicence(i.packageName)
-							//Kiosk
-							i.packageName = 'No access to online material from this search computer';
-							i.serviceUrl = '';
-						}
-					});
-				  } catch(e) {
-					  return
-				  }
+				//vm.parentCtrl.item = []
 		});
-
-		function getlicence(packagename) {
-			var method = 'GET';
-			var url = `https://apps.lib.kth.se/alma/primo/getlicenceve.php?packageName=${packagename}`;
-			var data = $http({method: method, url: url})
-			.then(function(response) {
-				console.log(response)
-			});
-
-		}
-
-		vm.getlic = getlic
-
-		function getlic() {
-			
-			console.log(vm.parentCtrl.item)
-			var method = 'GET';
-			var url = '/almaws/internalRest/uresolver/customerId/2455/institutionId/2456/licenseId/2050559730002456/language/sv';
-			var data = $http({method: method, url: url})
-			.then(function(response) {
-				//console.log(response)
-			});
-
-			var url = '/almaws/internalRest/uresolver/customerId/2455/institutionId/2456/licenseId/2050559730002456/language/sv';
-			var data3 = $http({method: method, url: vm.parentCtrl.item.delivery.electronicServices[0].serviceUrl})
-			.then(function(response) {
-				console.log(response)
-			});
-
-			console.log(vm.parentCtrl.item.delivery.electronicServices[0].licenceExist)
-			//var urlcollection = "https://api-eu.hosted.exlibrisgroup.com/almaws/v1/electronic/e-collections/" + packageid
-			if (vm.parentCtrl.item.delivery.electronicServices[0].licenceExist == "true") {
-				var url = vm.parentCtrl.item.delivery.electronicServices[0].licenceUrl + ""
-				//'/view/action/uresolver.do?operation=resolveService&package_service_id=22990811200002456&institutionId=2456&customerId=2455&VE=true'
-				var data2 = $http({method: method, url: url})
-				.then(function(response) {
-					console.log(response)
-				});
-			}
-			
-
-			///view/action/uresolver.do?operation=resolveService&package_service_id=22990811200002456&institutionId=2456&customerId=2455&VE=true
-			///almaws/internalRest/uresolver/customerId/2455/institutionId/2456/licenseId/2050559730002456/language/sv
-		}
 	});
 
 	/***************************************
@@ -870,7 +677,7 @@ console.log(kth_vid);
 									</div>
 								</span>
 								<span ng-if="holding.stackMapUrl" class="kthb-custom-holdings-map" style="margin-left: auto;">
-									<a href="{{holding.stackMapUrl}}" target="_blank"><md-icon md-svg-icon="maps:ic_place_24px" role="presentation" class="md-primoExplore-theme"><svg width="100%" height="100%" viewBox="0 0 24 24" id="ic_place_24px_cache634" y="1152" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path></svg></md-icon><span translate="nui.locations.locate"></span></a>
+									<a href="{{holding.stackMapUrl}}" target="_self"><md-icon md-svg-icon="maps:ic_place_24px" role="presentation" class="md-primoExplore-theme"><svg width="100%" height="100%" viewBox="0 0 24 24" id="ic_place_24px_cache634" y="1152" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path></svg></md-icon><span translate="nui.locations.locate"></span></a>
 								</span>
 							</div>
 							<table class="table-responsive-stack" ng-if="$ctrl.kthb_holdings.apidata[holding.holdId].records.length > 0" id="TABLE_DATA_item_list" cellspacing="0" cellpadding="0" border="0" summary="Items List">
@@ -925,7 +732,7 @@ console.log(kth_vid);
 										</td>
 										<!--td>
 											<span ng-if="holding.stackMapUrl" class="kthb-custom-holdings-map">
-												<a href="{{holding.stackMapUrl}}" target="_blank"><md-icon md-svg-icon="maps:ic_place_24px" role="presentation" class="md-primoExplore-theme"><svg width="100%" height="100%" viewBox="0 0 24 24" id="ic_place_24px_cache634" y="1152" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path></svg></md-icon><span translate="nui.locations.locate"></span></a>
+												<a href="{{holding.stackMapUrl}}" target="_self"><md-icon md-svg-icon="maps:ic_place_24px" role="presentation" class="md-primoExplore-theme"><svg width="100%" height="100%" viewBox="0 0 24 24" id="ic_place_24px_cache634" y="1152" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path></svg></md-icon><span translate="nui.locations.locate"></span></a>
 											</span>
 											<span ng-if="!holding.stackMapUrl" class="kthb-custom-holdings-map">
 												<span>-</a>
@@ -947,11 +754,18 @@ console.log(kth_vid);
 							</div>
 						</div>`
 	});
+
+	app.component('prmOpacAfter', {
+		bindings: {parentCtrl: '<'},
+		controller: 'prmOpacAfterController'
+	});
 	
 	app.controller('prmOpacAfterController', function ($scope, $http, $translate) {
 		var vm = this;
-
 		vm.$onInit = function () {
+			
+			/*
+
 			vm.lang = $translate.use();
 			console.log(vm.lang)
 			vm.kthb_holdings = {
@@ -990,8 +804,25 @@ console.log(kth_vid);
 
 				}
 			}
+			*/
 		}
     });
+
+	app.component('prmStackMapAfter', {
+		bindings: {parentCtrl: '<'},
+		controller: 'prmStackMapAfterController'
+	});
+	
+	app.controller('prmStackMapAfterController', function ($scope, $http, $translate) {
+		var vm = this;
+		angular.element(document).ready(function() {
+			var links = document.getElementsByTagName("a");
+			for (var i = 0, l = links.length; i < l; i++) {
+				links[i].target = "_self";
+			}
+		})
+	});
+
 
 	/********************************************************
 	
@@ -1018,7 +849,7 @@ console.log(kth_vid);
 							<div>
 								<div ng-if="$ctrl.doi || $ctrl.issn" class="loc-altemtrics margin-bottom-medium">
 									<div ng-if="$ctrl.issn">
-										<span translate="nui.kth_JCR"></span> <a target="_new" href="http://focus.lib.kth.se/login?url=http://gateway.webofknowledge.com/gateway/Gateway.cgi?GWVersion=2&amp;SrcAuth=KTH&amp;SrcApp=KTH_Primo&amp;KeyISSN=0169-555X&amp;DestApp=IC2JCR" class="md-primoExplore-theme">JCR</a>
+										<span translate="nui.kth_JCR"></span> <a target="_self" href="http://focus.lib.kth.se/login?url=http://gateway.webofknowledge.com/gateway/Gateway.cgi?GWVersion=2&amp;SrcAuth=KTH&amp;SrcApp=KTH_Primo&amp;KeyISSN=0169-555X&amp;DestApp=IC2JCR" class="md-primoExplore-theme">JCR</a>
 									</div>
 									<div id="kth_altmetrics">
 										<div ng-if="$ctrl.altmetricsisLoading" layout="column" layout-align="center">
@@ -1030,7 +861,7 @@ console.log(kth_vid);
 											<div class="section-body layout-align-start-stretch layout-row" layout="row" layout-align="">
 												<div class="spaced-rows layout-column" layout="column">
 													<div ng-if="$ctrl.almetricsscore > 0">
-														<span translate="nui.kth_altmetrics1">Attention score</span> <span class="wostimesCited">{{$ctrl.almetricsscore}}</span> <span translate="nui.kth_altmetrics2">in</span> <a target="_new" href="{{$ctrl.almetricsdetails_url}}"><span translate="nui.kth_altmetrics3">Altmetrics</span>&trade;</a>
+														<span translate="nui.kth_altmetrics1">Attention score</span> <span class="wostimesCited">{{$ctrl.almetricsscore}}</span> <span translate="nui.kth_altmetrics2">in</span> <a target="_self" href="{{$ctrl.almetricsdetails_url}}"><span translate="nui.kth_altmetrics3">Altmetrics</span>&trade;</a>
 													</div>
 												</div>
 											</div>
@@ -1065,12 +896,12 @@ console.log(kth_vid);
 												<div ng-if="$ctrl.wostimesCited!==\'\'">
 													<!--span class="wostimesCited">{{$ctrl.wostimesCited}}</span-->
 													<span translate="nui.citation.multicited" translate-values="{'idx_0' : $ctrl.wostimesCited}"></span>
-													<a target="_new" href="{{$ctrl.wossourceURL}}"> Web of Science&trade;</a>
+													<a target="_self" href="{{$ctrl.wossourceURL}}"> Web of Science&trade;</a>
 												</div>
 												<div ng-if="$ctrl.scopustimesCited!==\'\'">
 													<!--span class="wostimesCited">{{$ctrl.scopustimesCited}}</span-->
 													<span translate="nui.citation.multicited" translate-values="{'idx_0' : $ctrl.scopustimesCited}"></span>
-													<a target="_new" href="{{$ctrl.scopussourceURL}}"> Scopus&trade;</a>
+													<a target="_self" href="{{$ctrl.scopussourceURL}}"> Scopus&trade;</a>
 												</div>
 											</div>
 										</div>
@@ -1203,7 +1034,7 @@ console.log(kth_vid);
 							</span>
 							<span translate="delivery.code.{{holding.availabilityStatus}}" class="kthb-custom-holdings-{{holding.availabilityStatus}}"></span>
 							<span ng-if="holding.stackMapUrl" class="kthb-custom-holdings-map">
-								<a href="{{holding.stackMapUrl}}" target="_blank">
+								<a href="{{holding.stackMapUrl}}" target="_self">
 									<md-icon md-svg-icon="maps:ic_place_24px" role="presentation" class="md-primoExplore-theme">
 										<svg width="100%" height="100%" viewBox="0 0 24 24" id="ic_place_24px_cache634" y="1152" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false">
 											<path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
@@ -1326,39 +1157,6 @@ console.log(kth_vid);
 	
 
 })();
-
-/********************
- *
- * Kundo Chat
- * 
- * Skapa script och gör disable på default och använd en egen knapp istället
- *
- *******************/
-
- (function () {
-	var x = document.createElement("script");
-	x.id = "primo_kundo"
-	x.type = "text/javascript";
-	x.async = true;
-	x.src = (document.location.protocol === "https:" ? "https://" : "http://") + "static-chat.kundo.se/chat-js/org/1199/widget.js";
-	document.body.appendChild(x);
-})();
-
-
-(function(w){
-	w.$kundo_chat=w.$kundo_chat||{};
-	window.$kundo_chat.disable_widget = true
-}(this));
-
-function startChat(lang) {
-	if (lang.indexOf('sv') != -1) {
-		lang = 'sv';
-		window.$kundo_chat.start_chat("kth-bibliotek-03b3q6zo")
-	} else {
-		window.$kundo_chat.start_chat("kth-library-2ja5nukh")
-	}
-}
-
 
 /****************************
 	 

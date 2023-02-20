@@ -137,24 +137,7 @@ console.log(kth_vid);
 	app.controller('prmExploreMainAfterController', function ($translate) {
         var vm = this;
 
-		//Citation Styles(men var är dessa egentligen konfigurerade?? 
-		//Hittar inte i primo BO, men hämtas här: /primo_library/libweb/webservices/rest/v1/configuration/46KTH_VU1_L)
-		//Lägg även in dem i Primo BO för att få rätt namn/översättning (exvis default.citation.labels.vancouver)
-		//Ta bort de vi inte vill ha
-		for(var i = window.appConfig['mapping-tables']['Citation styles'].length - 1; i >= 0; i--) {
-			//if(window.appConfig['mapping-tables']['Citation styles'][i].target === "apa") {
-			  // window.appConfig['mapping-tables']['Citation styles'].splice(i, 1);
-			//}
-		}
-		//Lägg till de vi saknar
-		window.appConfig['mapping-tables']['Citation styles'].push({ source1: '10', target: 'vancouver' });
-		window.appConfig['mapping-tables']['Citation styles'].push({ source1: '11', target: 'ieee' });
-		//window.appConfig['mapping-tables']['Citation styles'].push({ source1: '12', target: 'oscola' });
-
-		
 		vm.$onInit = function () {
-			console.log("oninit")
-
 			var lang = $translate.use()
 
 			/***
@@ -246,10 +229,10 @@ console.log(kth_vid);
 			var otherLanguage = $translate.use() === 'sv' ? 'en' : 'sv';
 			vm.switchLang = function () {
 				var url = document.location.href.replace('lang=' + vm.lang, 'lang=' + otherLanguage);
-					document.location = url;
+				document.location = url;
 				/*
 				if (!$rootScope.languageSelectionCtrl) {
-				return false;
+					return false;
 				}
 				return $rootScope.languageSelectionCtrl.changeLanguage(otherLanguage);
 				*/
@@ -509,8 +492,70 @@ console.log(kth_vid);
 
 		return data;
 	});
+	/*****************************************
 	
+	prm-search-after
+		
+	*****************************************/
+	app.component('prmTopbarAfter', {
+		bindings: {parentCtrl: '<'},
+		controller: 'prmTobarAfterController',
+		template: `<!--Infotext som vi själva lägger in i Primo BO
+		hämta translate-texten i controller för prm-search-after för att användas som villkor?-->
+		<div class="kth_alertbarwrapper" ng-class="!$ctrl.mediaQueries.xs  ? \'1kth_sidepadding\' : \'\' " ng-cloak ng-if="$ctrl.kthinfotext!=\'0\' && $ctrl.showkthinfomessage!=false">
+			<div style="display:flex" flex ng-cloak layout="column" layout-align="center center" class="bar alert-bar kthinfotext">
+				<!--Texten nedan ändras via Primo BO: nui.kth_infotext-->
+				<div layout="row" layout-align="center center">
+					<span class="bar-text" translate="nui.kth_infotext"></span>
+					<!--md-divider></md-divider>
+					<md-button aria-label="{{::(\'nui.message.dismiss\' | translate)}}" (click)="$ctrl.dismisskthinfo()" class="dismiss-alert-button zero-margin" ng-class="ctrl.mediaQueries.xs ? \'md-icon-button\' : \'button-with-icon\' ">
+						<prm-icon aria-label="{{::(\'nui.message.dismiss\' | translate)}}" icon-type="svg" svg-icon-set="navigation" icon-definition="ic_close_24px">
+							<md-icon md-svg-icon="navigation:ic_close_24px" aria-label="{{::(\'nui.message.dismiss\' | translate)}}" class="md-primoExplore-theme" aria-hidden="true"><svg width="100%" height="100%" viewBox="0 0 24 24" id="ic_close_24px_cache52" y="240" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg></md-icon>
+						</prm-icon>
+						<span translate="nui.message.dismiss" hide-xs></span>
+					</md-button-->
+				</div>
+			</div>
+		</div>`
+});
+
+app.controller('prmTobarAfterController', function ($scope,$location,$rootScope,kth_currenturl,kth_searchurl, kth_loginservice,$timeout,$templateCache, $translate, $http, $sce) {
+	var vm = this;
+	vm.kthinfotext = '0';
 	
+	/******************************************************
+	 
+	
+	kthinfotext som ska visas vid fel eller annan info
+	Lägg in i BO när det är aktuellt
+	
+	******************************************************/
+	vm.$onInit = function () {
+		console.log("prmSearchAfterController")
+		$translate('nui.kth_infotext').then(function (translation) {
+			vm.kthinfotext = translation;
+		});
+	}
+	
+	/****************************************************************
+	
+	Spara dismiss-statusar(att dölja alerten) i rootscope 
+	så meddelandet inte visas förrän vid en "refresh"
+	
+	****************************************************************/
+	vm.dismisscampusmessage = dismisscampusmessage;
+	vm.showcampusmessage = $rootScope.showcampusmessage;
+	function dismisscampusmessage() {
+		$rootScope.showcampusmessage = false;
+		vm.showcampusmessage = $rootScope.showcampusmessage;
+	}
+	vm.dismisskthinfo = dismisskthinfo;
+	vm.showkthinfomessage = $rootScope.showkthinfomessage;
+	function dismisskthinfo() {
+		$rootScope.showkthinfomessage = false;
+		vm.showkthinfomessage = $rootScope.showkthinfomessage;
+	}
+});
 	/*****************************************
 	 
 	prm-search-result-frbr-line-after

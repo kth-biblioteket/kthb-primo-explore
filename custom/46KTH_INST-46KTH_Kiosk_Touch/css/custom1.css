@@ -363,7 +363,7 @@ Sidhuvudet, logga + egen meny
 ******************************************************/
 
 prm-topbar {
-	height: unset;
+	height: 85px;
 	background-color: white
 }
 
@@ -406,7 +406,6 @@ body.kiosk prm-logo-after {
 prm-topbar .top-nav-bar {
 	background-color: #1954a6;
 	background-color: white;
-	height: 85px;
 }
 
 /* se till att logga plus text tar upp flexutrymme och att loggan hamnar centrerat i höjd */
@@ -542,9 +541,10 @@ Alert bar
 
 .kth_alertbarwrapper .bar {
 	padding: 0.5em 0 ;
-	border-radius: 0px;
 }
-
+.kth_alertbarwrapper div {
+	background-color: #fff8c4; /*ex libris gul*/
+}
 .kth_alertbarwrapper {
 	display: flex;
 }
