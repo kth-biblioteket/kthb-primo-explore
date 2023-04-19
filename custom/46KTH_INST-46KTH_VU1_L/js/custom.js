@@ -229,7 +229,7 @@ console.log(kth_vid);
 			var otherLanguage = $translate.use() === 'sv' ? 'en' : 'sv';
 			vm.switchLang = function () {
 				var url = document.location.href.replace('lang=' + vm.lang, 'lang=' + otherLanguage);
-				document.location = url;
+        		document.location = url;
 				/*
 				if (!$rootScope.languageSelectionCtrl) {
 					return false;
@@ -313,7 +313,7 @@ console.log(kth_vid);
 			var element = vm.parentCtrl.$element[0];
 			element.innerHTML = '<md-icon md-svg-icon="primo-ui:' + icon + '" alt="" class="heart md-primoExplore-theme" aria-hidden="true">' + icons[icon] + '</md-icon>';
 			}
-			//Byt ut open actions more-ikkonen till "share"
+			/* Byt ut open actions more-ikkonen till "share"
 			if (icon === 'ic_more_horiz_24px') {
 				var icons = {
 				'ic_share_24px': '<svg width="100%" height="100%" viewBox="0 0 24 24" id="ic_share_24px" x="120" y="72" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"></path></svg>'
@@ -321,6 +321,7 @@ console.log(kth_vid);
 				var element = vm.parentCtrl.$element[0];
 				element.innerHTML = '<md-icon md-svg-icon="social:ic_share_24px" alt="" class="md-primoExplore-theme" aria-hidden="true">' + icons['ic_share_24px'] + '</md-icon>';
 			}
+			*/
 
 			//Byt ut my account-ikkonen till person
 			if (icon === 'account-card-details') {
@@ -492,6 +493,7 @@ console.log(kth_vid);
 
 		return data;
 	});
+	
 	/*****************************************
 	
 	prm-search-after
@@ -556,6 +558,8 @@ app.controller('prmTobarAfterController', function ($scope,$location,$rootScope,
 		vm.showkthinfomessage = $rootScope.showkthinfomessage;
 	}
 });
+
+
 	/*****************************************
 	 
 	prm-search-result-frbr-line-after

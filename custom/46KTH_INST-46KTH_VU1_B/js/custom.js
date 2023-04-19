@@ -134,12 +134,149 @@ console.log(kth_vid);
 			}
 	});
 	
-	app.controller('prmExploreMainAfterController', function ($translate) {
+	app.controller('prmExploreMainAfterController', function ($translate, $rootScope, $http, $mdDialog) {
         var vm = this;
-
+		/****************************************************************
+		
+		Spara dismiss-statusar(att dölja alerten) i rootscope 
+		så meddelandet inte visas förrän vid en "refresh"
+		
+		****************************************************************/
+		vm.dismissactivatepatron = dismissactivatepatron;
+		vm.hideactivatepatron = $rootScope.hideactivatepatron;
+		function dismissactivatepatron() {
+			$rootScope.hideactivatepatron = true;
+			vm.hideactivatepatron = $rootScope.hideactivatepatron;
+		}
+		
 		vm.$onInit = function () {
+			let userinfo = vm.primoExploreCtrl.jwtUtilService.getDecodedToken()
 			var lang = $translate.use()
+			if(!vm.hideactivatepatron) {
+				if(userinfo.signedIn) {
+					var apiUrl = '/primaws/rest/priv/myaccount/personal_settings';
+					$http.get(apiUrl)
+						.then(function(response) {
+							console.log(response.data.data)
+							const searchString = "Patron;KTH Library;";
+							const result = response.data.data.roles.role.includes(searchString);
+							//Visa om användaren inte har någon patronroll
+							if (!result) {
+								if(userinfo.userGroup == 10 ) {
+									$mdDialog.show({
+										controller: function controller() {
+											return {
+												hide: function hide() {
+													dismissactivatepatron()
+													$mdDialog.hide();
+												},
+												cancel: function cancel() {
+													dismissactivatepatron()
+													$mdDialog.cancel();
+												},
+												activatepatron: function activatepatron(element){
+													console.log(element)
+													console.log(element.formData.accept)
+													
+													var method = 'POST';
+													var html = '';
+													console.log(vm.primoExploreCtrl.jwtUtilService.getJwtFromLocalStorage().replace(/['"]+/g, ''))
+													var url = 'https://api-ref.lib.kth.se/alma/api/v1/activatepatron?jwt=' + vm.primoExploreCtrl.jwtUtilService.getJwtFromLocalStorage().replace(/['"]+/g, '');
+													let language_desc = "English"
+													if (element.formData.language_value == 'sv') {
+														language_desc = "Swedish"
+													} 
+													$http.post(url, {
+														pin_number: element.formData.pin,
+														language_value: element.formData.language_value,
+														language_desc: language_desc
+													})
+													.then(function(response) {
+														console.log(response.data);
+													}, 
+													function(response) {
+													});
+													$mdDialog.hide();
+												},
+												validateNumber: function($event) {
+													var keyCode = $event.which || $event.keyCode;
+													if (keyCode < 48 || keyCode > 57) {
+													$event.preventDefault();
+													}
+													var maxLength = 4;
+													var currentValue = $event.target.value || '';
+													if (currentValue.length >= maxLength && keyCode !== 8 && keyCode !== 46) {
+														$event.preventDefault();
+													}
+												}
+											};
+										},
+										controllerAs: '$ctrl',
+										template: `<md-dialog style="width:70%" id="mapdialog" aria-label="List dialog"> 
+														<md-toolbar class="_md _md-toolbar-transitions"> 
+															<div class="md-toolbar-tools"> 
+																<h2>Activate your library account</h2> 
+																<span flex="" class="flex"></span> 
+																<button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.cancel()"> 
+																	<prm-icon icon-type="svg" svg-icon-set="primo-ui" icon-definition="close"> 
+																		<md-icon md-svg-icon="primo-ui:close" aria-label="icon-close" class="md-primoExplore-theme" aria-hidden="true"> 
+																		</md-icon> 
+																	</prm-icon> 
+																</button> 
+															</div> 
+														</md-toolbar> 
+														<md-dialog-content style="padding:10px">
+															<p>In order to borrow or request materials from the library you need to activate your library account. Activate your account by accepting our terms of use below.</p>
+															<form name="fooForm" role="form">
+																<div layout-gt-xs="row">
+																	<md-select ng-model="formData.language_value" placeholder="Select language" ng-required="true">
+																		<md-option value="en">Engelska</md-option>
+																		<md-option value="sv">Svenska</md-option>
+																	</md-select>
+																</div>
+																<div layout-gt-xs="row">
+																	<md-input-container class="md-block underlined-input" flex-gt-xs="">
+																		<label for="language">Pin(xxxx) (choose your own four digit code to borrow in the self service machines)</label>
+																		<input type="text" name="pin" ng-model="formData.pin" ng-pattern="/^[0-9]{4}$/" ng-keypress="$ctrl.validateNumber($event)" maxlength="4" ng-required>
+																		<span ng-show="fooForm.pin.$error.required">This field is required.</span>
+																		<span ng-show="fooForm.pin.$error.pattern">Please enter a valid 4-digit number.</span>
+																	</md-input-container>
+																</div>
+																<div layout-gt-xs="row">
+																	<md-input-container class="md-block" flex-gt-xs="">
+																		<md-checkbox ng-required="true" ng-model="accept" aria-label="Accept">I accept the KTH Library <a target="_blank" href="https://www.kth.se/en/biblioteket/anvanda-biblioteket/anvandarvillkor-1.854843">terms of use</a></md-checkbox>
+																	</md-input-container>
+																</div>
+																<md-dialog-actions>
+																	<md-button class="md-button md-primoExplore-theme md-ink-ripple" type="button" (click)="$ctrl.cancel()">
+																		Cancel
+																	</md-button>
+																	<md-button ng-disabled="fooForm.$invalid" class="button-confirm md-button md-primoExplore-theme md-ink-ripple" type="button" (click)="$ctrl.activatepatron(this)">
+																		Activate
+																	</md-button>
+																</md-dialog-actions>
+															</form>
+														</md-dialog-content>
+													</md-dialog>`, 
+										targetEvent: event,
+										clickOutsideToClose: true,
+										fullscreen: false // Only for -xs, -sm breakpoints.
+									});
+									//alert("You need to activate your account online as KTH!")
 
+								} else {
+									alert("You need to activate your account at the desk!")
+								}						
+							} else {
+							}
+							console.log(result)
+
+							}, 
+							function(error) {
+							console.error('Error making request to Alma API: ' + error.statusText);
+							});
+				}
+			}
 			/***
 			 * Egen chattkonfig/knapp
 			 */
@@ -313,7 +450,7 @@ console.log(kth_vid);
 			var element = vm.parentCtrl.$element[0];
 			element.innerHTML = '<md-icon md-svg-icon="primo-ui:' + icon + '" alt="" class="heart md-primoExplore-theme" aria-hidden="true">' + icons[icon] + '</md-icon>';
 			}
-			//Byt ut open actions more-ikkonen till "share"
+			/* Byt ut open actions more-ikkonen till "share"
 			if (icon === 'ic_more_horiz_24px') {
 				var icons = {
 				'ic_share_24px': '<svg width="100%" height="100%" viewBox="0 0 24 24" id="ic_share_24px" x="120" y="72" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"></path></svg>'
@@ -321,6 +458,7 @@ console.log(kth_vid);
 				var element = vm.parentCtrl.$element[0];
 				element.innerHTML = '<md-icon md-svg-icon="social:ic_share_24px" alt="" class="md-primoExplore-theme" aria-hidden="true">' + icons['ic_share_24px'] + '</md-icon>';
 			}
+			*/
 
 			//Byt ut my account-ikkonen till person
 			if (icon === 'account-card-details') {
@@ -492,6 +630,7 @@ console.log(kth_vid);
 
 		return data;
 	});
+
 	/*****************************************
 	
 	prm-search-after
@@ -556,6 +695,7 @@ app.controller('prmTobarAfterController', function ($scope,$location,$rootScope,
 		vm.showkthinfomessage = $rootScope.showkthinfomessage;
 	}
 });
+
 	/*****************************************
 	 
 	prm-search-result-frbr-line-after
@@ -1250,6 +1390,37 @@ app.controller('prmTobarAfterController', function ($scope,$location,$rootScope,
 			}
 		}
 		
+	});
+
+	app.component("prmBriefResultContainerAfter", {
+        bindings: { parentCtrl: "<" },
+        controller: "BriefResultContainerAfterController"
+    })
+
+    app.controller("BriefResultContainerAfterController", function ($translate, $scope) {
+		var vm = this;
+		vm.$onInit = function () { 
+			if(vm.parentCtrl.item.pnx.display.type[0] === "Databas" || vm.parentCtrl.item.pnx.display.type[0] === "database") {
+				//Bevaka om descriptions length finns
+				$scope.$watch(function() { return vm.parentCtrl.descriptions.length; }, function(newval, oldval) {
+					// är längden > 1(dvs då finns det tvåspråkig beskrivning)
+					if(newval > 1) {
+						// plocka bort index 1 om det är engelska sidan som visas(engelsk beskrivning ska ligga i 0)
+						if ($translate.use() === "en") {
+							vm.parentCtrl.descriptions.splice(1, 1)
+						}
+						// plocka bort index 0 om det är svensk sidan som visas
+						if ($translate.use() === "sv") {
+							vm.parentCtrl.descriptions.splice(0, 1)
+						}
+					}
+					// Finns bara en beskrivning så visa den oavsett sidans språk
+					
+				});
+				
+			}
+		}
+        
 	});
 	
 	/*********************
