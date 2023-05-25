@@ -735,10 +735,15 @@ prm-copy-clipboard-btn .md-button.button-confirm {
  .result-item-actions .unpin-button.unpinned {
 	color: #4aa8ea;
  }
-/*döljer citation trail från träfflistan */
+/*döljer citation trail bredvid actions på varje post i träfflistan */
+prm-citation-trails-indication-container {
+	display: none;
+}
+/*
 prm-citation-trails-indication .md-button.button-with-icon, prm-citation-trails-indication .md-button.md-icon-button {
     display: none;
 }
+*/
 
 /* materialbild(omslag etc) */
 prm-search-result-thumbnail-container img {
@@ -1047,9 +1052,11 @@ prm-full-view .services-index-under {
 }
 
 /* ordning högerlistan, recommendations underst */
+/*
 prm-recomendations {
 	order: 3;
 }
+*/
 
 /* Anpassa "divider"/streck efter varje avdelning */
 prm-service-header>div.layout-align-center-center {

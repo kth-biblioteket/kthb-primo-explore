@@ -245,10 +245,10 @@ console.log(kth_vid);
 			var otherLanguage = $translate.use() === 'sv' ? 'en' : 'sv';
 			vm.switchLang = function () {
 				var url = document.location.href.replace('lang=' + vm.lang, 'lang=' + otherLanguage);
-					document.location = url;
+				document.location = url;
 				/*
 				if (!$rootScope.languageSelectionCtrl) {
-				return false;
+					return false;
 				}
 				return $rootScope.languageSelectionCtrl.changeLanguage(otherLanguage);
 				*/
@@ -319,34 +319,35 @@ console.log(kth_vid);
 	app.controller('IconAfterController', [function() {
 		var vm = this;
 		vm.$onInit = function () { 
-		// Byt ut pin ikkonen till hjärta.
-		var icon = vm.parentCtrl.iconDefinition;
-		if (icon === 'prm_pin' || icon === 'prm_unpin') {
-		  var icons = {
-			'prm_pin': '<svg width="100%" height="100%" viewBox="0 0 24 24" y="1056" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"></path></svg>',
-			'prm_unpin': '<svg width="100%" height="100%" viewBox="0 0 24 24" y="1032" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>'
-		  };
-		  var element = vm.parentCtrl.$element[0];
-		  element.innerHTML = '<md-icon md-svg-icon="primo-ui:' + icon + '" alt="" class="heart md-primoExplore-theme" aria-hidden="true">' + icons[icon] + '</md-icon>';
-		}
-		//Byt ut open actions more-ikkonen till "share"
-		if (icon === 'ic_more_horiz_24px') {
-			var icons = {
-			  'ic_share_24px': '<svg width="100%" height="100%" viewBox="0 0 24 24" id="ic_share_24px" x="120" y="72" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"></path></svg>'
+			// Byt ut pin ikkonen till hjärta.
+			var icon = vm.parentCtrl.iconDefinition;
+			if (icon === 'prm_pin' || icon === 'prm_unpin') {
+				var icons = {
+				'prm_pin': '<svg width="100%" height="100%" viewBox="0 0 24 24" y="1056" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"></path></svg>',
+				'prm_unpin': '<svg width="100%" height="100%" viewBox="0 0 24 24" y="1032" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>'
 			};
 			var element = vm.parentCtrl.$element[0];
-			element.innerHTML = '<md-icon md-svg-icon="social:ic_share_24px" alt="" class="md-primoExplore-theme" aria-hidden="true">' + icons['ic_share_24px'] + '</md-icon>';
-		  }
+			element.innerHTML = '<md-icon md-svg-icon="primo-ui:' + icon + '" alt="" class="heart md-primoExplore-theme" aria-hidden="true">' + icons[icon] + '</md-icon>';
+			}
+			/* Byt ut open actions more-ikkonen till "share"
+			if (icon === 'ic_more_horiz_24px') {
+				var icons = {
+				'ic_share_24px': '<svg width="100%" height="100%" viewBox="0 0 24 24" id="ic_share_24px" x="120" y="72" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"></path></svg>'
+				};
+				var element = vm.parentCtrl.$element[0];
+				element.innerHTML = '<md-icon md-svg-icon="social:ic_share_24px" alt="" class="md-primoExplore-theme" aria-hidden="true">' + icons['ic_share_24px'] + '</md-icon>';
+			}
+			*/
 
-		//Byt ut my account-ikkonen till person
-		if (icon === 'account-card-details') {
-			var icons = {
-			  'ic_person_24px': '<svg width="100%" height="100%" viewBox="0 0 24 24" id="ic_person_24px" x="96" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>'
-			};
-			var element = vm.parentCtrl.$element[0];
-			element.innerHTML = '<md-icon md-svg-icon="social:ic_person_24px" alt="" class="md-primoExplore-theme" aria-hidden="true">' + icons['ic_person_24px'] + '</md-icon>';
-			
-		  }
+			//Byt ut my account-ikkonen till person
+			if (icon === 'account-card-details') {
+				var icons = {
+				'ic_person_24px': '<svg width="100%" height="100%" viewBox="0 0 24 24" id="ic_person_24px" x="96" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>'
+				};
+				var element = vm.parentCtrl.$element[0];
+				element.innerHTML = '<md-icon md-svg-icon="social:ic_person_24px" alt="" class="md-primoExplore-theme" aria-hidden="true">' + icons['ic_person_24px'] + '</md-icon>';
+				
+			}
 		}
 
 
@@ -543,8 +544,73 @@ console.log(kth_vid);
 
 		return data;
 	});
+
+	/*****************************************
 	
+	prm-search-after
 		
+	*****************************************/
+	app.component('prmTopbarAfter', {
+		bindings: {parentCtrl: '<'},
+		controller: 'prmTobarAfterController',
+		template: `<!--Infotext som vi själva lägger in i Primo BO
+		hämta translate-texten i controller för prm-search-after för att användas som villkor?-->
+		<div class="kth_alertbarwrapper" ng-class="!$ctrl.mediaQueries.xs  ? \'1kth_sidepadding\' : \'\' " ng-cloak ng-if="$ctrl.kthinfotext!=\'0\' && $ctrl.showkthinfomessage!=false">
+			<div style="display:flex" flex ng-cloak layout="column" layout-align="center center" class="bar alert-bar kthinfotext">
+				<!--Texten nedan ändras via Primo BO: nui.kth_infotext-->
+				<div layout="row" layout-align="center center">
+					<span class="bar-text" translate="nui.kth_infotext"></span>
+					<!--md-divider></md-divider>
+					<md-button aria-label="{{::(\'nui.message.dismiss\' | translate)}}" (click)="$ctrl.dismisskthinfo()" class="dismiss-alert-button zero-margin" ng-class="ctrl.mediaQueries.xs ? \'md-icon-button\' : \'button-with-icon\' ">
+						<prm-icon aria-label="{{::(\'nui.message.dismiss\' | translate)}}" icon-type="svg" svg-icon-set="navigation" icon-definition="ic_close_24px">
+							<md-icon md-svg-icon="navigation:ic_close_24px" aria-label="{{::(\'nui.message.dismiss\' | translate)}}" class="md-primoExplore-theme" aria-hidden="true"><svg width="100%" height="100%" viewBox="0 0 24 24" id="ic_close_24px_cache52" y="240" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg></md-icon>
+						</prm-icon>
+						<span translate="nui.message.dismiss" hide-xs></span>
+					</md-button-->
+				</div>
+			</div>
+		</div>`
+});
+
+app.controller('prmTobarAfterController', function ($scope,$location,$rootScope,kth_currenturl,kth_searchurl, kth_loginservice,$timeout,$templateCache, $translate, $http, $sce) {
+	var vm = this;
+	vm.kthinfotext = '0';
+	
+	/******************************************************
+	 
+	
+	kthinfotext som ska visas vid fel eller annan info
+	Lägg in i BO när det är aktuellt
+	
+	******************************************************/
+	vm.$onInit = function () {
+		console.log("prmSearchAfterController")
+		$translate('nui.kth_infotext').then(function (translation) {
+			vm.kthinfotext = translation;
+		});
+	}
+	
+	/****************************************************************
+	
+	Spara dismiss-statusar(att dölja alerten) i rootscope 
+	så meddelandet inte visas förrän vid en "refresh"
+	
+	****************************************************************/
+	vm.dismisscampusmessage = dismisscampusmessage;
+	vm.showcampusmessage = $rootScope.showcampusmessage;
+	function dismisscampusmessage() {
+		$rootScope.showcampusmessage = false;
+		vm.showcampusmessage = $rootScope.showcampusmessage;
+	}
+	vm.dismisskthinfo = dismisskthinfo;
+	vm.showkthinfomessage = $rootScope.showkthinfomessage;
+	function dismisskthinfo() {
+		$rootScope.showkthinfomessage = false;
+		vm.showkthinfomessage = $rootScope.showkthinfomessage;
+	}
+});
+
+
 	/*****************************************
 	 
 	prm-search-result-frbr-line-after
@@ -709,7 +775,7 @@ console.log(kth_vid);
 	 * prm-view-online-after
 	 * Kiosk
 	 ***************************************************/
-	 app.component('prmViewOnlineAfter', {
+	app.component('prmViewOnlineAfter', {
 		bindings: {parentCtrl: '<'},
 		controller: 'prmViewOnlineAfterController',
 		template: `<span translate="nui.kth_noaccesstext">No access to online material from this search computer</span>`
@@ -729,7 +795,7 @@ console.log(kth_vid);
 	 *
 	 ******************************************/
 	 
-	 app.component('1prmAlmaViewitItemsAfter', {
+	app.component('1prmAlmaViewitItemsAfter', {
 		bindings: {parentCtrl: '<'},
 		controller: 'prmAlmaViewitItemsAfterController',
 		template: `
@@ -1091,13 +1157,13 @@ console.log(kth_vid);
 		vm.showcitations = false
 
 		vm.show_KTH_metrics = false
-		
+
 		vm.$onInit = function () { 
 			if(vm.parentCtrl.item.pnx.addata.issn) {
 				vm.issn = vm.parentCtrl.item.pnx.addata.issn[0] || '';
 			} else if (vm.parentCtrl.item.pnx.addata.eissn) {
 				vm.issn = vm.parentCtrl.item.pnx.addata.eissn[0] || '';
-			}	
+			}
 			//vm.parentElement = this.$element.parent()[0];
 			try {
 				vm.doi = vm.parentCtrl.item.pnx.addata.doi[0] || '';
@@ -1175,7 +1241,7 @@ console.log(kth_vid);
 			}
 		};
 	});
-	
+
 	/**********************************************************
 	
 	prm-search-result-availability-line Träfflista
@@ -1321,7 +1387,7 @@ console.log(kth_vid);
 		g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
 	})();
 
-
+	
 
 	
 
@@ -1335,7 +1401,7 @@ console.log(kth_vid);
  *
  *******************/
 
- (function () {
+(function () {
 	var x = document.createElement("script");
 	x.id = "primo_kundo"
 	x.type = "text/javascript";

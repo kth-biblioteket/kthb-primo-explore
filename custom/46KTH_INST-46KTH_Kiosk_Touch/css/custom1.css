@@ -187,12 +187,12 @@ body {
 Rättning för iPhone IOS 11 från Ex libris 2017-11-01
 
 *****************************************************/
-.md-dialog-container {
+/*.md-dialog-container {
     height: 100% !important;
     position: fixed !important;
     top: 0px !important;
   }
-  
+*/
 /*****************************************************
 
 bakgrund för diverse
@@ -363,7 +363,7 @@ Sidhuvudet, logga + egen meny
 ******************************************************/
 
 prm-topbar {
-	height: 85px;
+	height: unset;
 	background-color: white
 }
 
@@ -406,6 +406,7 @@ body.kiosk prm-logo-after {
 prm-topbar .top-nav-bar {
 	background-color: #1954a6;
 	background-color: white;
+	height: 85px;
 }
 
 /* se till att logga plus text tar upp flexutrymme och att loggan hamnar centrerat i höjd */
@@ -541,10 +542,9 @@ Alert bar
 
 .kth_alertbarwrapper .bar {
 	padding: 0.5em 0 ;
+	border-radius: 0px;
 }
-.kth_alertbarwrapper div {
-	background-color: #fff8c4; /*ex libris gul*/
-}
+
 .kth_alertbarwrapper {
 	display: flex;
 }
@@ -669,12 +669,6 @@ prm-search-result-availability-line {
     line-height: 1.6em;
 }
 
-/* "Actions", dölj mail,ref, citations och citationtrail */
-prm-brief-result-container .result-item-actions>button:nth-of-type(1),
-prm-brief-result-container .result-item-actions>button:nth-of-type(2),
-prm-brief-result-container .result-item-actions>prm-citation-trails-indication-container {
-	display:none;
-}
 
 /* Kiosk dölj */
 body.kiosk .result-item-actions,
@@ -733,13 +727,23 @@ prm-copy-clipboard-btn .md-button.button-confirm {
 .result-item-actions .pin-button.pinned md-icon {
 	transform: rotate(0deg);
 }
-/* färger på markera favoritikon(hjärta), grå resp blå*/
+/* färger på markera favoritikon(hjärta), grå resp blå
 .result-item-actions .pin-button.pinned {
 	color: #97abba;
  }
+ */
  .result-item-actions .unpin-button.unpinned {
 	color: #4aa8ea;
  }
+/*döljer citation trail bredvid actions på varje post i träfflistan */
+prm-citation-trails-indication-container {
+	display: none;
+}
+/*
+prm-citation-trails-indication .md-button.button-with-icon, prm-citation-trails-indication .md-button.md-icon-button {
+    display: none;
+}
+*/
 
 /* materialbild(omslag etc) */
 prm-search-result-thumbnail-container img {
@@ -820,6 +824,11 @@ body.kiosk prm-view-online>div {
 
 body.kiosk prm-alma-viewit-items {
 	display: none;
+}
+
+/* Banner funktionen*/
+.main-text-banner {
+    display: none;
 }
 
 /*******************
@@ -1043,9 +1052,11 @@ prm-full-view .services-index-under {
 }
 
 /* ordning högerlistan, recommendations underst */
+/*
 prm-recomendations {
 	order: 3;
 }
+*/
 
 /* Anpassa "divider"/streck efter varje avdelning */
 prm-service-header>div.layout-align-center-center {
@@ -1197,17 +1208,18 @@ prm-virtual-browse[md-virtual-repeat] {
 /* Kartlänk/knapp */
 
 prm-stack-map a.md-button.button-link {
-	font-size: 1.3em;
-	min-width: 170px;
-	display: inline-block;
-	margin: 1em 0;
-	background-color: #1954a6;
-	border-radius: 5px;
-	color: #fff;
-	font-weight: 600;
-	padding: 10px 25px;
-	text-decoration: none;
-	text-align: center;
+    font-size: 1em;
+    min-width: 100px;
+    display: inline-block;
+    margin: 1em 0;
+    background-color: #1954a6;
+    border-radius: 5px;
+    color: #fff;
+    /* font-weight: 600; */
+    padding: 5px 10px;
+    text-decoration: none;
+    text-align: center;
+    text-transform: capitalize;
 }
 
 /* Full text länk/knapp */
@@ -1283,9 +1295,10 @@ prm-alma-viewit prm-alma-viewit-items .in-element-dialog-context prm-icon[icon-d
 
 prm-request-services .md-button.button-as-link,
 prm-service-button .md-button {
-	border: 1px solid #53738c;
     padding: 12px;
-    border-radius: 5px
+    border-radius: 5px;
+	background-color: #1954a6;
+	color: #fff
 } 
 
 alma-howovp .md-button.neutralized-button a {
@@ -1296,10 +1309,10 @@ alma-howovp .md-button.neutralized-button a:hover {
 } 
 
 alma-howovp .md-button.neutralized-button {
-	border: 1px solid #53738c;
     border-radius: 5px;
 	width: auto;
-	color: #53738c
+	color: #fff;
+	background-color: #1954a6
 }
 
 alma-howovp .md-button.neutralized-button:hover {
@@ -1549,6 +1562,19 @@ prm-recomendations-after {
 
 /*********************************
 
+Database search
+
+**********************************/
+/* Hides bullet list on database startpage */
+li[translate="dbcategories.option1"],
+li[translate="dbcategories.option2"],
+li[translate="dbcategories.option3"]{
+    display: none;
+}
+
+
+/*********************************
+
 Alma mashup
 
 **********************************/
@@ -1604,14 +1630,16 @@ Favorites
 
 **********************************/
 
-/* färger på favoritikon(hjärta), grå resp blå*/
+/* färger på favoritikon(hjärta), grå resp blå
 .result-item-actions .pin-button.pinned {
 	color: #97abba;
 }
+*/
+/* Bortkommenterat
 prm-favorites .unpin-button {
 	color: #4aa8ea;
 }
-
+*/
 /*********************************
 
 My Account / Mina Sidor
