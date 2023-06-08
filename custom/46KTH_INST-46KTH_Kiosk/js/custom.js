@@ -398,11 +398,10 @@ console.log(kth_vid);
 		controller: 'prmNoSearchResultAfterController',
 		template:`<md-card class="default-card zero-margin _md md-primoExplore-theme">
 					<md-card-title>
-						<md-card-title-text><span translate="" class="md-headline">No results matched your search</span></md-card-title-text>
+						<md-card-title-text><span translate="nui.noresults.title" class="md-headline"></span></md-card-title-text>
 					</md-card-title>
 					<md-card-content>
-						<p><span translate="nui.noresults.description" translate-value-term="ashg jkdhgasjkhdg"></span></p>
-						<p><span translate="" class="bold-text">Suggestions:</span></p>
+						<p><span translate="nui.noresults.suggestions" class="bold-text"></span></p>
 						<ul>
 							<li translate="nui.noresults_kiosk.suggestions1"></li>
 							<li translate="nui.noresults_kiosk.suggestions2"></li>
