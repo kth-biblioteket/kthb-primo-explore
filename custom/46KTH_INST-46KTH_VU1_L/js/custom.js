@@ -470,30 +470,6 @@ console.log(kth_vid);
 		};
 	});	
 
-	/*****************************************************************
-	
-	Service för loggning till databas
-	
-	*****************************************************************/
-	app.factory('kth_logg', function ($http) {
-
-		var data = {
-		};
-		
-		data.kthlogg = function(type,info) {
-			var method = 'POST';
-			var url = 'https://apps.lib.kth.se/webservices/primo/api/v1/systemlog';
-			return $http({
-				method: method, 
-				url: url, 
-				headers: {"X-From-ExL-API-Gateway": undefined, 'Content-Type': 'application/json'},
-				data: {type: type, info: info}
-			});
-		};
-
-		return data;
-	});
-
 	/*****************************************
 	
 	prm-search-after
@@ -1142,7 +1118,7 @@ app.controller('prmTobarAfterController', function ($scope,$location,$rootScope,
 				vm.wosisLoading = true;
 				vm.wosdata = "";
 				var method = 'GET';
-				var url = 'https://apps.lib.kth.se/alma/wos/wosapi.php?doi=' + doi + '&source=' + source;
+				var url = 'https://api.lib.kth.se/almatools/v1/citationdata/' + source + '?doi=' + doi;
 				$http({method: method, url: url}).
 					then(function(response) {
 						var status = response.status;
