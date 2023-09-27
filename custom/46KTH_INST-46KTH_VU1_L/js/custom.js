@@ -134,12 +134,204 @@ console.log(kth_vid);
 			}
 	});
 	
-	app.controller('prmExploreMainAfterController', function ($translate) {
-        var vm = this;
-
+	app.controller('prmExploreMainAfterController', function ($translate, $rootScope, $http, $mdDialog) {
+    	var vm = this;
+		/****************************************************************
+		
+		Spara dismiss-statusar(att dölja alerten) i rootscope 
+		så meddelandet inte visas förrän vid en "refresh"
+		
+		****************************************************************/
+		vm.dismissactivatepatron = dismissactivatepatron;
+		vm.hideactivatepatron = $rootScope.hideactivatepatron;
+		function dismissactivatepatron() {
+			$rootScope.hideactivatepatron = true;
+			vm.hideactivatepatron = $rootScope.hideactivatepatron;
+		}
+		
 		vm.$onInit = function () {
+			let userinfo = vm.primoExploreCtrl.jwtUtilService.getDecodedToken()
 			var lang = $translate.use()
+			if(!vm.hideactivatepatron) {
+				if(userinfo.signedIn) {
+					var apiUrl = '/primaws/rest/priv/myaccount/personal_settings';
+					$http.get(apiUrl)
+						.then(function(response) {
+							//Sök efter patronrollen
+							let searchString = "Patron;KTH Library;";
+							if(lang=='sv') {
+								searchString = "Låntagare;KTH Biblioteket;";
+							}
+							const result = response.data.data.roles.role.includes(searchString);
+							
+							//Visa om användaren inte har någon patronroll
+							if (!result) {
+								//Kontrollera om användaren har user group "Student"(20) eller "staff"(10) eller not affiliated(30) eller other(40) annars är det en "icke KTH användare" som ska gå till disken och aktivera sitt konto
+								if(userinfo.userGroup == 10 || userinfo.userGroup == 20 || userinfo.userGroup == 30 || userinfo.userGroup == 40 ) {
+									$mdDialog.show({
+										controller: function controller() {
+											console.log(lang)
+											return {
+												activated: false,
+												spinner: false,
+												activateerror: false,
+												errormessage: "",
+												user_displayName: userinfo.displayName,
+												lang: lang,
+												hide: function hide() {
+													dismissactivatepatron()
+													$mdDialog.hide();
+												},
+												cancel: function cancel() {
+													dismissactivatepatron()
+													$mdDialog.cancel();
+												},
+												activatepatron: function activatepatron(element){
+													element.$parent.$ctrl.spinner = true
+													var url = 'https://api.lib.kth.se/almatools/v1/activatepatron?jwt=' + vm.primoExploreCtrl.jwtUtilService.getJwtFromLocalStorage().replace(/['"]+/g, '');
+													let language_desc = "English"
+													if (element.formData.language_value == 'sv') {
+														language_desc = "Swedish"
+													} 
+													$http.post(url, {
+														pin_number: element.formData.pin,
+														language_value: element.formData.language_value,
+														language_desc: language_desc
+													})
+													.then(function(response) {
+														if (response.status==200 && response.data=="success") {
+															element.$parent.$ctrl.spinner = false
+															element.$parent.$ctrl.activated = true;
+														}
+													}, 
+													function(response) {
+														element.$parent.$ctrl.spinner = false
+														element.$parent.$ctrl.activateerror = true;
+														if (response.status == 400) {
+															element.$parent.$ctrl.errormessage = response.data;	
+														} else {
+															element.$parent.$ctrl.errormessage = response.statusText;
+														}
+													})
+												},
+												validateNumber: function($event) {
+													var keyCode = $event.which || $event.keyCode;
+													if (keyCode < 48 || keyCode > 57) {
+													$event.preventDefault();
+													}
+													var maxLength = 4;
+													var currentValue = $event.target.value || '';
+													if (currentValue.length >= maxLength && keyCode !== 8 && keyCode !== 46) {
+														$event.preventDefault();
+													}
+												}
+											};
+										},
+										controllerAs: '$ctrl',
+										template: `<md-dialog style="width:70%" id="mapdialog" aria-label="List dialog">
+														<md-toolbar class="_md _md-toolbar-transitions"> 
+															<div class="md-toolbar-tools"> 
+																<h2>{{$ctrl.lang=='en' ? 'Activate your library account' : 'Aktivera ditt låntagarkonto' }}</h2> 
+																<span flex="" class="flex"></span> 
+																<button class="md-icon-button md-button md-ink-ripple" type="button" ng-click="$ctrl.cancel()"> 
+																	<prm-icon icon-type="svg" svg-icon-set="primo-ui" icon-definition="close"> 
+																		<md-icon md-svg-icon="primo-ui:close" aria-label="icon-close" class="md-primoExplore-theme" aria-hidden="true"> 
+																		</md-icon> 
+																	</prm-icon> 
+																</button> 
+															</div> 
+														</md-toolbar> 
+														<md-dialog-content ng-if="!$ctrl.activated" style="padding:10px">
+														<div ng-if="$ctrl.lang=='en'">
+															<p>In order to borrow or request materials from the library you need to activate your library account. Activate your account by accepting our terms of use below.</p>
+															<p id="userinfo" style="display: block;">
+																<span style="display:inline-block" class="" for="userfullname">Logged in as&nbsp;</span><i><span id="userfullname">{{$ctrl.user_displayName}}</span></i>
+															<p>
+														</div>
+														<div ng-if="$ctrl.lang=='sv'">
+															<p>För att kunna reservera, låna eller beställa material från biblioteket behöver ditt låntagarkonto aktiveras. Aktivera ditt konto genom att godkänna våra användarvillkor nedan.</p>
+															<p id="userinfo" style="display: block;">
+																<span style="display:inline-block" class="" for="userfullname">Inloggad som&nbsp;</span><i><span id="userfullname">{{$ctrl.user_displayName}}</span></i>
+															<p>
+														</div>
+															<form name="fooForm" role="form">
+																<div layout-gt-xs="row">
+																	<md-select ng-model="formData.language_value" placeholder="{{$ctrl.lang=='en' ? 'Select language' : 'Välj språk' }}" ng-required="true">
+																		<md-option value="en">Engelska</md-option>
+																		<md-option value="sv">Svenska</md-option>
+																	</md-select>
+																</div>
+																<div layout-gt-xs="row">
+																	<md-input-container class="md-block underlined-input" flex-gt-xs="">
+																		<label for="language">{{$ctrl.lang=='en' ? 'Pin(xxxx) (choose your own four digit code to borrow in the self service machines)' : 'PIN (xxxx) (välj din egen fyrasiffriga PIN-kod för att låna i självbetjäningsautomaterna)' }}</label>
+																		<input type="text" name="pin" ng-model="formData.pin" ng-pattern="/^[0-9]{4}$/" ng-keypress="$ctrl.validateNumber($event)" maxlength="4" ng-required>
+																		<span ng-show="fooForm.pin.$error.required">This field is required.</span>
+																		<span ng-show="fooForm.pin.$error.pattern">Please enter a valid 4-digit number.</span>
+																	</md-input-container>
+																</div>
+																<div layout-gt-xs="row">
+																	<md-input-container class="md-block" flex-gt-xs="">
+																		<md-checkbox ng-if="$ctrl.lang=='en'" ng-required="true" ng-model="accept" aria-label="Accept">I accept the KTH Library <a target="_blank" href="https://www.kth.se/en/biblioteket/anvanda-biblioteket/anvandarvillkor-1.854843">terms of use</a></md-checkbox>
+																		<md-checkbox ng-if="$ctrl.lang=='sv'" ng-required="true" ng-model="accept" aria-label="Accept">Jag godkänner KTH Bibliotekets <a target="_blank" href="https://www.kth.se/en/biblioteket/anvanda-biblioteket/anvandarvillkor-1.854843">användarvillkor</a></md-checkbox>
+																	</md-input-container>
+																</div>
+																<div ng-if="$ctrl.spinner" layout="column" layout-align="center">
+																	<div layout="row" layout-align="center">
+																		<md-progress-circular md-diameter="20px" style="stroke:#106cc8" md-mode="indeterminate"></md-progress-circular>
+																	</div>
+																</div>
+																<div ng-if="$ctrl.activateerror">
+																	<p style="color:red">Something went wrong!</p>
+																	<p>{{$ctrl.errormessage}}</p>
+																</div>
+																<md-dialog-actions>
+																	<md-button class="md-button md-primoExplore-theme md-ink-ripple" type="button" (click)="$ctrl.cancel()">
+																		{{$ctrl.lang=='en' ? 'Cancel' : 'Avbryt' }}
+																	</md-button>
+																	<md-button ng-disabled="fooForm.$invalid" class="button-confirm md-button md-primoExplore-theme md-ink-ripple" type="button" (click)="$ctrl.activatepatron(this)">
+																		{{$ctrl.lang=='en' ? 'Activate' : 'Aktivera' }}
+																	</md-button>
+																</md-dialog-actions>
+															</form>
+														</md-dialog-content>
+														<md-dialog-content ng-if="$ctrl.activated" style="padding:10px">
+															<div ng-if="$ctrl.lang=='en'" class="activationtext alert alert-success" style="display: block;">
+																<p>Your account is activated! Borrow books using your Swedish personal identification number or the temporary T-personal identification number and your chosen PIN code at our self-service machines.</p>
+																<p>Please note that if you are a student at Campus Södertälje and do not have a Swedish personal identification number, you need to pick up a library card at the information desk.</p>
+																<p>Read more about how to <a href="https://www.kth.se/en/biblioteket/anvanda-biblioteket/lana-och-bestalla/lana-och-bestalla-1.853035">borrow and request</a></p>
+																<p>Welcome to KTH Library!</p>
+															</div>
+															<div ng-if="$ctrl.lang=='sv'" class="activationtext alert alert-success" style="display: block;">
+																<p>Ditt konto är aktiverat! Låna böcker med ditt svenska personnummer eller det tillfälliga T-personnumret och din valda PIN-kod i våra självserviceautomater.</p>
+																<p>Observera, om du är student vid Campus Södertälje och saknar svenskt personnummmer behöver du hämta ut ett lånekort i informationsdisken.</p>
+																<p>Läs mer om hur du <a href="https://www.kth.se/biblioteket/anvanda-biblioteket/lana-och-bestalla/lana-och-bestalla-1.853035">lånar och beställer</a></p>
+																<p>Välkommen till KTH Biblioteket!</p>
+															</div>														
+															<md-dialog-actions>
+																<md-button class="button-confirm md-button md-primoExplore-theme md-ink-ripple" type="button" (click)="$ctrl.cancel()">
+																	OK
+																</md-button>
+															</md-dialog-actions>
+														</md-dialog-content>
+													</md-dialog>`,
+										targetEvent: event,
+										clickOutsideToClose: false,
+										fullscreen: false // Only for -xs, -sm breakpoints.
+									});
+									//alert("You need to activate your account online as KTH!")
 
+								} else {
+									alert("You need to activate your account at the desk!")
+								}						
+							} else {
+							}
+
+						}, 
+						function(error) {
+							console.error('Error making request to Alma API: ' + error.statusText);
+						});
+				}
+			}
 			/***
 			 * Egen chattkonfig/knapp
 			 */
@@ -509,7 +701,6 @@ app.controller('prmTobarAfterController', function ($scope,$location,$rootScope,
 	
 	******************************************************/
 	vm.$onInit = function () {
-		console.log("prmSearchAfterController")
 		$translate('nui.kth_infotext').then(function (translation) {
 			vm.kthinfotext = translation;
 		});
