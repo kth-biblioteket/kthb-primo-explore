@@ -2029,7 +2029,19 @@ body #kundo-chat #kundo-chat-widget.kundo-chat-widget .kundo-chat-flow-selector 
     animation-duration: .3s;
     top: auto;
     left: auto;
-	background-color: #d02f80;
+	background-color: #0029ed;
+}
+
+.kundo-chat-widget__start-button:hover,
+.kundo-chat-widget__start-button:focus,
+.kundo-chat-flow-selector__select-button {
+    background-color: white !important;
+}
+
+.kundo-chat-widget__start-button:hover,
+.kundo-chat-widget__start-button:focus,
+.kundo-chat-flow-selector__select-button {
+    color: #0029ed !important;
 }
 
 @media (min-width: 768px) {
