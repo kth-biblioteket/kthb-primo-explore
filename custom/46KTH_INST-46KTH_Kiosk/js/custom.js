@@ -1298,6 +1298,43 @@ app.controller('prmTobarAfterController', function ($scope,$location,$rootScope,
 		
 	});
 
+	/**************
+	 
+	Databasbeskrivningar  
+	
+	*********/
+
+	app.component("prmBriefResultContainerAfter", {
+        bindings: { parentCtrl: "<" },
+        controller: "BriefResultContainerAfterController"
+    })
+
+    app.controller("BriefResultContainerAfterController", function ($translate, $scope) {
+		var vm = this;
+		vm.$onInit = function () { 
+			if(vm.parentCtrl.item.pnx.display.type[0] === "Databas" || vm.parentCtrl.item.pnx.display.type[0] === "database") {
+				//Bevaka om descriptions length finns
+				$scope.$watch(function() { return vm.parentCtrl.descriptions.length; }, function(newval, oldval) {
+					// är längden > 1(dvs då finns det tvåspråkig beskrivning)
+					if(newval > 1) {
+						// plocka bort index 1 om det är engelska sidan som visas(engelsk beskrivning ska ligga i 0)
+						if ($translate.use() === "en") {
+							vm.parentCtrl.descriptions.splice(1, 1)
+						}
+						// plocka bort index 0 om det är svenska sidan som visas
+						if ($translate.use() === "sv") {
+							vm.parentCtrl.descriptions.splice(0, 1)
+						}
+					}
+					// Finns bara en beskrivning så visa den oavsett sidans språk
+					
+				});
+				
+			}
+		}
+        
+	});
+
 	/*********************
 	
 	prm-personal-info-after

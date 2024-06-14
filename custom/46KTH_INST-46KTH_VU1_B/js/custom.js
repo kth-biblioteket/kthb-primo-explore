@@ -166,7 +166,7 @@ console.log(kth_vid);
 							
 							//Visa om användaren inte har någon patronroll
 							if (!result) {
-								///Kontrollera om användaren har user group "Student"(20) eller "staff"(10) eller other(40) annars är det en "icke KTH användare" som ska gå till disken och aktivera sitt konto
+								//Kontrollera om användaren har user group "Student"(20) eller "staff"(10) eller other(40) annars är det en "icke KTH användare" som ska gå till disken och aktivera sitt konto
 								if(userinfo.userGroup == 10 || userinfo.userGroup == 20 || userinfo.userGroup == 40 ||
 									userinfo.userGroup == "10" || userinfo.userGroup == "20" || userinfo.userGroup == "40" ) {
 									$mdDialog.show({
