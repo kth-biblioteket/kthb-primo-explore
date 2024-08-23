@@ -1300,9 +1300,39 @@ app.controller('prmTobarAfterController', function ($scope,$location,$rootScope,
 
 	/**************
 	 
-	Databasbeskrivningar  
+	Databasbeskrivningar 
+	på två ställen (brief + service)
 	
 	*********/
+
+	app.component("prmServiceDetailsAfter", {
+        bindings: { parentCtrl: "<" },
+        controller: "ServiceDetailsAfterController"
+    })
+
+	app.controller("ServiceDetailsAfterController", function ($translate, $scope) {
+		var vm = this;
+		vm.$onInit = function () { 
+			//Bevaka om details length finns
+			$scope.$watch(function() { return vm.parentCtrl.details.length; }, function(newval, oldval) {
+				//Hitta description i details
+				const labelToFind = 'description';
+				const record = vm.parentCtrl.details.find(record => record.label === labelToFind);
+				// är längden > 1(dvs då finns det tvåspråkig beskrivning)
+				if(record.values[0].values.length > 1) {
+					// plocka bort index 1 om det är engelska sidan som visas(engelsk beskrivning ska ligga i 0)
+					if ($translate.use() === "en") {
+						record.values[0].values.splice(1, 1)
+					}
+					// plocka bort index 0 om det är svenska sidan som visas
+					if ($translate.use() === "sv") {
+						record.values[0].values.splice(0, 1)
+					}
+				}
+				// Finns bara en beskrivning så visa den oavsett sidans språk
+			});
+		}
+	});
 
 	app.component("prmBriefResultContainerAfter", {
         bindings: { parentCtrl: "<" },
