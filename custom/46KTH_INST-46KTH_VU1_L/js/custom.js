@@ -158,11 +158,13 @@ console.log(kth_vid);
 					$http.get(apiUrl)
 						.then(function(response) {
 							//Sök efter patronrollen
-							let searchString = "Patron;KTH Library;";
-							if(lang=='sv') {
-								searchString = "Låntagare;KTH Biblioteket;";
-							}
-							const result = response.data.data.roles.role.includes(searchString);
+							let searchStrings = [
+								"Patron;KTH Library;",
+								"Låntagare;KTH Biblioteket;"
+							];
+							const result = searchStrings.some(searchString => 
+								response.data.data.roles.role.includes(searchString)
+							);
 							
 							//Visa om användaren inte har någon patronroll
 							if (!result) {
@@ -357,7 +359,7 @@ console.log(kth_vid);
 						<div style="position: fixed;right: 16px;bottom: 16px;z-index: 10000;border-radius: 40px">
 							<button class="kundo-chat-widget__start-button kundo-chat-widget__start-button--with-transition" aria-label="chatt" class="button-with-icon zero-margin" onclick="startChat('${lang}')">
 								<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" class="kundo-chat-widget__start-button-icon"><path d="M5.195 11.895h-.043c.017.911.227 1.808.616 2.634a6.156 6.156 0 0 1-3.5 1.32c-.124 0-.364-.116-.364-.238a.438.438 0 0 1 .123-.36 4.932 4.932 0 0 0 1.233-2.635A6.02 6.02 0 0 1 0 7.466C0 3.871 3.506 1 7.974 1c4.227 0 7.61 2.634 7.974 5.988a7.897 7.897 0 0 0-3.747-.959c-3.863 0-7.006 2.634-7.006 5.866zM12.2 7.221c3.26 0 5.799 2.157 5.799 4.668a4.549 4.549 0 0 1-2.416 3.832c.069.712.365 1.384.845 1.918.123.123.123.123 0 .239 0 .122-.124.122-.24.122a4.617 4.617 0 0 1-3.143-1.558c-.364 0-.617.122-.968.122-3.26 0-5.799-2.157-5.799-4.669.124-2.633 2.656-4.668 5.916-4.668l.006-.006z" fill-rule="nonzero" fill="currentColor"></path></svg>
-								<span id="chat_start_text">${startchatt_text}</span>
+								<span id="chat_start_text" class="kundo-chat-widget__start-button-text">${startchatt_text}</span>
 							</button>
 						</div>
 					`
@@ -886,53 +888,6 @@ app.controller('prmTobarAfterController', function ($scope,$location,$rootScope,
     });
 	
 	/*****************************************
-	 * 
-	 * prm-alma-viewit-items-after
-	 * 
-	 * 
-	 *
-	 ******************************************/
-	 
-	 app.component('1prmAlmaViewitItemsAfter', {
-		bindings: {parentCtrl: '<'},
-		controller: 'prmAlmaViewitItemsAfterController',
-		template: `
-		<md-list-item ng-repeat="item in $ctrl.parentCtrl.getServices() track by $index">
-		<md-button ng-if="item.licenceExist===\'true\'" class="button-link"
-                        prm-aria-label="{{\'nui.aria.almaViewitItems.license\' | translate}}"
-                        (click)="$ctrl.parentCtrl.getLicense(item,$event)" aria-label="license">S</md-button>
-			<p (click)="$ctrl.disableClick($event)" ng-if="item.toggleLicense" class="ng-scope license" style="padding: 1em 1.5em">
-				<span class="ng-binding ng-scope" ng-repeat="line in item.licence track by $index" ng-bind-html="line+\'<br/>\'"></span>
-			</p>
-		</md-list-item>`
-
-		/*
-		<md-list-item ng-repeat="item in $ctrl.parentCtrl.getServices() track by $index"
-		
-			<p (click)="$ctrl.disableClick($event)" ng-if="item.toggleLicense" class="ng-scope license"
-				style="padding: 1em 1.5em"><span class="ng-binding ng-scope"
-					ng-repeat="line in item.licence track by $index" ng-bind-html="line+\'<br/>\'"></span>
-			</p>
-		</md-list-item>
-		*/
-					
-	});
-
-	app.controller('prmAlmaViewitItemsAfterController', function ($scope, $http) {
-		var vm = this;
-
-		$scope.$watch(function() { 
-			return vm.parentCtrl.getServices(); 
-			}, function(item) {
-				try {
-					console.log(item)
-				  } catch(e) {
-					  console.log(e)
-				  }
-		});
-	})
-	
-	/*****************************************
 	
 	
 	prm-alma-viewit-after
@@ -949,6 +904,8 @@ app.controller('prmTobarAfterController', function ($scope,$location,$rootScope,
 		var vm = this;
 
 		//Lägg till "Full text - "på alla knappar som leder till leverantörer
+		// Bort 2025-03-18 enligt mediagruppens beslut
+		/*
 		$scope.$watch(function() { 
 			return vm.parentCtrl.item.delivery.electronicServices; 
 			}, function(electronicServices) {
@@ -963,16 +920,8 @@ app.controller('prmTobarAfterController', function ($scope,$location,$rootScope,
 					  return
 				  }
 		});
+		*/
 
-		function getlicence(packagename) {
-			var method = 'GET';
-			var url = `https://apps.lib.kth.se/alma/primo/getlicenceve.php?packageName=${packagename}`;
-			var data = $http({method: method, url: url})
-			.then(function(response) {
-				console.log(response)
-			});
-
-		}
 
 		vm.getlic = getlic
 
@@ -1576,6 +1525,7 @@ app.controller('prmTobarAfterController', function ($scope,$location,$rootScope,
 	x.async = true;
 	x.src = (document.location.protocol === "https:" ? "https://" : "http://") + "static-chat.kundo.se/chat-js/org/1199/widget.js";
 	document.body.appendChild(x);
+	document.addEventListener('scroll', chatball);
 })();
 
 
@@ -1614,5 +1564,17 @@ function togglepolicy(element) {
 	} else {
 		element.querySelector(".tooltiptext").style.visibility = "hidden";
 		element.querySelector(".tooltiptext").style.opacity = "0";
+	}
+}
+
+function chatball() {
+	if (window.innerWidth >= 768)
+		return;
+	var chatWidgetText = document.querySelector('.kundo-chat-widget__start-button-text');
+	if (window.scrollY <= 60) {
+		chatWidgetText === null || chatWidgetText === void 0 ? void 0 : chatWidgetText.classList.remove('kundo-chat-widget__start-button-text--hidden');
+	}
+	else {
+		chatWidgetText === null || chatWidgetText === void 0 ? void 0 : chatWidgetText.classList.add('kundo-chat-widget__start-button-text--hidden');
 	}
 }

@@ -315,8 +315,19 @@ prm-main-menu
 
 *******************************************/
 
-prm-main-menu .md-button.multi-line-button{
+prm-main-menu .md-button.multi-line-button,
+prm-main-menu[menu-type=menu] .md-button.main-menu-ra.multi-line-button {
 	white-space: nowrap;
+}
+
+/* Dölj beta för resarch assistant*/
+.beta-sign {
+	display: none
+}
+
+/* Dölj stjärnor för resarch assistant*/
+prm-icon[icon-definition="research-assistant"] {
+	display: none;
 }
 
 prm-main-menu[menu-type=menu] .md-button {
@@ -2071,6 +2082,14 @@ body #kundo-chat #kundo-chat-widget.kundo-chat-widget .kundo-chat-flow-selector 
     color: #0029ed !important;
 }
 
+/* Gör en liten boll av chattikonen vid mindre skärmbredder*/
+#chat_start_text.kundo-chat-widget__start-button-text--hidden:not(:empty) {
+    font-size: 0;
+    margin: 0;
+    padding: 0;
+	line-height: 0;
+}
+
 @media (min-width: 768px) {
 	#chat_kth_kundo .kundo-chat-widget__start-button {
 		min-width: 56px;
@@ -2083,6 +2102,17 @@ body #kundo-chat #kundo-chat-widget.kundo-chat-widget .kundo-chat-flow-selector 
 	    bottom: 64px;
 	}
 }
+
+/*
+@media (max-width: 599px) and (min-width: 200px) {
+	#chat_start_text {
+		font-size: 0;
+		margin: 0;
+		padding: 0;
+		line-height: 0;
+	}
+}
+*/
 
 
 @media screen and (max-width: 768px) {
